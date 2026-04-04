@@ -79,11 +79,11 @@
       <label>Speed</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.5">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.2">
       <label>Bloom</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="0.8">
       <label>Size</label>
     </div>
     <div class="ctrl-group">
@@ -141,9 +141,9 @@
     // Half-resolution bloom for performance
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(innerWidth / 2, innerHeight / 2),
-      0.4,  // strength (low to avoid blowout)
+      0.2,  // strength (low to avoid blowout)
       0.3,  // radius
-      0.8   // threshold (high — only bright edges bloom)
+      0.9   // threshold (high — only bright edges bloom)
     );
     composer.addPass(bloomPass);
 
@@ -209,14 +209,13 @@
         float c = 1.0;
         float d = 0.7;
 
-        // Apply iterations based on speed (1 iteration per frame at speed=1)
+        // Apply one iteration of the Clifford map per frame
         float xNew = sin(a * y) + c * cos(a * x);
         float yNew = sin(b * x) + d * cos(b * y);
 
-        // Interpolate toward the new position for smooth animation
-        float blend = uSpeed * 0.05;
-        x = mix(x, xNew, blend);
-        y = mix(y, yNew, blend);
+        // Direct assignment — this is an iterated map, not an ODE
+        x = xNew;
+        y = yNew;
 
         // Z oscillation based on phase and time
         float z = sin(phase * 6.28318 + uTime) * 0.3;
@@ -278,12 +277,12 @@
         // Color: hue from atan2(y, x) for rainbow
         float hue = fract((atan(y, x) / 3.14159265 + 1.0) * 0.5 + uHueShift);
         float saturation = 0.7;
-        float lightness = 0.12 + 0.15;
+        float lightness = 0.08 + 0.1;
 
         vColor = hsl2rgb(hue, saturation, lightness);
 
         vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-        gl_PointSize = uPointSize * (60.0 / -mvPosition.z);
+        gl_PointSize = uPointSize * (40.0 / -mvPosition.z);
         gl_PointSize = max(gl_PointSize, 0.3);
         gl_Position = projectionMatrix * mvPosition;
       }
@@ -294,7 +293,7 @@
       void main() {
         float d = length(gl_PointCoord - 0.5) * 2.0;
         if (d > 1.0) discard;
-        float alpha = (1.0 - d * d) * 0.2;
+        float alpha = (1.0 - d * d) * 0.1;
         gl_FragColor = vec4(vColor, alpha);
       }
     `;

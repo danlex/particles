@@ -181,6 +181,12 @@
       uniform float uSpeed;
       uniform sampler2D uSeedTexture;
 
+      float hash(vec2 p) {
+        vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+        p3 += dot(p3, p3.yzx + 33.33);
+        return fract((p3.x + p3.y) * p3.z);
+      }
+
       void main() {
         vec2 uv = gl_FragCoord.xy / resolution.xy;
         vec4 seed = texture2D(uSeedTexture, uv);
@@ -202,10 +208,15 @@
         // 3. Slow spiral rotation
         float animTheta = theta + t * 0.05;
 
+        // Add per-particle jitter to break Moiré banding
+        float jitterTheta = animTheta + hash(uv * 999.0) * 0.08;
+        float jitterPhi = phi + hash(uv * 777.0 + 50.0) * 0.06;
+        float jitterR = R + hash(uv * 555.0 + 100.0) * 0.15;
+
         // Convert spherical to Cartesian
-        float x = R * sin(phi) * cos(animTheta);
-        float y = R * sin(phi) * sin(animTheta);
-        float z = R * cos(phi);
+        float x = jitterR * sin(jitterPhi) * cos(jitterTheta);
+        float y = jitterR * sin(jitterPhi) * sin(jitterTheta);
+        float z = jitterR * cos(jitterPhi);
 
         // Compute speed (rate of radius change) for coloring
         float dR = abs(0.3 * 0.5 * cos(t * 0.5 + phi * 2.0))
@@ -288,7 +299,7 @@
         // Color: map hue to phi (latitude = rainbow from pole to pole)
         float hue = fract(phi / 3.14159265 + uHueShift);
         float saturation = 0.75;
-        float lightness = 0.1 + 0.15 * waveIntensity;
+        float lightness = 0.12 + 0.18 * waveIntensity;
 
         vColor = hsl2rgb(hue, saturation, lightness);
 
@@ -304,7 +315,7 @@
       void main() {
         float d = length(gl_PointCoord - 0.5) * 2.0;
         if (d > 1.0) discard;
-        float alpha = (1.0 - d * d) * 0.18;
+        float alpha = (1.0 - d * d) * 0.22;
         gl_FragColor = vec4(vColor, alpha);
       }
     `;

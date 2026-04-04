@@ -79,11 +79,11 @@
       <label>Speed</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.5">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.2">
       <label>Bloom</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="0.8">
       <label>Size</label>
     </div>
     <div class="ctrl-group">
@@ -132,7 +132,7 @@
     composer.addPass(new RenderPass(scene, camera));
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(innerWidth / 2, innerHeight / 2),
-      0.4, 0.3, 0.8
+      0.2, 0.2, 0.9
     );
     composer.addPass(bloomPass);
 
@@ -259,12 +259,12 @@
         // Color: hue from t parameter (rainbow along curve), brightness from position
         float hue = fract(t / 6.28318 + uHueShift);
         float saturation = 0.8;
-        float lightness = 0.15 + 0.12 * sin(t * 3.0 + uTime);
+        float lightness = 0.08 + 0.08 * sin(t * 3.0 + uTime);
 
         vColor = hsl2rgb(hue, saturation, lightness);
 
         vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-        gl_PointSize = uPointSize * (80.0 / -mvPosition.z);
+        gl_PointSize = uPointSize * (45.0 / -mvPosition.z);
         gl_PointSize = max(gl_PointSize, 0.3);
         gl_Position = projectionMatrix * mvPosition;
       }
@@ -275,7 +275,7 @@
       void main() {
         float d = length(gl_PointCoord - 0.5) * 2.0;
         if (d > 1.0) discard;
-        float alpha = (1.0 - d * d) * 0.3;
+        float alpha = (1.0 - d * d) * 0.12;
         gl_FragColor = vec4(vColor, alpha);
       }
     `;
