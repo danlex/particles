@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fibonacci Sphere — GPU Particle Animation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
+    canvas { display: block; }
+    #controls {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 28px;
+      z-index: 10;
+      align-items: center;
+    }
+    .ctrl-group {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .ctrl-group label {
+      color: rgba(255,255,255,0.4); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .ctrl-group input[type="range"] {
+      -webkit-appearance: none; width: 100px; height: 3px;
+      background: rgba(255,255,255,0.15); border-radius: 2px; outline: none;
+    }
+    .ctrl-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: #fff; cursor: pointer;
+    }
+    #info {
+      position: fixed; top: 24px; left: 28px; z-index: 10;
+    }
+    #info h1 {
+      color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    #info p {
+      color: rgba(255,255,255,0.25); font-size: 10px;
+      margin-top: 6px; letter-spacing: 1px;
+    }
+    #fps {
+      position: fixed; top: 24px; right: 28px;
+      color: rgba(255,255,255,0.2); font-size: 10px;
+      letter-spacing: 1px; z-index: 10;
+    }
+    #back {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+    }
+    #back a {
+      color: rgba(255,255,255,0.2); font-size: 9px; text-decoration: none;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    #back a:hover { color: rgba(255,255,255,0.5); }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h1>Fibonacci Sphere</h1>
+    <p id="particle-count"></p>
+  </div>
+  <div id="fps"></div>
+  <div id="back"><a href="index.html">Gallery</a></div>
+  <div id="controls">
+    <div class="ctrl-group">
+      <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
+      <label>Speed</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.5">
+      <label>Bloom</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
+      <label>Size</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="hueShift" min="0" max="1" step="0.01" value="0">
+      <label>Hue</label>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+    // =============================================
+    // CONFIG
+    // =============================================
+    // Texture size: WIDTH x WIDTH = total particles
+    const WIDTH = 256; // 256x256 = 65,536 particles
+    const PARTICLE_COUNT = WIDTH * WIDTH;
+
+    // =============================================
+    // SCENE
+    // =============================================
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
+    camera.position.set(0, 0, 18);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(1); // Force 1x for performance; bloom is the bottleneck at 2x
+    document.body.appendChild(renderer.domElement);
+
+    const orbitControls = new OrbitControls(camera, renderer.domElement);
+    orbitControls.enableDamping = true;
+    orbitControls.dampingFactor = 0.05;
+    orbitControls.autoRotate = true;
+    orbitControls.autoRotateSpeed = 0.5;
+
+    // =============================================
+    // POST-PROCESSING
+    // =============================================
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    // Half-resolution bloom for performance
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(innerWidth / 2, innerHeight / 2),
+      0.4,  // strength (low to avoid blowout)
+      0.3,  // radius
+      0.8   // threshold (high — only bright edges bloom)
+    );
+    composer.addPass(bloomPass);
+
+    // =============================================
+    // GPU COMPUTATION (Fibonacci Sphere on GPU)
+    // =============================================
+    const gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
+
+    // Position texture: stores (theta, phi, baseRadius, index/N) per particle
+    const posTex0 = gpuCompute.createTexture();
+
+    // Seed particles on a Fibonacci sphere
+    function initSeedData(tex) {
+      const data = tex.image.data; // Float32Array, 4 values per pixel (RGBA)
+      const GOLDEN_RATIO = (1.0 + Math.sqrt(5.0)) / 2.0;
+      const BASE_RADIUS = 5.0;
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const theta = 2.0 * Math.PI * i / GOLDEN_RATIO;
+        const phi = Math.acos(1.0 - 2.0 * (i + 0.5) / PARTICLE_COUNT);
+
+        const idx = i * 4;
+        data[idx]     = theta;            // theta angle
+        data[idx + 1] = phi;              // phi angle (0 to PI)
+        data[idx + 2] = BASE_RADIUS;      // base radius
+        data[idx + 3] = i / PARTICLE_COUNT; // normalized index
+      }
+    }
+
+    initSeedData(posTex0);
+
+    // GPU shader: Fibonacci sphere with breathing/pulsing animation
+    const positionShader = `
+      uniform float uTime;
+      uniform float uSpeed;
+      uniform sampler2D uSeedTexture;
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution.xy;
+        vec4 seed = texture2D(uSeedTexture, uv);
+
+        float theta = seed.x;
+        float phi = seed.y;
+        float baseRadius = seed.z;
+        float particleIndex = seed.w;
+
+        // Animate time with speed multiplier
+        float t = uTime * uSpeed;
+
+        // 1. Breathing effect: radius pulses with time, offset by latitude
+        float R = baseRadius + 0.3 * sin(t * 0.5 + phi * 2.0);
+
+        // 2. Wave ripple across the surface
+        R += 0.15 * sin(phi * 8.0 - t * 2.0);
+
+        // 3. Slow spiral rotation
+        float animTheta = theta + t * 0.05;
+
+        // Convert spherical to Cartesian
+        float x = R * sin(phi) * cos(animTheta);
+        float y = R * sin(phi) * sin(animTheta);
+        float z = R * cos(phi);
+
+        // Compute speed (rate of radius change) for coloring
+        float dR = abs(0.3 * 0.5 * cos(t * 0.5 + phi * 2.0))
+                 + abs(0.15 * 2.0 * cos(phi * 8.0 - t * 2.0));
+
+        gl_FragColor = vec4(x, y, z, dR);
+      }
+    `;
+
+    // =============================================
+    // SEED TEXTURE (read-only, for compute + vertex shaders)
+    // =============================================
+    // Copy the seed data so it persists unchanged
+    const seedData = new Float32Array(posTex0.image.data);
+    const seedTexture = new THREE.DataTexture(
+      seedData,
+      WIDTH,
+      WIDTH,
+      THREE.RGBAFormat,
+      THREE.FloatType
+    );
+    seedTexture.needsUpdate = true;
+
+    const posVar = gpuCompute.addVariable('texturePosition', positionShader, posTex0);
+    gpuCompute.setVariableDependencies(posVar, [posVar]);
+
+    posVar.material.uniforms.uTime = { value: 0.0 };
+    posVar.material.uniforms.uSpeed = { value: 1.0 };
+    posVar.material.uniforms.uSeedTexture = { value: seedTexture };
+
+    // Wrap mode for the texture
+    posVar.wrapS = THREE.RepeatWrapping;
+    posVar.wrapT = THREE.RepeatWrapping;
+
+    const err = gpuCompute.init();
+    if (err !== null) {
+      console.error('GPU Computation init error:', err);
+    }
+
+    // =============================================
+    // PARTICLE RENDERING (custom shader reads GPU texture)
+    // =============================================
+    const vertexShader = `
+      uniform sampler2D uPositionTexture;
+      uniform sampler2D uSeedTexture;
+      uniform float uHueShift;
+      uniform float uPointSize;
+      attribute vec2 aTexCoord;
+      varying vec3 vColor;
+
+      vec3 hsl2rgb(float h, float s, float l) {
+        float c = (1.0 - abs(2.0 * l - 1.0)) * s;
+        float h6 = h * 6.0;
+        float x = c * (1.0 - abs(mod(h6, 2.0) - 1.0));
+        float m = l - c * 0.5;
+        vec3 rgb;
+        if (h6 < 1.0) rgb = vec3(c, x, 0.0);
+        else if (h6 < 2.0) rgb = vec3(x, c, 0.0);
+        else if (h6 < 3.0) rgb = vec3(0.0, c, x);
+        else if (h6 < 4.0) rgb = vec3(0.0, x, c);
+        else if (h6 < 5.0) rgb = vec3(x, 0.0, c);
+        else rgb = vec3(c, 0.0, x);
+        return rgb + m;
+      }
+
+      void main() {
+        vec4 posData = texture2D(uPositionTexture, aTexCoord);
+        vec4 seedData = texture2D(uSeedTexture, aTexCoord);
+
+        float x = posData.x;
+        float y = posData.y;
+        float z = posData.z;
+        float waveIntensity = posData.w;
+
+        // phi from seed for latitude-based hue mapping
+        float phi = seedData.y;
+
+        vec3 pos = vec3(x, y, z);
+
+        // Color: map hue to phi (latitude = rainbow from pole to pole)
+        float hue = fract(phi / 3.14159265 + uHueShift);
+        float saturation = 0.75;
+        float lightness = 0.1 + 0.15 * waveIntensity;
+
+        vColor = hsl2rgb(hue, saturation, lightness);
+
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        gl_PointSize = uPointSize * (45.0 / -mvPosition.z);
+        gl_PointSize = max(gl_PointSize, 0.3);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `;
+
+    const fragmentShader = `
+      varying vec3 vColor;
+      void main() {
+        float d = length(gl_PointCoord - 0.5) * 2.0;
+        if (d > 1.0) discard;
+        float alpha = (1.0 - d * d) * 0.18;
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `;
+
+    // Create geometry with texture coordinates to look up GPU results
+    const geometry = new THREE.BufferGeometry();
+    const texCoords = new Float32Array(PARTICLE_COUNT * 2);
+    for (let j = 0; j < WIDTH; j++) {
+      for (let i = 0; i < WIDTH; i++) {
+        const idx = (j * WIDTH + i) * 2;
+        texCoords[idx]     = (i + 0.5) / WIDTH;
+        texCoords[idx + 1] = (j + 0.5) / WIDTH;
+      }
+    }
+    // Dummy positions (will be overridden by vertex shader)
+    const dummyPositions = new Float32Array(PARTICLE_COUNT * 3);
+    geometry.setAttribute('position', new THREE.BufferAttribute(dummyPositions, 3));
+    geometry.setAttribute('aTexCoord', new THREE.BufferAttribute(texCoords, 2));
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        uPositionTexture: { value: null },
+        uSeedTexture: { value: seedTexture },
+        uHueShift: { value: 0.0 },
+        uPointSize: { value: 1.0 },
+      },
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // =============================================
+    // UI
+    // =============================================
+    document.getElementById('particle-count').textContent =
+      `${PARTICLE_COUNT.toLocaleString()} particles — fully GPU computed`;
+
+    const speedSlider = document.getElementById('speed');
+    const bloomSlider = document.getElementById('bloom');
+    const sizeSlider = document.getElementById('size');
+    const hueSlider = document.getElementById('hueShift');
+    const fpsEl = document.getElementById('fps');
+
+    // =============================================
+    // ANIMATION LOOP (CPU does zero particle work)
+    // =============================================
+    let lastTime = performance.now();
+    let frameCount = 0;
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        fpsEl.textContent = `${frameCount} FPS`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      // Update uniforms from UI
+      posVar.material.uniforms.uSpeed.value = parseFloat(speedSlider.value);
+      posVar.material.uniforms.uTime.value = now * 0.001; // seconds
+      bloomPass.strength = parseFloat(bloomSlider.value);
+      material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
+      material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
+
+      // Run GPU computation (Fibonacci sphere animation on GPU)
+      gpuCompute.compute();
+
+      // Pass computed position texture to the render shader
+      material.uniforms.uPositionTexture.value =
+        gpuCompute.getCurrentRenderTarget(posVar).texture;
+
+      orbitControls.update();
+      composer.render();
+    }
+
+    animate(performance.now());
+
+    // =============================================
+    // RESIZE
+    // =============================================
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      composer.setSize(innerWidth, innerHeight);
+    });
+  </script>
+</body>
+</html>

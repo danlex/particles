@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Lissajous — GPU Particle Animation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
+    canvas { display: block; }
+    #controls {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 28px;
+      z-index: 10;
+      align-items: center;
+    }
+    .ctrl-group {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .ctrl-group label {
+      color: rgba(255,255,255,0.4); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .ctrl-group input[type="range"] {
+      -webkit-appearance: none; width: 100px; height: 3px;
+      background: rgba(255,255,255,0.15); border-radius: 2px; outline: none;
+    }
+    .ctrl-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: #fff; cursor: pointer;
+    }
+    #info {
+      position: fixed; top: 24px; left: 28px; z-index: 10;
+    }
+    #info h1 {
+      color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    #info p {
+      color: rgba(255,255,255,0.25); font-size: 10px;
+      margin-top: 6px; letter-spacing: 1px;
+    }
+    #fps {
+      position: fixed; top: 24px; right: 28px;
+      color: rgba(255,255,255,0.2); font-size: 10px;
+      letter-spacing: 1px; z-index: 10;
+    }
+    #back {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+    }
+    #back a {
+      color: rgba(255,255,255,0.2); font-size: 9px; text-decoration: none;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    #back a:hover { color: rgba(255,255,255,0.5); }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h1>3D Lissajous</h1>
+    <p id="particle-count"></p>
+  </div>
+  <div id="fps"></div>
+  <div id="back"><a href="index.html">Gallery</a></div>
+  <div id="controls">
+    <div class="ctrl-group">
+      <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
+      <label>Speed</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.5">
+      <label>Bloom</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
+      <label>Size</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="hueShift" min="0" max="1" step="0.01" value="0">
+      <label>Hue</label>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+    const WIDTH = 256;
+    const PARTICLE_COUNT = WIDTH * WIDTH;
+
+    // Scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
+    camera.position.set(0, 3, 18);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(1);
+    document.body.appendChild(renderer.domElement);
+
+    const orbitControls = new OrbitControls(camera, renderer.domElement);
+    orbitControls.enableDamping = true;
+    orbitControls.dampingFactor = 0.05;
+    orbitControls.autoRotate = true;
+    orbitControls.autoRotateSpeed = 0.6;
+
+    // Post-processing
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(innerWidth / 2, innerHeight / 2),
+      0.4, 0.3, 0.8
+    );
+    composer.addPass(bloomPass);
+
+    // GPU Computation
+    const gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
+    const posTex0 = gpuCompute.createTexture();
+
+    // 3D Lissajous: x = A*sin(a*t + d1), y = B*sin(b*t), z = C*sin(c*t + d2)
+    // Seed: distribute particles at different t values along the curve
+    function seedTexture(tex) {
+      const data = tex.image.data;
+      const A = 4.0, B = 4.0, C = 4.0;
+      const a = 3, b = 2, c = 5;
+      const d1 = 0.0, d2 = Math.PI * 0.3;
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const idx = i * 4;
+        // t parameter spread across full range with slight randomness for thickness
+        const t = (i / PARTICLE_COUNT) * Math.PI * 2.0 + (Math.random() - 0.5) * 0.02;
+        const spread = (Math.random() - 0.5) * 0.3;
+
+        data[idx]     = A * Math.sin(a * t + d1) + spread;
+        data[idx + 1] = B * Math.sin(b * t) + spread;
+        data[idx + 2] = C * Math.sin(c * t + d2) + spread;
+        data[idx + 3] = t; // store t parameter for animation
+      }
+    }
+
+    seedTexture(posTex0);
+
+    // GPU shader: Lissajous with evolving phase creates morphing patterns
+    const positionShader = `
+      uniform float uTime;
+      uniform float uSpeed;
+
+      float hash(vec2 p) {
+        vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+        p3 += dot(p3, p3.yzx + 33.33);
+        return fract((p3.x + p3.y) * p3.z);
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution.xy;
+        vec4 pos = texture2D(texturePosition, uv);
+
+        float t = pos.w; // particle's t parameter
+
+        // Lissajous ratios
+        float a = 3.0;
+        float b = 2.0;
+        float c = 5.0;
+        float A = 4.0;
+        float B = 4.0;
+        float C = 4.0;
+
+        // Evolving phase — this is what makes the pattern morph endlessly
+        float phase1 = uTime * 0.15;
+        float phase2 = uTime * 0.1;
+
+        // Advance t along the curve
+        t += 0.008 * uSpeed;
+        t = mod(t, 6.28318530718);
+
+        // Compute Lissajous position
+        float x = A * sin(a * t + phase1);
+        float y = B * sin(b * t);
+        float z = C * sin(c * t + phase2);
+
+        // Add subtle perpendicular perturbation for volume
+        float n = hash(uv * 500.0 + uTime) * 0.06;
+        x += n;
+        y += hash(uv * 500.0 + uTime + 100.0) * 0.06;
+        z += hash(uv * 500.0 + uTime + 200.0) * 0.06;
+
+        // Speed = rate of change of position (for coloring)
+        float dx = A * a * cos(a * t + phase1);
+        float dy = B * b * cos(b * t);
+        float dz = C * c * cos(c * t + phase2);
+        float speed = length(vec3(dx, dy, dz));
+
+        gl_FragColor = vec4(x, y, z, t);
+      }
+    `;
+
+    const posVar = gpuCompute.addVariable('texturePosition', positionShader, posTex0);
+    gpuCompute.setVariableDependencies(posVar, [posVar]);
+    posVar.material.uniforms.uTime = { value: 0.0 };
+    posVar.material.uniforms.uSpeed = { value: 1.0 };
+    posVar.wrapS = THREE.RepeatWrapping;
+    posVar.wrapT = THREE.RepeatWrapping;
+
+    const err = gpuCompute.init();
+    if (err) console.error('GPU init error:', err);
+
+    // Render shader
+    const vertexShader = `
+      uniform sampler2D uPositionTexture;
+      uniform float uHueShift;
+      uniform float uPointSize;
+      uniform float uTime;
+      attribute vec2 aTexCoord;
+      varying vec3 vColor;
+
+      vec3 hsl2rgb(float h, float s, float l) {
+        float c = (1.0 - abs(2.0 * l - 1.0)) * s;
+        float h6 = h * 6.0;
+        float x = c * (1.0 - abs(mod(h6, 2.0) - 1.0));
+        float m = l - c * 0.5;
+        vec3 rgb;
+        if (h6 < 1.0) rgb = vec3(c, x, 0.0);
+        else if (h6 < 2.0) rgb = vec3(x, c, 0.0);
+        else if (h6 < 3.0) rgb = vec3(0.0, c, x);
+        else if (h6 < 4.0) rgb = vec3(0.0, x, c);
+        else if (h6 < 5.0) rgb = vec3(x, 0.0, c);
+        else rgb = vec3(c, 0.0, x);
+        return rgb + m;
+      }
+
+      void main() {
+        vec4 posData = texture2D(uPositionTexture, aTexCoord);
+        vec3 pos = posData.xyz;
+        float t = posData.w;
+
+        // Color: hue from t parameter (rainbow along curve), brightness from position
+        float hue = fract(t / 6.28318 + uHueShift);
+        float saturation = 0.8;
+        float lightness = 0.15 + 0.12 * sin(t * 3.0 + uTime);
+
+        vColor = hsl2rgb(hue, saturation, lightness);
+
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        gl_PointSize = uPointSize * (80.0 / -mvPosition.z);
+        gl_PointSize = max(gl_PointSize, 0.3);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `;
+
+    const fragmentShader = `
+      varying vec3 vColor;
+      void main() {
+        float d = length(gl_PointCoord - 0.5) * 2.0;
+        if (d > 1.0) discard;
+        float alpha = (1.0 - d * d) * 0.3;
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `;
+
+    // Geometry
+    const geometry = new THREE.BufferGeometry();
+    const texCoords = new Float32Array(PARTICLE_COUNT * 2);
+    for (let j = 0; j < WIDTH; j++) {
+      for (let i = 0; i < WIDTH; i++) {
+        const idx = (j * WIDTH + i) * 2;
+        texCoords[idx]     = (i + 0.5) / WIDTH;
+        texCoords[idx + 1] = (j + 0.5) / WIDTH;
+      }
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(PARTICLE_COUNT * 3), 3));
+    geometry.setAttribute('aTexCoord', new THREE.BufferAttribute(texCoords, 2));
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader, fragmentShader,
+      uniforms: {
+        uPositionTexture: { value: null },
+        uHueShift: { value: 0.0 },
+        uPointSize: { value: 1.5 },
+        uTime: { value: 0.0 },
+      },
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    scene.add(new THREE.Points(geometry, material));
+
+    // UI
+    document.getElementById('particle-count').textContent =
+      `${PARTICLE_COUNT.toLocaleString()} particles — evolving phase animation`;
+
+    const speedSlider = document.getElementById('speed');
+    const bloomSlider = document.getElementById('bloom');
+    const sizeSlider = document.getElementById('size');
+    const hueSlider = document.getElementById('hueShift');
+    const fpsEl = document.getElementById('fps');
+
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let elapsedTime = 0;
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const delta = Math.min((now - lastTime) / 1000, 0.1);
+
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        fpsEl.textContent = `${frameCount} FPS`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      const speed = parseFloat(speedSlider.value);
+      elapsedTime += delta * speed;
+
+      posVar.material.uniforms.uSpeed.value = speed;
+      posVar.material.uniforms.uTime.value = elapsedTime;
+      bloomPass.strength = parseFloat(bloomSlider.value);
+      material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
+      material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
+      material.uniforms.uTime.value = elapsedTime;
+
+      gpuCompute.compute();
+      material.uniforms.uPositionTexture.value =
+        gpuCompute.getCurrentRenderTarget(posVar).texture;
+
+      orbitControls.update();
+      composer.render();
+    }
+
+    animate(performance.now());
+
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      composer.setSize(innerWidth, innerHeight);
+    });
+  </script>
+</body>
+</html>

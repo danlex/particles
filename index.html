@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPU Particle Animations</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #050505;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 2px;
+      margin-bottom: 60px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+      max-width: 1140px;
+      width: 100%;
+    }
+    .card {
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0a0a0a;
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .card:hover .play-hint { opacity: 1; }
+    .card-preview {
+      width: 100%;
+      aspect-ratio: 16/9;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    .card-preview canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .card-preview::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50px;
+      background: linear-gradient(transparent, #0a0a0a);
+      pointer-events: none;
+    }
+    .play-hint {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .play-hint::after {
+      content: '';
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 8px 0 8px 14px;
+      border-color: transparent transparent transparent rgba(255,255,255,0.5);
+      margin-left: 3px;
+    }
+    .card-info { padding: 20px 24px 22px; }
+    .card-title {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.7;
+      letter-spacing: 0.5px;
+    }
+    .card-tags { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .card-tag {
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
+    .card-particles {
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.15);
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 4px;
+    }
+    .footer {
+      margin-top: 80px;
+      font-size: 9px;
+      color: rgba(255,255,255,0.12);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <h1>GPU Particle Animations</h1>
+  <p class="subtitle">65,536 particles each — fully GPU computed — Three.js r160</p>
+
+  <div class="grid">
+    <a class="card" href="lorenz-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-lorenz"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Lorenz Attractor</div>
+        <div class="card-desc">The iconic butterfly of chaos theory. Two-winged strange attractor with sensitive dependence on initial conditions.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">RK2</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="aizawa-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-aizawa"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Aizawa Attractor</div>
+        <div class="card-desc">A spherical shell-like chaotic attractor producing toroidal structures with intricate surface patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Toroidal</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="thomas-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-thomas"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Thomas Attractor</div>
+        <div class="card-desc">Cyclically symmetric knotted paths. Slow, meandering attractor producing beautiful intertwined loops.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Cyclic Symmetry</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="torus-knot.html">
+      <div class="card-preview">
+        <canvas id="c-torus"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Torus Knot</div>
+        <div class="card-desc">Particles flowing along a (3,7) torus knot — a complex curve wrapping a torus, never self-intersecting.</div>
+        <div class="card-tags">
+          <span class="card-tag">Parametric Curve</span>
+          <span class="card-tag">Flowing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="halvorsen-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-halvorsen"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Halvorsen Attractor</div>
+        <div class="card-desc">A churning, tri-lobed chaotic form with three-fold rotational symmetry and turbulent dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Tri-lobed</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="rossler-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-rossler"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Rossler Attractor</div>
+        <div class="card-desc">A band-like spiral with a dramatic sharp fold. One of the simplest systems exhibiting chaos.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Spiral Fold</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="fibonacci-sphere.html">
+      <div class="card-preview">
+        <canvas id="c-fibonacci"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fibonacci Sphere</div>
+        <div class="card-desc">Golden ratio distribution on a sphere with breathing waves and spiral rotation. Nature's most elegant pattern.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature-Inspired</span>
+          <span class="card-tag">Phyllotaxis</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="chen-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-chen"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chen Attractor</div>
+        <div class="card-desc">A double-scroll chaotic attractor with fast, turbulent dynamics and butterfly-like structure.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Double Scroll</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="galaxy-spiral.html">
+      <div class="card-preview">
+        <canvas id="c-galaxy"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Galaxy Spiral</div>
+        <div class="card-desc">Four-arm spiral galaxy with differential rotation. Inner stars orbit faster than outer ones.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Differential Rotation</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="dna-helix.html">
+      <div class="card-preview">
+        <canvas id="c-dna"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">DNA Helix</div>
+        <div class="card-desc">Double helix with connecting bridges. Two intertwined strands scrolling through space.</div>
+        <div class="card-tags">
+          <span class="card-tag">Biology</span>
+          <span class="card-tag">Parametric</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="clifford-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-clifford"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Clifford Attractor</div>
+        <div class="card-desc">A feathery 2D iterated map creating dense, organic patterns through simple trigonometric rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Generative Art</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="lissajous.html">
+      <div class="card-preview">
+        <canvas id="c-lissajous"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">3D Lissajous</div>
+        <div class="card-desc">Hypnotic harmonograph curves in 3D. Evolving phase parameters create endlessly morphing patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Parametric</span>
+          <span class="card-tag">Phase Animation</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
+
+  <script>
+    // Render lightweight 2D canvas previews of each attractor
+    const DPR = Math.min(devicePixelRatio, 2);
+
+    function setupCanvas(id) {
+      const canvas = document.getElementById(id);
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * DPR;
+      canvas.height = rect.height * DPR;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(DPR, DPR);
+      return { ctx, w: rect.width, h: rect.height };
+    }
+
+    function hsl(h, s, l, a) {
+      return `hsla(${h},${s}%,${l}%,${a})`;
+    }
+
+    // Project 3D -> 2D with simple perspective
+    function project(x, y, z, w, h, scale, fov) {
+      const d = fov / (fov + z);
+      return { px: w/2 + x * scale * d, py: h/2 + y * scale * d, d };
+    }
+
+    // --- Lorenz ---
+    function drawLorenz() {
+      const { ctx, w, h } = setupCanvas('c-lorenz');
+      const pts = [];
+      let x = 0.1, y = 0, z = 0;
+      const sigma = 10, rho = 28, beta = 8/3, dt = 0.005;
+      for (let i = 0; i < 15000; i++) {
+        const dx = sigma*(y-x), dy = x*(rho-z)-y, dz = x*y-beta*z;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 200) pts.push({ x, y: y, z: z-25, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d } = project(p.x, p.y, p.z, w, h, 4.5, 80);
+        const wingHue = (Math.atan2(p.y, p.x)/Math.PI+1)*0.5;
+        const hu = wingHue * 180 + 120;
+        const li = 30 + Math.min(p.speed/60, 0.4)*60;
+        ctx.fillStyle = hsl(hu, 80, li, 0.4 * d);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.5, 1.2*d), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Aizawa ---
+    function drawAizawa() {
+      const { ctx, w, h } = setupCanvas('c-aizawa');
+      const pts = [];
+      let x = 0.1, y = 0, z = 0;
+      const a=0.95, b=0.7, c=0.6, d=3.5, e=0.25, f=0.1, dt=0.005;
+      for (let i = 0; i < 15000; i++) {
+        const dx = (z-b)*x - d*y;
+        const dy = d*x + (z-b)*y;
+        const dz = c + a*z - z*z*z/3 - (x*x+y*y)*(1+e*z) + f*z*x*x*x;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z-0.5, w, h, 60, 12);
+        const hu = (p.z + 1.5) / 3 * 270 + 200;
+        const li = 25 + Math.min(p.speed/8, 0.5)*50;
+        ctx.fillStyle = hsl(hu % 360, 75, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Thomas ---
+    function drawThomas() {
+      const { ctx, w, h } = setupCanvas('c-thomas');
+      const pts = [];
+      let x = 1, y = 1.1, z = 1.05;
+      const b = 0.208186, dt = 0.03;
+      for (let i = 0; i < 12000; i++) {
+        const dx = Math.sin(y)-b*x, dy = Math.sin(z)-b*y, dz = Math.sin(x)-b*z;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 200) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 25, 20);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180;
+        const li = 30 + Math.min(p.speed/1.2, 0.5)*40;
+        ctx.fillStyle = hsl(hu, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Torus Knot ---
+    function drawTorusKnot() {
+      const { ctx, w, h } = setupCanvas('c-torus');
+      const pts = [];
+      const R = 2, r = 0.8, p = 3, q = 7;
+      for (let i = 0; i < 8000; i++) {
+        const t = (i / 8000) * Math.PI * 2;
+        const x = (R + r*Math.cos(q*t)) * Math.cos(p*t);
+        const y = (R + r*Math.cos(q*t)) * Math.sin(p*t);
+        const z = r * Math.sin(q*t);
+        pts.push({ x, y, z, t });
+      }
+      pts.forEach(pt => {
+        const { px, py, d: dd } = project(pt.x, pt.y, pt.z, w, h, 40, 15);
+        const hu = (pt.t / (Math.PI*2)) * 360;
+        ctx.fillStyle = hsl(hu, 80, 40, 0.45 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.5, 1.2*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Halvorsen ---
+    function drawHalvorsen() {
+      const { ctx, w, h } = setupCanvas('c-halvorsen');
+      const pts = [];
+      let x = -5, y = 0, z = 0;
+      const alpha = 1.89, dt = 0.003;
+      for (let i = 0; i < 15000; i++) {
+        const dx = -alpha*x - 4*y - 4*z - y*y;
+        const dy = -alpha*y - 4*z - 4*x - z*z;
+        const dz = -alpha*z - 4*x - 4*y - x*x;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 5, 60);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 60;
+        const li = 25 + Math.min(p.speed/50, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Rossler ---
+    function drawRossler() {
+      const { ctx, w, h } = setupCanvas('c-rossler');
+      const pts = [];
+      let x = 1, y = 1, z = 0;
+      const a = 0.2, b = 0.2, c = 5.7, dt = 0.008;
+      for (let i = 0; i < 12000; i++) {
+        const dx = -(y + z);
+        const dy = x + a*y;
+        const dz = b + z*(x - c);
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) pts.push({ x, y, z: z-5, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 5, 50);
+        const hu = Math.min(p.z+5, 20)/20 * 240 + 180;
+        const li = 25 + Math.min(p.speed/30, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Fibonacci Sphere ---
+    function drawFibonacci() {
+      const { ctx, w, h } = setupCanvas('c-fibonacci');
+      const pts = [];
+      const N = 8000, golden = (1 + Math.sqrt(5)) / 2, R = 5;
+      for (let i = 0; i < N; i++) {
+        const theta = 2 * Math.PI * i / golden;
+        const phi = Math.acos(1 - 2*(i + 0.5)/N);
+        const x = R * Math.sin(phi) * Math.cos(theta);
+        const y = R * Math.sin(phi) * Math.sin(theta);
+        const z = R * Math.cos(phi);
+        pts.push({ x, y, z, phi });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 16, 20);
+        const hu = (p.phi / Math.PI) * 270 + 180;
+        ctx.fillStyle = hsl(hu % 360, 65, 35, 0.4 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Chen ---
+    function drawChen() {
+      const { ctx, w, h } = setupCanvas('c-chen');
+      const pts = [];
+      let x = 5, y = 10, z = 10;
+      const a = 35, b = 3, c = 28, dt = 0.001;
+      for (let i = 0; i < 15000; i++) {
+        const dx = a*(y-x), dy = (c-a)*x - x*z + c*y, dz = x*y - b*z;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 200) pts.push({ x, y, z: z-25, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 3, 80);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 30;
+        ctx.fillStyle = hsl(hu % 360, 70, 30, 0.3 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Galaxy ---
+    function drawGalaxy() {
+      const { ctx, w, h } = setupCanvas('c-galaxy');
+      const pts = [];
+      for (let i = 0; i < 6000; i++) {
+        const arm = i % 4;
+        const t = (i / 6000);
+        const r = Math.sqrt(t) * 8;
+        const angle = t * Math.PI * 6 + arm * Math.PI / 2;
+        const x = r * Math.cos(angle) + (Math.random()-0.5)*0.5;
+        const z = r * Math.sin(angle) + (Math.random()-0.5)*0.5;
+        const y = (Math.random()-0.5) * 0.4 / (1+r*0.3);
+        pts.push({ x, y, z, r });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y-2, p.z, w, h, 10, 25);
+        const hu = 40 + p.r * 20;
+        const li = 30 + 20 * Math.exp(-p.r*0.3);
+        ctx.fillStyle = hsl(Math.min(hu, 240), 50, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- DNA ---
+    function drawDNA() {
+      const { ctx, w, h } = setupCanvas('c-dna');
+      const R = 2, pitch = 1.5;
+      for (let strand = 0; strand < 2; strand++) {
+        const offset = strand * Math.PI;
+        const hu = strand === 0 ? 180 : 300;
+        for (let i = 0; i < 3000; i++) {
+          const t = (i / 3000) * Math.PI * 6;
+          const x = R * Math.cos(t + offset);
+          const z = R * Math.sin(t + offset);
+          const y = t * pitch / (Math.PI*2) - 7;
+          const { px, py, d: dd } = project(x, y, z, w, h, 14, 20);
+          ctx.fillStyle = hsl(hu, 70, 35, 0.4 * dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Clifford ---
+    function drawClifford() {
+      const { ctx, w, h } = setupCanvas('c-clifford');
+      const a=-1.4, b=1.6, c=1.0, d=0.7;
+      let x = 0.1, y = 0.1;
+      for (let i = 0; i < 15000; i++) {
+        const nx = Math.sin(a*y) + c*Math.cos(a*x);
+        const ny = Math.sin(b*x) + d*Math.cos(b*y);
+        x = nx; y = ny;
+        if (i > 10) {
+          const { px, py, d: dd } = project(x, y, 0, w, h, 55, 10);
+          const hu = (Math.atan2(y, x)/Math.PI+1)*180;
+          ctx.fillStyle = hsl(hu, 60, 30, 0.2);
+          ctx.beginPath();
+          ctx.arc(px, py, 0.6, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- 3D Lissajous ---
+    function drawLissajous() {
+      const { ctx, w, h } = setupCanvas('c-lissajous');
+      const pts = [];
+      const A = 4, B = 4, C = 4;
+      const a = 3, b = 2, c = 5;
+      const d1 = 0.5, d2 = 1.2;
+      for (let i = 0; i < 10000; i++) {
+        const t = (i / 10000) * Math.PI * 2;
+        const x = A * Math.sin(a*t + d1);
+        const y = B * Math.sin(b*t);
+        const z = C * Math.sin(c*t + d2);
+        pts.push({ x, y, z, t });
+      }
+      pts.forEach(pt => {
+        const { px, py, d: dd } = project(pt.x, pt.y, pt.z, w, h, 18, 20);
+        const hu = (pt.t / (Math.PI*2)) * 360 + 280;
+        ctx.fillStyle = hsl(hu % 360, 75, 38, 0.4 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.1*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // Render all previews
+    const drawAll = () => {
+      drawLorenz(); drawAizawa(); drawThomas(); drawTorusKnot();
+      drawHalvorsen(); drawRossler(); drawFibonacci();
+      drawChen(); drawGalaxy(); drawDNA(); drawClifford(); drawLissajous();
+    };
+    requestAnimationFrame(drawAll);
+    window.addEventListener('resize', drawAll);
+  </script>
+</body>
+</html>
