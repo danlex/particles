@@ -1,6 +1,6 @@
 # Particles
 
-A gallery of **45 real-time GPU particle animations**. Each runs 65,536 particles fully computed on the GPU using Three.js r160 and `GPUComputationRenderer`.
+A gallery of **48 real-time GPU particle animations**. Each runs 65,536 particles fully computed on the GPU using Three.js r160 and `GPUComputationRenderer`.
 
 Live site: https://danlex.github.io/particles/
 

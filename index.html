@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 45 GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 45 GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="A gallery of 45 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and GPUComputationRenderer. Strange attractors, fractals, physics simulations, and sacred geometry.">
+  <title>Particles — 48 GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 48 GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="A gallery of 48 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and GPUComputationRenderer. Strange attractors, fractals, physics simulations, and sacred geometry.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz, fractal, shader, creative coding, generative art, GPUComputationRenderer, mathematical visualization">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -17,16 +17,16 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 45 GPU Particle Animations">
-  <meta property="og:description" content="A gallery of 45 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL.">
+  <meta property="og:title" content="Particles — 48 GPU Particle Animations">
+  <meta property="og:description" content="A gallery of 48 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:site_name" content="Particles">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 45 GPU Particle Animations">
-  <meta name="twitter:description" content="A gallery of 45 real-time GPU particle animations. 65,536 particles each, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 48 GPU Particle Animations">
+  <meta name="twitter:description" content="A gallery of 48 real-time GPU particle animations. 65,536 particles each, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
 
   <!-- Icons -->
@@ -40,7 +40,7 @@
     "@type": "WebSite",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 45 real-time GPU particle animations built with Three.js and GPUComputationRenderer.",
+    "description": "A gallery of 48 real-time GPU particle animations built with Three.js and GPUComputationRenderer.",
     "author": {
       "@type": "Person",
       "name": "Alexandru DAN"
@@ -905,6 +905,54 @@
         <div class="card-tags">
           <span class="card-tag">Strange Attractor</span>
           <span class="card-tag">Twisted</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="sprott-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-sprott"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Sprott Attractor</div>
+        <div class="card-desc">J.C. Sprott's minimalist chaotic system. Three elegantly simple equations produce complex attractor dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Minimalist</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="hopf-fibration.html">
+      <div class="card-preview">
+        <canvas id="c-hopf"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Hopf Fibration</div>
+        <div class="card-desc">Linked circles on a 3-sphere stereographically projected to 3D. A beautiful topological object where fibers never intersect.</div>
+        <div class="card-tags">
+          <span class="card-tag">Topology</span>
+          <span class="card-tag">Linked Circles</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="fireflies.html">
+      <div class="card-preview">
+        <canvas id="c-fireflies"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fireflies</div>
+        <div class="card-desc">Wandering particles with pulsing brightness, like fireflies in a summer night. Calm, organic, meditative.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature</span>
+          <span class="card-tag">Pulsing</span>
           <span class="card-particles">65,536 particles</span>
         </div>
       </div>
@@ -2022,6 +2070,79 @@
     }
 
     // Render all previews
+    // --- Sprott B ---
+    function drawSprott() {
+      const { ctx, w, h } = setupCanvas('c-sprott');
+      const pts = [];
+      let x=0.1, y=0.1, z=0.1;
+      const dt=0.01;
+      for (let i = 0; i < 15000; i++) {
+        const dx = y*z, dy = x-y, dz = 1-x*y;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 400) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x*3.5, p.y*3.5, p.z*3.5, w, h, 5, 30);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 80;
+        const li = 25 + Math.min(p.speed/4, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Hopf Fibration ---
+    function drawHopf() {
+      const { ctx, w, h } = setupCanvas('c-hopf');
+      const golden = (1+Math.sqrt(5))/2;
+      const fiberCount = 24;
+      for (let f = 0; f < fiberCount; f++) {
+        const theta = 2*Math.PI*f/golden;
+        const phi = Math.acos(1 - 2*(f+0.5)/fiberCount);
+        const halfTheta = phi * 0.5;
+        const cHT = Math.cos(halfTheta);
+        const sHT = Math.sin(halfTheta);
+        const hu = (f/fiberCount) * 360;
+        for (let j = 0; j < 80; j++) {
+          const psi = j/80 * Math.PI * 2;
+          const a = cHT * Math.cos(psi);
+          const b = cHT * Math.sin(psi);
+          const c = sHT * Math.cos(psi + theta);
+          const d = sHT * Math.sin(psi + theta);
+          const denom = 1 - d + 0.01;
+          const x = a / denom * 2;
+          const y = b / denom * 2;
+          const z = c / denom * 2;
+          const r = Math.sqrt(x*x+y*y+z*z);
+          if (r > 20) continue;
+          const { px, py, d: dd } = project(x*0.5, y*0.5, z*0.5, w, h, 14, 20);
+          ctx.fillStyle = hsl(hu, 70, 30, 0.35*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Fireflies ---
+    function drawFireflies() {
+      const { ctx, w, h } = setupCanvas('c-fireflies');
+      for (let i = 0; i < 400; i++) {
+        const x = (Math.random()-0.5)*20;
+        const y = (Math.random()-0.5)*16;
+        const z = (Math.random()-0.5)*20;
+        const pulse = Math.pow(Math.random(), 3);
+        const { px, py, d: dd } = project(x, y, z, w, h, 7, 25);
+        const hu = 47 + pulse * 18;
+        const li = 8 + pulse * 45;
+        ctx.fillStyle = hsl(hu, 85, li, 0.5*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.5, 1.2*dd*(0.3+pulse)), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
     const drawAll = () => {
       drawLorenz(); drawAizawa(); drawThomas(); drawTorusKnot();
       drawHalvorsen(); drawRossler(); drawFibonacci();
@@ -2035,6 +2156,7 @@
       drawGalaxyCollision();
       drawChua(); drawPickover(); drawChladni(); drawPlasma(); drawSupernova();
       drawMenger(); drawTree(); drawWarp(); drawLuChen();
+      drawSprott(); drawHopf(); drawFireflies();
     };
     requestAnimationFrame(drawAll);
     window.addEventListener('resize', drawAll);
