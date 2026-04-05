@@ -3,7 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rossler Attractor — GPU Particle Animation</title>
+  <title>Rossler Attractor — Particles</title>
+  <meta name="description" content="Otto Rossler's band-like spiral with a dramatic sharp fold. One of the simplest chaotic systems.">
+  <meta name="author" content="Alexandru DAN">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://danlex.github.io/particles/rossler-attractor.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danlex.github.io/particles/rossler-attractor.html">
+  <meta property="og:title" content="Rossler Attractor — Particles">
+  <meta property="og:description" content="Otto Rossler's band-like spiral with a dramatic sharp fold. One of the simplest chaotic systems.">
+  <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
+  <meta property="og:site_name" content="Particles">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rossler Attractor — Particles">
+  <meta name="twitter:description" content="Otto Rossler's band-like spiral with a dramatic sharp fold. One of the simplest chaotic systems.">
+  <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
@@ -64,6 +83,15 @@
       transition: color 0.3s;
     }
     #back a:hover { color: rgba(255,255,255,0.5); }
+      .zoom-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5); font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      font-family: monospace;
+    }
+    .zoom-btn:hover { background: rgba(255,255,255,0.12); }
   </style>
 </head>
 <body>
@@ -90,6 +118,8 @@
       <input type="range" id="hueShift" min="0" max="1" step="0.01" value="0">
       <label>Hue</label>
     </div>
+    <button class="zoom-btn" id="zoomOut">−</button>
+    <button class="zoom-btn" id="zoomIn">+</button>
   </div>
 
   <script type="importmap">
@@ -394,7 +424,7 @@
     });
 
     const points = new THREE.Points(geometry, material);
-    scene.add(points);
+    const pivot = new THREE.Group(); pivot.add(points); scene.add(pivot);
 
     // =============================================
     // UI
@@ -407,6 +437,13 @@
     const sizeSlider = document.getElementById('size');
     const hueSlider = document.getElementById('hueShift');
     const fpsEl = document.getElementById('fps');
+
+    document.getElementById('zoomIn').addEventListener('click', () => {
+      material.uniforms.uScale.value *= 1.15;
+    });
+    document.getElementById('zoomOut').addEventListener('click', () => {
+      material.uniforms.uScale.value *= 0.85;
+    });
 
     // =============================================
     // ANIMATION LOOP (CPU does zero particle work)
@@ -438,6 +475,7 @@
       material.uniforms.uPositionTexture.value =
         gpuCompute.getCurrentRenderTarget(posVar).texture;
 
+      pivot.rotation.x += 0.0008;
       orbitControls.update();
       composer.render();
     }

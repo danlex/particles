@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNA Helix — Particles</title>
-  <meta name="description" content="Double helix structure with connecting bridges. Two intertwined strands scrolling through space.">
+  <title>Galaxy Collision — Particles</title>
+  <meta name="description" content="Two spiral galaxies orbit and merge, their stars drawn into luminous tidal streams.">
   <meta name="author" content="Alexandru DAN">
   <meta name="theme-color" content="#050505">
-  <link rel="canonical" href="https://danlex.github.io/particles/dna-helix.html">
+  <link rel="canonical" href="https://danlex.github.io/particles/galaxy-collision.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://danlex.github.io/particles/dna-helix.html">
-  <meta property="og:title" content="DNA Helix — Particles">
-  <meta property="og:description" content="Double helix structure with connecting bridges. Two intertwined strands scrolling through space.">
+  <meta property="og:url" content="https://danlex.github.io/particles/galaxy-collision.html">
+  <meta property="og:title" content="Galaxy Collision — Particles">
+  <meta property="og:description" content="Two spiral galaxies orbit and merge, their stars drawn into luminous tidal streams.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:site_name" content="Particles">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="DNA Helix — Particles">
-  <meta name="twitter:description" content="Double helix structure with connecting bridges. Two intertwined strands scrolling through space.">
+  <meta name="twitter:title" content="Galaxy Collision — Particles">
+  <meta name="twitter:description" content="Two spiral galaxies orbit and merge, their stars drawn into luminous tidal streams.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -96,7 +96,7 @@
 </head>
 <body>
   <div id="info">
-    <h1>DNA Helix</h1>
+    <h1>Galaxy Collision</h1>
     <p id="particle-count"></p>
   </div>
   <div id="fps"></div>
@@ -107,11 +107,11 @@
       <label>Speed</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.2">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.4">
       <label>Bloom</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="size" min="0.5" max="4" step="0.1" value="0.8">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
       <label>Size</label>
     </div>
     <div class="ctrl-group">
@@ -138,193 +138,107 @@
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
     import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
 
-    // =============================================
-    // CONFIG
-    // =============================================
-    // Texture size: WIDTH x WIDTH = total particles
-    const WIDTH = 256; // 256x256 = 65,536 particles
+    const WIDTH = 256;
     const PARTICLE_COUNT = WIDTH * WIDTH;
 
-    // DNA parameters
-    const HELIX_RADIUS = 2.0;
-    const HELIX_PITCH = 2.5;
-    const T_MAX = 6.0 * Math.PI; // 3 full turns
-    const TOTAL_HEIGHT = T_MAX * HELIX_PITCH / (2.0 * Math.PI);
-    const BRIDGE_FRACTION = 0.1; // ~10% bridge particles
-
-    // =============================================
-    // SCENE
-    // =============================================
+    // Scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
-    camera.position.set(0, 0, 18);
+    camera.position.set(0, 12, 30);
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.setSize(innerWidth, innerHeight);
-    renderer.setPixelRatio(1); // Force 1x for performance; bloom is the bottleneck at 2x
+    renderer.setPixelRatio(1);
     document.body.appendChild(renderer.domElement);
 
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true;
     orbitControls.dampingFactor = 0.05;
     orbitControls.autoRotate = true;
-    orbitControls.autoRotateSpeed = 0.8;
+    orbitControls.autoRotateSpeed = 0.5;
 
-    // =============================================
-    // POST-PROCESSING
-    // =============================================
+    // Post-processing
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    // Half-resolution bloom for performance
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(innerWidth / 2, innerHeight / 2),
-      0.2,  // strength
-      0.2,  // radius
-      0.9   // threshold
+      0.4, 0.3, 0.85
     );
     composer.addPass(bloomPass);
 
-    // =============================================
-    // GPU COMPUTATION (DNA Helix on GPU)
-    // =============================================
+    // GPU Computation
     const gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
-
-    // Seed texture: stores (t_param, strand_id, bridge_flag, norm_index) per particle
-    const seedTex = gpuCompute.createTexture();
-    // Position texture: stores (x, y, z, w) per particle — computed from seed
     const posTex0 = gpuCompute.createTexture();
 
-    // Seed particles with DNA helix parameters
-    function initSeedData(tex) {
-      const data = tex.image.data; // Float32Array, 4 values per pixel (RGBA)
-
+    function seedTexture(tex) {
+      const data = tex.image.data;
+      // Zeros — shader computes positions analytically from index
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const idx = i * 4;
-        const isBridge = Math.random() < BRIDGE_FRACTION;
-        const tParam = (i / PARTICLE_COUNT) * T_MAX;
-        const strandId = isBridge ? 0.0 : (Math.random() < 0.5 ? 0.0 : 1.0);
-        const normIndex = Math.random(); // For bridges: interpolation factor; for strands: unused
-
-        data[idx]     = tParam;       // t_param
-        data[idx + 1] = strandId;     // strand_id (0 or 1)
-        data[idx + 2] = isBridge ? 1.0 : 0.0; // bridge_flag
-        data[idx + 3] = normIndex;    // norm_index (bridge interpolation)
+        data[idx]     = 0;
+        data[idx + 1] = 0;
+        data[idx + 2] = 0;
+        data[idx + 3] = 0;
       }
     }
 
-    // Initialize seed positions from helix parameters (so first frame isn't blank)
-    function initPositionData(posTex, seedTexRef) {
-      const posData = posTex.image.data;
-      const seedData = seedTexRef.image.data;
+    seedTexture(posTex0);
 
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const si = i * 4;
-        const tParam = seedData[si];
-        const strandId = seedData[si + 1];
-        const bridgeFlag = seedData[si + 2];
-        const normIndex = seedData[si + 3];
-
-        let x, y, z;
-
-        if (bridgeFlag > 0.5) {
-          // Bridge: interpolate between strand 0 and strand 1
-          const x0 = HELIX_RADIUS * Math.cos(tParam);
-          const z0 = HELIX_RADIUS * Math.sin(tParam);
-          const x1 = HELIX_RADIUS * Math.cos(tParam + Math.PI);
-          const z1 = HELIX_RADIUS * Math.sin(tParam + Math.PI);
-          const yVal = tParam * HELIX_PITCH / (2.0 * Math.PI) - TOTAL_HEIGHT / 2.0;
-
-          x = x0 + (x1 - x0) * normIndex;
-          y = yVal;
-          z = z0 + (z1 - z0) * normIndex;
-        } else {
-          // Strand particle
-          const angle = tParam + strandId * Math.PI;
-          x = HELIX_RADIUS * Math.cos(angle);
-          z = HELIX_RADIUS * Math.sin(angle);
-          y = tParam * HELIX_PITCH / (2.0 * Math.PI) - TOTAL_HEIGHT / 2.0;
-        }
-
-        const pi = i * 4;
-        posData[pi]     = x;
-        posData[pi + 1] = y;
-        posData[pi + 2] = z;
-        posData[pi + 3] = seedData[si + 2]; // pass bridge_flag for coloring
-      }
-    }
-
-    initSeedData(seedTex);
-    initPositionData(posTex0, seedTex);
-
-    // GPU shader: DNA helix computed entirely on GPU
     const positionShader = `
       uniform float uTime;
       uniform float uSpeed;
-      uniform float uFrame;
-      uniform sampler2D uSeedTexture;
-
-      // Simple GPU-friendly hash noise
-      float hash(vec2 p) {
-        vec3 p3 = fract(vec3(p.xyx) * 0.1031);
-        p3 += dot(p3, p3.yzx + 33.33);
-        return fract((p3.x + p3.y) * p3.z);
-      }
-
-      float noise(vec2 p) {
-        return hash(p) * 2.0 - 1.0; // range [-1, 1]
-      }
 
       void main() {
         vec2 uv = gl_FragCoord.xy / resolution.xy;
 
-        // Read seed data: (t_param, strand_id, bridge_flag, norm_index)
-        vec4 seed = texture2D(uSeedTexture, uv);
-        float tParam = seed.x;
-        float strandId = seed.y;
-        float bridgeFlag = seed.z;
-        float normIndex = seed.w;
+        float idx = gl_FragCoord.y * resolution.x + gl_FragCoord.x;
+        float total = resolution.x * resolution.y;
+        float golden = 1.6180339887;
 
-        // Helix parameters
-        float R = 2.0;
-        float pitch = 2.5;
-        float tMax = 6.0 * 3.14159265;
-        float totalHeight = tMax * pitch / (2.0 * 3.14159265);
+        // Derive fixed orbital params from index
+        bool isA = idx < total * 0.5;
+        float localI = isA ? idx : idx - total * 0.5;
+        float localT = localI / (total * 0.5);
 
-        // Slowly scroll the helix
-        float t = tParam + uTime * 0.3 * uSpeed;
+        // Fixed radius and arm for this particle
+        float r = sqrt(localT) * 6.0; // denser center
+        float arm = floor(mod(localI * golden, 2.0));
+        float theta0 = localT * 12.566 + arm * 3.14159; // spiral
 
-        // Compute strand 0 position
-        float x0 = R * cos(t);
-        float z0 = R * sin(t);
-        float yVal = tParam * pitch / (2.0 * 3.14159265) - totalHeight * 0.5;
+        // Orbital rotation (Keplerian: inner orbits faster)
+        float orbitRate = 1.5 / sqrt(r + 0.5);
+        float theta = theta0 + uTime * orbitRate * uSpeed;
 
-        // Compute strand 1 position (offset by PI)
-        float x1 = R * cos(t + 3.14159265);
-        float z1 = R * sin(t + 3.14159265);
+        // Local position in galaxy
+        float lx = r * cos(theta);
+        float lz = r * sin(theta);
+        float ly = (fract(localI * 0.037) - 0.5) * 0.4;
 
-        float x, y, z;
+        // Galaxy center orbits - spiral inward as they collide
+        float t = uTime * 0.15 * uSpeed;
+        float sep = max(10.0 - t * 0.5, 3.0);
+        float globalPhase = t * 0.4;
+        float side = isA ? 1.0 : -1.0;
+        vec3 center = vec3(
+          side * sep * cos(globalPhase),
+          0.0,
+          side * sep * sin(globalPhase)
+        );
 
-        if (bridgeFlag > 0.5) {
-          // Bridge particle: interpolate between strand 0 and strand 1
-          x = mix(x0, x1, normIndex);
-          y = yVal;
-          z = mix(z0, z1, normIndex);
-        } else {
-          // Strand particle
-          float angle = t + strandId * 3.14159265;
-          x = R * cos(angle);
-          z = R * sin(angle);
-          y = yVal;
-        }
+        // Tidal disturbance from other galaxy
+        vec3 otherCenter = vec3(
+          -side * sep * cos(globalPhase),
+          0.0,
+          -side * sep * sin(globalPhase)
+        );
+        vec3 particlePos = center + vec3(lx, ly, lz);
+        vec3 toOther = otherCenter - particlePos;
+        float tidalStrength = min(1.0 / dot(toOther, toOther), 0.3);
+        particlePos += normalize(toOther) * tidalStrength * 2.0;
 
-        // Add very subtle noise
-        vec2 noiseSeed = uv * 1000.0 + uFrame;
-        x += noise(noiseSeed) * 0.015;
-        y += noise(noiseSeed + 100.0) * 0.015;
-        z += noise(noiseSeed + 200.0) * 0.015;
-
-        // Pack bridge_flag into w for coloring in vertex shader
-        gl_FragColor = vec4(x, y, z, bridgeFlag + strandId * 2.0);
+        // Pack: xyz position, w encodes orbitRate with galaxy flag in sign
+        float speedChannel = isA ? orbitRate : -orbitRate;
+        gl_FragColor = vec4(particlePos, speedChannel);
       }
     `;
 
@@ -333,25 +247,19 @@
 
     posVar.material.uniforms.uTime = { value: 0.0 };
     posVar.material.uniforms.uSpeed = { value: 1.0 };
-    posVar.material.uniforms.uFrame = { value: 0.0 };
-    posVar.material.uniforms.uSeedTexture = { value: seedTex };
 
-    // Wrap mode for the texture
     posVar.wrapS = THREE.RepeatWrapping;
     posVar.wrapT = THREE.RepeatWrapping;
 
     const err = gpuCompute.init();
-    if (err !== null) {
-      console.error('GPU Computation init error:', err);
-    }
+    if (err !== null) console.error('GPU Computation init error:', err);
 
-    // =============================================
-    // PARTICLE RENDERING (custom shader reads GPU texture)
-    // =============================================
+    // Particle Rendering
     const vertexShader = `
       uniform sampler2D uPositionTexture;
       uniform float uHueShift;
       uniform float uPointSize;
+      uniform float uScale;
       attribute vec2 aTexCoord;
       varying vec3 vColor;
 
@@ -372,39 +280,27 @@
 
       void main() {
         vec4 posData = texture2D(uPositionTexture, aTexCoord);
-        vec3 pos = posData.xyz;
+        float x = posData.x;
+        float y = posData.y;
+        float z = posData.z;
+        float speedChannel = posData.w;
 
-        // Decode w channel: bridgeFlag + strandId * 2.0
-        // bridge: w = 1.0 (strand0) or 3.0 (strand0, but bridges use strand0)
-        // strand0: w = 0.0
-        // strand1: w = 2.0
-        float packed = posData.w;
-        float bridgeFlag = step(0.5, mod(packed, 2.0));
-        float strandId = floor(packed / 2.0);
+        vec3 pos = vec3(x, y, z) * uScale;
 
-        float hue;
+        // Sign of w marks galaxy (A positive, B negative)
+        bool isA = speedChannel >= 0.0;
+        float speed = abs(speedChannel);
+
+        // Galaxy A = blue/white (hue 0.6), Galaxy B = orange/red (hue 0.05)
+        float baseHue = isA ? 0.6 : 0.05;
+        float hue = fract(baseHue + uHueShift);
         float saturation = 0.8;
-        float lightness;
-
-        if (bridgeFlag > 0.5) {
-          // Bridge particles: white/yellow
-          hue = fract(0.15 + uHueShift); // yellow hue
-          saturation = 0.3;
-          lightness = 0.15;
-        } else if (strandId < 0.5) {
-          // Strand 0: cyan hues
-          hue = fract(0.5 + uHueShift);
-          lightness = 0.08 + 0.07;
-        } else {
-          // Strand 1: magenta hues
-          hue = fract(0.85 + uHueShift);
-          lightness = 0.08 + 0.07;
-        }
+        float lightness = 0.12 + min(speed * 0.25, 0.25);
 
         vColor = hsl2rgb(hue, saturation, lightness);
 
         vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-        gl_PointSize = uPointSize * (40.0 / -mvPosition.z);
+        gl_PointSize = uPointSize * (55.0 / -mvPosition.z);
         gl_PointSize = max(gl_PointSize, 0.3);
         gl_Position = projectionMatrix * mvPosition;
       }
@@ -415,12 +311,11 @@
       void main() {
         float d = length(gl_PointCoord - 0.5) * 2.0;
         if (d > 1.0) discard;
-        float alpha = (1.0 - d * d) * 0.1;
+        float alpha = (1.0 - d * d) * 0.18;
         gl_FragColor = vec4(vColor, alpha);
       }
     `;
 
-    // Create geometry with texture coordinates to look up GPU results
     const geometry = new THREE.BufferGeometry();
     const texCoords = new Float32Array(PARTICLE_COUNT * 2);
     for (let j = 0; j < WIDTH; j++) {
@@ -430,7 +325,6 @@
         texCoords[idx + 1] = (j + 0.5) / WIDTH;
       }
     }
-    // Dummy positions (will be overridden by vertex shader)
     const dummyPositions = new Float32Array(PARTICLE_COUNT * 3);
     geometry.setAttribute('position', new THREE.BufferAttribute(dummyPositions, 3));
     geometry.setAttribute('aTexCoord', new THREE.BufferAttribute(texCoords, 2));
@@ -442,6 +336,7 @@
         uPositionTexture: { value: null },
         uHueShift: { value: 0.0 },
         uPointSize: { value: 1.0 },
+        uScale: { value: 1.0 },
       },
       transparent: true,
       blending: THREE.AdditiveBlending,
@@ -451,9 +346,7 @@
     const points = new THREE.Points(geometry, material);
     const pivot = new THREE.Group(); pivot.add(points); scene.add(pivot);
 
-    // =============================================
     // UI
-    // =============================================
     document.getElementById('particle-count').textContent =
       `${PARTICLE_COUNT.toLocaleString()} particles — fully GPU computed`;
 
@@ -470,11 +363,10 @@
       material.uniforms.uScale.value *= 0.85;
     });
 
-    // =============================================
-    // ANIMATION LOOP (CPU does zero particle work)
-    // =============================================
+    // Animation Loop
     let lastTime = performance.now();
     let frameCount = 0;
+    let simTime = 0;
 
     function animate(now) {
       requestAnimationFrame(animate);
@@ -486,18 +378,16 @@
         lastTime = now;
       }
 
-      // Update uniforms from UI
-      posVar.material.uniforms.uSpeed.value = parseFloat(speedSlider.value);
-      posVar.material.uniforms.uTime.value += 0.016; // ~60fps time step
-      posVar.material.uniforms.uFrame.value += 1.0;
+      const spd = parseFloat(speedSlider.value);
+      posVar.material.uniforms.uSpeed.value = spd;
+      simTime += 0.016;
+      posVar.material.uniforms.uTime.value = simTime;
       bloomPass.strength = parseFloat(bloomSlider.value);
       material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
       material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
 
-      // Run GPU computation (DNA helix on GPU)
       gpuCompute.compute();
 
-      // Pass computed position texture to the render shader
       material.uniforms.uPositionTexture.value =
         gpuCompute.getCurrentRenderTarget(posVar).texture;
 
@@ -508,9 +398,7 @@
 
     animate(performance.now());
 
-    // =============================================
-    // RESIZE
-    // =============================================
+    // Resize
     window.addEventListener('resize', () => {
       camera.aspect = innerWidth / innerHeight;
       camera.updateProjectionMatrix();

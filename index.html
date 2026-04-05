@@ -3,7 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPU Particle Animations</title>
+
+  <!-- Primary Meta Tags -->
+  <title>Particles — 45 GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 45 GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="A gallery of 45 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and GPUComputationRenderer. Strange attractors, fractals, physics simulations, and sacred geometry.">
+  <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz, fractal, shader, creative coding, generative art, GPUComputationRenderer, mathematical visualization">
+  <meta name="author" content="Alexandru DAN">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://danlex.github.io/particles/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danlex.github.io/particles/">
+  <meta property="og:title" content="Particles — 45 GPU Particle Animations">
+  <meta property="og:description" content="A gallery of 45 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL.">
+  <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
+  <meta property="og:site_name" content="Particles">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://danlex.github.io/particles/">
+  <meta name="twitter:title" content="Particles — 45 GPU Particle Animations">
+  <meta name="twitter:description" content="A gallery of 45 real-time GPU particle animations. 65,536 particles each, fully GPU-computed.">
+  <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Particles",
+    "url": "https://danlex.github.io/particles/",
+    "description": "A gallery of 45 real-time GPU particle animations built with Three.js and GPUComputationRenderer.",
+    "author": {
+      "@type": "Person",
+      "name": "Alexandru DAN"
+    },
+    "keywords": "particle animation, GPU particles, three.js, webgl, strange attractor, fractal, creative coding"
+  }
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -337,6 +381,535 @@
         </div>
       </div>
     </a>
+
+    <a class="card" href="four-wing-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-fourwing"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Four-Wing Attractor</div>
+        <div class="card-desc">The Qi chaotic system producing a striking four-lobed butterfly structure with complex inter-wing dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Four-Lobed</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="dadras-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-dadras"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Dadras Attractor</div>
+        <div class="card-desc">A wispy, cloud-like chaotic system with two lobes. The Dadras-Momeni equations produce ethereal flowing forms.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Cloud-like</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="spherical-harmonics.html">
+      <div class="card-preview">
+        <canvas id="c-harmonics"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Spherical Harmonics</div>
+        <div class="card-desc">Morphing organic shapes from harmonic wave functions on a sphere. Animated coefficients create endlessly evolving surfaces.</div>
+        <div class="card-tags">
+          <span class="card-tag">Harmonic Surface</span>
+          <span class="card-tag">Morphing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="magnetic-field.html">
+      <div class="card-preview">
+        <canvas id="c-magnetic"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Magnetic Field</div>
+        <div class="card-desc">Particles tracing 3D dipole magnetic field lines. Graceful arcs flow from pole to pole through the equatorial plane.</div>
+        <div class="card-tags">
+          <span class="card-tag">Physics</span>
+          <span class="card-tag">Field Lines</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="nose-hoover.html">
+      <div class="card-preview">
+        <canvas id="c-nosehoover"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Nose-Hoover Attractor</div>
+        <div class="card-desc">A torus-like chaotic system from thermodynamic oscillator equations. Smooth flow on a donut-shaped manifold.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Toroidal</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="ocean-surface.html">
+      <div class="card-preview">
+        <canvas id="c-ocean"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Ocean Surface</div>
+        <div class="card-desc">Gerstner wave equations on a particle grid. Three overlapping wave systems create a realistic ocean surface.</div>
+        <div class="card-tags">
+          <span class="card-tag">Physics</span>
+          <span class="card-tag">Waves</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="shimizu-morioka.html">
+      <div class="card-preview">
+        <canvas id="c-shimizu"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Shimizu-Morioka Attractor</div>
+        <div class="card-desc">A Lorenz variant with smoother, wider butterfly wings. Elegant transitions between the two lobes.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Butterfly</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="vortex-rings.html">
+      <div class="card-preview">
+        <canvas id="c-vortex"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Vortex Rings</div>
+        <div class="card-desc">Toroidal vortex flow — particles circulate through a smoke ring, driven by poloidal circulation dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fluid Dynamics</span>
+          <span class="card-tag">Toroidal Flow</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="aurora.html">
+      <div class="card-preview">
+        <canvas id="c-aurora"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Aurora Borealis</div>
+        <div class="card-desc">Shimmering curtain waves of light, mimicking the northern lights with layered sinusoidal displacement.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature</span>
+          <span class="card-tag">Curtain Waves</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="rabinovich-fabrikant.html">
+      <div class="card-preview">
+        <canvas id="c-rabinovich"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Rabinovich-Fabrikant</div>
+        <div class="card-desc">An intricately folded chaotic attractor with complex self-intersecting loops and delicate structure.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Folded</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="jellyfish.html">
+      <div class="card-preview">
+        <canvas id="c-jellyfish"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Jellyfish</div>
+        <div class="card-desc">A pulsating bell dome with trailing tentacles. Rhythmic contraction drives the flowing organic form.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature</span>
+          <span class="card-tag">Organic</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="burke-shaw.html">
+      <div class="card-preview">
+        <canvas id="c-burkeshaw"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Burke-Shaw Attractor</div>
+        <div class="card-desc">A pretzel-like twisted chaotic system with fast dynamics and intricate self-crossing trajectories.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Twisted</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="flower-of-life.html">
+      <div class="card-preview">
+        <canvas id="c-flowerlife"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Flower of Life</div>
+        <div class="card-desc">Sacred geometry — 19 overlapping circles in hexagonal arrangement, rotating through 3D space with golden hues.</div>
+        <div class="card-tags">
+          <span class="card-tag">Sacred Geometry</span>
+          <span class="card-tag">Hexagonal</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="mandala.html">
+      <div class="card-preview">
+        <canvas id="c-mandala"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Mandala</div>
+        <div class="card-desc">Concentric rings with petal symmetry, differential rotation, and 3D breathing. Jewel-toned radial harmony.</div>
+        <div class="card-tags">
+          <span class="card-tag">Sacred Geometry</span>
+          <span class="card-tag">Radial Symmetry</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="geometric-paradox.html">
+      <div class="card-preview">
+        <canvas id="c-paradox"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Geometric Paradox</div>
+        <div class="card-desc">Morphing between impossible shapes — Penrose triangle, Necker cube, and Möbius strip in continuous transformation.</div>
+        <div class="card-tags">
+          <span class="card-tag">Impossible Geometry</span>
+          <span class="card-tag">Morphing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="curl-noise.html">
+      <div class="card-preview">
+        <canvas id="c-curlnoise"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Curl Noise Flow</div>
+        <div class="card-desc">Divergence-free noise field creates ethereal smoke-like tendrils. Classic Shadertoy / demoscene technique.</div>
+        <div class="card-tags">
+          <span class="card-tag">Flow Field</span>
+          <span class="card-tag">Demoscene</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="supershape.html">
+      <div class="card-preview">
+        <canvas id="c-supershape"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Supershape</div>
+        <div class="card-desc">Gielis superformula morphs spheres into starfish, flowers, and crystals with animated parameters.</div>
+        <div class="card-tags">
+          <span class="card-tag">Superformula</span>
+          <span class="card-tag">Morphing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="black-hole.html">
+      <div class="card-preview">
+        <canvas id="c-blackhole"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Black Hole</div>
+        <div class="card-desc">Accretion disk with Keplerian orbits spiraling inward. Inner particles glow blue-white, outer ones burn red.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Accretion Disk</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="hopalong-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-hopalong"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Hopalong Attractor</div>
+        <div class="card-desc">Barry Martin's iterated map creates intricate mandala-like orbital patterns through simple square-root rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Generative Art</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="klein-bottle.html">
+      <div class="card-preview">
+        <canvas id="c-klein"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Klein Bottle</div>
+        <div class="card-desc">A 4D non-orientable surface immersed in 3D. No inside or outside — topology made visible.</div>
+        <div class="card-tags">
+          <span class="card-tag">Topology</span>
+          <span class="card-tag">4D Surface</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="tornado.html">
+      <div class="card-preview">
+        <canvas id="c-tornado"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Tornado</div>
+        <div class="card-desc">A spiraling vortex funnel with turbulent dynamics. Particles accelerate inward and lift upward.</div>
+        <div class="card-tags">
+          <span class="card-tag">Weather</span>
+          <span class="card-tag">Vortex</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="fireworks.html">
+      <div class="card-preview">
+        <canvas id="c-fireworks"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fireworks</div>
+        <div class="card-desc">Eight staggered bursts exploding radially with gravity arcs. Each burst a different color.</div>
+        <div class="card-tags">
+          <span class="card-tag">Simulation</span>
+          <span class="card-tag">Ballistics</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="dejong-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-dejong"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">De Jong Attractor</div>
+        <div class="card-desc">Peter de Jong's iterated map — intricate symmetric lace patterns from simple trigonometric rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Lace Patterns</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="galaxy-collision.html">
+      <div class="card-preview">
+        <canvas id="c-galaxycollision"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Galaxy Collision</div>
+        <div class="card-desc">Two spiral galaxies orbit and merge, their stars drawn into luminous tidal streams by mutual gravitation.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Tidal Streams</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="chua-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-chua"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chua Attractor</div>
+        <div class="card-desc">Leon Chua's famous chaotic circuit — a double-scroll shape born from a single piecewise-linear nonlinearity.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Double Scroll</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="pickover-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-pickover"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Pickover Attractor</div>
+        <div class="card-desc">Clifford Pickover's 3D iterated map generates feathery, organic forms from four trigonometric rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Feathery</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="chladni.html">
+      <div class="card-preview">
+        <canvas id="c-chladni"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chladni Patterns</div>
+        <div class="card-desc">Particles on a vibrating plate settle onto nodal lines. Cycling vibration modes create evolving symmetric patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Physics</span>
+          <span class="card-tag">Standing Waves</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="plasma-ball.html">
+      <div class="card-preview">
+        <canvas id="c-plasma"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Plasma Ball</div>
+        <div class="card-desc">Sixteen electric arcs branch from a central core to the glowing surface. Classic tesla-globe aesthetic.</div>
+        <div class="card-tags">
+          <span class="card-tag">Electricity</span>
+          <span class="card-tag">Branching</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="supernova.html">
+      <div class="card-preview">
+        <canvas id="c-supernova"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Supernova</div>
+        <div class="card-desc">A cyclic stellar explosion with shockwave dynamics. Particles rage from hot blue-white to cooling red embers.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Explosion</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="menger-sponge.html">
+      <div class="card-preview">
+        <canvas id="c-menger"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Menger Sponge</div>
+        <div class="card-desc">A recursive 3D fractal cube. Each iteration removes the center of every subcube, carving infinite surface area.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fractal</span>
+          <span class="card-tag">Recursive</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="fractal-tree.html">
+      <div class="card-preview">
+        <canvas id="c-tree"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fractal Tree</div>
+        <div class="card-desc">Recursive 3D branching from trunk to leaves. Each level splits and shrinks, swaying gently in the breeze.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fractal</span>
+          <span class="card-tag">Branching</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="starfield-warp.html">
+      <div class="card-preview">
+        <canvas id="c-warp"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Starfield Warp</div>
+        <div class="card-desc">Classic hyperspace effect — stars streaking outward from center with velocity-based brightness.</div>
+        <div class="card-tags">
+          <span class="card-tag">Sci-Fi</span>
+          <span class="card-tag">Radial Flow</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="lu-chen-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-luchen"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Lu-Chen Attractor</div>
+        <div class="card-desc">A twisted variant of the Chen attractor with complex topology. Larger scale chaos with dramatic folds.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Twisted</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
   </div>
 
   <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
@@ -638,11 +1211,830 @@
       });
     }
 
+    // --- Four-Wing (Qi) ---
+    function drawFourWing() {
+      const { ctx, w, h } = setupCanvas('c-fourwing');
+      const pts = [];
+      let x = 1, y = 1, z = 1;
+      const a=14, b=43, c=-1, d=16, e=4, dt=0.0008;
+      for (let i = 0; i < 15000; i++) {
+        const dx = a*(y-x)+e*y*z, dy = c*x+d*y-x*z, dz = -b*z+x*y;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) pts.push({ x: x*0.08, y: y*0.08, z: (z-20)*0.08, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 55, 12);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180;
+        const li = 25 + Math.min(p.speed/300, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 75, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Dadras ---
+    function drawDadras() {
+      const { ctx, w, h } = setupCanvas('c-dadras');
+      const pts = [];
+      let x = 1, y = 1, z = 0.5;
+      const a=3, b=2.7, c=1.7, d=2, e=9, dt=0.003;
+      for (let i = 0; i < 12000; i++) {
+        const dx = y-a*x+b*y*z, dy = c*y-x*z+z, dz = d*x*y-e*z;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 200) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 12, 30);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 100;
+        const li = 25 + Math.min(p.speed/20, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Spherical Harmonics ---
+    function drawHarmonics() {
+      const { ctx, w, h } = setupCanvas('c-harmonics');
+      const pts = [];
+      const N = 8000, golden = (1+Math.sqrt(5))/2, R = 5;
+      for (let i = 0; i < N; i++) {
+        const theta = 2*Math.PI*i/golden;
+        const phi = Math.acos(1-2*(i+0.5)/N);
+        const r = R*(1+0.3*Math.sin(3*theta)*Math.sin(2*phi)
+          +0.2*Math.cos(2*theta)*Math.sin(3*phi)
+          +0.15*Math.sin(4*theta)*Math.cos(phi));
+        const x = r*Math.sin(phi)*Math.cos(theta);
+        const y = r*Math.sin(phi)*Math.sin(theta);
+        const z = r*Math.cos(phi);
+        pts.push({ x, y, z, phi, r });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 16, 20);
+        const hu = (p.phi/Math.PI)*200 + 180;
+        const li = 30 + Math.abs(p.r-R)/R * 30;
+        ctx.fillStyle = hsl(hu % 360, 65, li, 0.4 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Magnetic Field ---
+    function drawMagnetic() {
+      const { ctx, w, h } = setupCanvas('c-magnetic');
+      // Draw field lines by tracing dipole field
+      for (let line = 0; line < 24; line++) {
+        const startAngle = (line / 24) * Math.PI * 2;
+        const startR = 2;
+        let x = startR * Math.cos(startAngle);
+        let z = startR * Math.sin(startAngle);
+        let y = (Math.random()-0.5)*0.5;
+        const hu = (line/24)*360;
+        for (let step = 0; step < 600; step++) {
+          const r = Math.sqrt(x*x+y*y+z*z);
+          if (r < 0.3 || r > 18) break;
+          const r5 = r*r*r*r*r;
+          const Bx = 3*x*z/r5;
+          const By = 3*y*z/r5;
+          const Bz = (3*z*z-r*r)/r5;
+          const Bm = Math.sqrt(Bx*Bx+By*By+Bz*Bz)+0.001;
+          const dt = 0.15;
+          x += Bx/Bm*dt; y += By/Bm*dt; z += Bz/Bm*dt;
+          const { px, py, d: dd } = project(x, y, z, w, h, 5, 40);
+          const lat = z/(r+0.001);
+          const li = 25 + Math.abs(lat)*25;
+          ctx.fillStyle = hsl((hu+lat*60)%360, 65, li, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Nose-Hoover ---
+    function drawNoseHoover() {
+      const { ctx, w, h } = setupCanvas('c-nosehoover');
+      const pts = [];
+      let x = 0, y = 1, z = 0;
+      const a = 1.5, dt = 0.005;
+      for (let i = 0; i < 12000; i++) {
+        const dx = y, dy = -x + y*z, dz = a - y*y;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 200) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 22, 18);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180;
+        const li = 25 + Math.min(p.speed/4, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Ocean Surface ---
+    function drawOcean() {
+      const { ctx, w, h } = setupCanvas('c-ocean');
+      for (let i = 0; i < 6000; i++) {
+        const gx = (i % 80) / 80 * 30 - 15;
+        const gz = Math.floor(i / 80) / 75 * 30 - 15;
+        const phase1 = 1.0 * (gx*0.7 + gz*0.7);
+        const phase2 = 2.0 * (gx*0.9 - gz*0.4);
+        const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
+        const { px, py, d: dd } = project(gx, y-2, gz, w, h, 6, 30);
+        const hu = 200 + y * 30;
+        const li = 25 + (y+0.7)*15;
+        ctx.fillStyle = hsl(hu % 360, 60, Math.max(15, li), 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Shimizu-Morioka ---
+    function drawShimizu() {
+      const { ctx, w, h } = setupCanvas('c-shimizu');
+      const pts = [];
+      let x = 0.5, y = 0.5, z = 0.5;
+      const a = 0.75, b = 0.45, dt = 0.008;
+      for (let i = 0; i < 12000; i++) {
+        const dx = y, dy = x - a*y - x*z, dz = -b*z + x*x;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 200) pts.push({ x, y, z: z-4, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 25, 20);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 180;
+        const li = 25 + Math.min(p.speed/3, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Vortex Rings ---
+    function drawVortex() {
+      const { ctx, w, h } = setupCanvas('c-vortex');
+      const R = 5, r = 2;
+      for (let i = 0; i < 6000; i++) {
+        const theta = (i / 6000) * Math.PI * 2;
+        const phi = (i * 7.3) % (Math.PI * 2);
+        const rr = r + Math.sin(i*0.1)*0.5;
+        const x = (R + rr*Math.cos(phi)) * Math.cos(theta);
+        const y = rr * Math.sin(phi);
+        const z = (R + rr*Math.cos(phi)) * Math.sin(theta);
+        const { px, py, d: dd } = project(x, y, z, w, h, 9, 25);
+        const hu = (theta / (Math.PI*2)) * 360;
+        const li = 30 + Math.abs(Math.sin(phi))*20;
+        ctx.fillStyle = hsl(hu % 360, 65, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Aurora ---
+    function drawAurora() {
+      const { ctx, w, h } = setupCanvas('c-aurora');
+      for (let i = 0; i < 5000; i++) {
+        const layer = Math.floor(i / 1250);
+        const col = (i % 50) / 50;
+        const row = Math.floor((i % 1250) / 50) / 25;
+        let x = (col - 0.5) * 20;
+        const y = row * 12 - 2;
+        const z = layer * 3 - 4.5;
+        x += Math.sin(col * 6 + layer) * 1.5 + Math.sin(y * 0.3) * 0.8;
+        const { px, py, d: dd } = project(x, y, z, w, h, 6, 25);
+        const hu = 120 + row * 200;
+        const li = 20 + row * 25;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.3 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Rabinovich-Fabrikant ---
+    function drawRabinovich() {
+      const { ctx, w, h } = setupCanvas('c-rabinovich');
+      const pts = [];
+      let x = -1, y = 0, z = 0.5;
+      const alpha = 1.1, gamma = 0.87, dt = 0.002;
+      for (let i = 0; i < 12000; i++) {
+        const dx = y*(z-1+x*x)+gamma*x;
+        const dy = x*(3*z+1-x*x)+gamma*y;
+        const dz = -2*z*(alpha+x*y);
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 45, 15);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 60;
+        const li = 25 + Math.min(p.speed/10, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Jellyfish ---
+    function drawJellyfish() {
+      const { ctx, w, h } = setupCanvas('c-jellyfish');
+      const golden = (1+Math.sqrt(5))/2;
+      // Bell
+      for (let i = 0; i < 3000; i++) {
+        const theta = 2*Math.PI*i/golden;
+        const phi = Math.acos(1-2*(i+0.5)/6000)*0.5;
+        const R = 4;
+        const x = R*Math.sin(phi)*Math.cos(theta);
+        const y = R*Math.cos(phi)*0.7+1;
+        const z = R*Math.sin(phi)*Math.sin(theta);
+        const { px, py, d: dd } = project(x, y, z, w, h, 10, 20);
+        ctx.fillStyle = hsl(180, 70, 35, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+      // Tentacles
+      for (let t = 0; t < 12; t++) {
+        const angle = t/12*Math.PI*2;
+        for (let j = 0; j < 80; j++) {
+          const along = j/80;
+          const x = 3.5*Math.cos(angle)+Math.sin(along*8+t)*0.5*along;
+          const y = -along*8+1;
+          const z = 3.5*Math.sin(angle)+Math.cos(along*6+t*2)*0.5*along;
+          const { px, py, d: dd } = project(x, y, z, w, h, 10, 20);
+          ctx.fillStyle = hsl(290, 65, 30, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Burke-Shaw ---
+    function drawBurkeShaw() {
+      const { ctx, w, h } = setupCanvas('c-burkeshaw');
+      const pts = [];
+      let x = 1, y = 0, z = 0;
+      const S = 10, V = 4.272, dt = 0.003;
+      for (let i = 0; i < 12000; i++) {
+        const dx = -S*(x+y), dy = -y-S*x*z, dz = S*x*y+V;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) pts.push({ x, y, z, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 45, 15);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 240;
+        const li = 25 + Math.min(p.speed/30, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
+    // --- Flower of Life ---
+    function drawFlowerLife() {
+      const { ctx, w, h } = setupCanvas('c-flowerlife');
+      const R = 3;
+      const centers = [[0,0]];
+      for (let i = 0; i < 6; i++) {
+        const a = i/6*Math.PI*2;
+        centers.push([R*Math.cos(a), R*Math.sin(a)]);
+      }
+      for (let i = 0; i < 12; i++) {
+        const a = i/12*Math.PI*2;
+        centers.push([R*2*Math.cos(a), R*2*Math.sin(a)]);
+      }
+      centers.forEach((c, ci) => {
+        const hu = 30 + ci * 3;
+        for (let j = 0; j < 200; j++) {
+          const t = j/200*Math.PI*2;
+          const x = c[0] + R*Math.cos(t);
+          const y = c[1] + R*Math.sin(t);
+          const { px, py, d: dd } = project(x, y, 0, w, h, 8, 20);
+          ctx.fillStyle = hsl(hu, 65, 35, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      });
+    }
+
+    // --- Mandala ---
+    function drawMandala() {
+      const { ctx, w, h } = setupCanvas('c-mandala');
+      for (let ring = 0; ring < 8; ring++) {
+        const baseR = (ring+1)*1.2;
+        const sym = 6+ring;
+        const hu = ((ring/8)*0.6+0.75)*360;
+        for (let j = 0; j < 500; j++) {
+          const t = j/500*Math.PI*2;
+          const petal = 1+0.3*Math.sin(sym*t);
+          const r = baseR*petal;
+          const x = r*Math.cos(t);
+          const y = r*Math.sin(t);
+          const { px, py, d: dd } = project(x, y, 0, w, h, 8, 20);
+          const li = 25+petal*15;
+          ctx.fillStyle = hsl(hu%360, 70, li, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Geometric Paradox ---
+    function drawParadox() {
+      const { ctx, w, h } = setupCanvas('c-paradox');
+      // Draw Penrose triangle outline
+      const S = 6;
+      for (let seg = 0; seg < 3; seg++) {
+        const a0 = seg*2.094;
+        const a1 = (seg+1)*2.094;
+        for (let j = 0; j < 800; j++) {
+          const t = j/800;
+          const x = S*Math.cos(a0)*(1-t)+S*Math.cos(a1)*t + (Math.random()-0.5)*0.8;
+          const y = S*Math.sin(a0)*(1-t)+S*Math.sin(a1)*t + (Math.random()-0.5)*0.8;
+          const z = Math.sin(seg*2.094+t*2.094)*2;
+          const { px, py, d: dd } = project(x, y, z, w, h, 10, 20);
+          const hu = seg*120+60;
+          ctx.fillStyle = hsl(hu, 65, 30, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Curl Noise ---
+    function drawCurlNoise() {
+      const { ctx, w, h } = setupCanvas('c-curlnoise');
+      // Simulate curl noise with random tendrils
+      for (let trail = 0; trail < 40; trail++) {
+        let x = (Math.random()-0.5)*8, y = (Math.random()-0.5)*8, z = (Math.random()-0.5)*8;
+        const hu = 190 + trail * 3;
+        for (let s = 0; s < 120; s++) {
+          x += Math.sin(y*0.5+trail)*0.15;
+          y += Math.cos(x*0.3+z*0.2)*0.15;
+          z += Math.sin(x*0.4-y*0.3)*0.15;
+          const { px, py, d: dd } = project(x, y, z, w, h, 8, 25);
+          ctx.fillStyle = hsl(hu%360, 60, 25+s*0.1, 0.25*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Supershape ---
+    function drawSupershape() {
+      const { ctx, w, h } = setupCanvas('c-supershape');
+      const golden = (1+Math.sqrt(5))/2;
+      const N = 6000;
+      for (let i = 0; i < N; i++) {
+        const theta = 2*Math.PI*i/golden;
+        const phi = Math.acos(1-2*(i+0.5)/N);
+        const m1=6,n1=1,n2=1,n3=1;
+        const ct=Math.cos(m1*theta/4), st=Math.sin(m1*theta/4);
+        const r1 = Math.pow(Math.pow(Math.abs(ct),n2)+Math.pow(Math.abs(st),n3),-1/n1);
+        const m2=4;
+        const cp=Math.cos(m2*phi/4), sp=Math.sin(m2*phi/4);
+        const r2 = Math.pow(Math.pow(Math.abs(cp),n2)+Math.pow(Math.abs(sp),n3),-1/n1);
+        const R=5;
+        const x=R*r1*Math.cos(theta)*r2*Math.cos(phi);
+        const y=R*r1*Math.sin(theta)*r2*Math.cos(phi);
+        const z=R*r2*Math.sin(phi);
+        const { px, py, d: dd } = project(x, y, z, w, h, 14, 20);
+        const disp = Math.abs(r1*r2-1);
+        const hu = disp*300+120;
+        ctx.fillStyle = hsl(hu%360, 70, 30+disp*20, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Black Hole ---
+    function drawBlackHole() {
+      const { ctx, w, h } = setupCanvas('c-blackhole');
+      for (let i = 0; i < 6000; i++) {
+        const r = 0.5 + Math.sqrt(Math.random())*14;
+        const angle = Math.random()*Math.PI*2;
+        const x = r*Math.cos(angle);
+        const z = r*Math.sin(angle);
+        const y = (Math.random()-0.5)*0.3/(1+r*0.1);
+        const { px, py, d: dd } = project(x, y-2, z, w, h, 5, 30);
+        const temp = Math.max(0, 1-r/15);
+        const hu = temp > 0.5 ? 220+temp*40 : temp*80;
+        const li = 20+temp*35;
+        ctx.fillStyle = hsl(hu%360, 60, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Hopalong ---
+    function drawHopalong() {
+      const { ctx, w, h } = setupCanvas('c-hopalong');
+      const a=2,b=1,c=0.5;
+      let x=0.1,y=0.1,z=0.1;
+      for (let i = 0; i < 12000; i++) {
+        const sx = x>=0?1:-1;
+        const sz = z>=0?1:-1;
+        const nx = y-sx*Math.sqrt(Math.abs(b*x-c));
+        const ny = a-x;
+        const nz = y-sz*Math.sqrt(Math.abs(0.9*z-0.4));
+        x=nx; y=ny; z=nz;
+        if (i > 10) {
+          const r = Math.sqrt(x*x+y*y+z*z);
+          const { px, py, d: dd } = project(x, y, z, w, h, 15, 20);
+          const hu = r*40+60;
+          ctx.fillStyle = hsl(hu%360, 60, 25+Math.min(r*3,20), 0.25);
+          ctx.beginPath();
+          ctx.arc(px, py, 0.6, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Klein Bottle ---
+    function drawKlein() {
+      const { ctx, w, h } = setupCanvas('c-klein');
+      const N = 6000;
+      for (let i = 0; i < N; i++) {
+        const u = (i / N) * Math.PI * 2;
+        const v = ((i * 1.618) % N) / N * Math.PI * 2;
+        const halfU = u * 0.5;
+        const a = 3;
+        const r = a + Math.cos(halfU)*Math.sin(v) - Math.sin(halfU)*Math.sin(2*v);
+        const x = r * Math.cos(u) * 1.5;
+        const y = r * Math.sin(u) * 1.5;
+        const z = (Math.sin(halfU)*Math.sin(v) + Math.cos(halfU)*Math.sin(2*v)) * 1.5;
+        const { px, py, d: dd } = project(x, y, z, w, h, 7, 25);
+        const hu = (u / (Math.PI*2)) * 360;
+        ctx.fillStyle = hsl(hu, 65, 30, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Tornado ---
+    function drawTornado() {
+      const { ctx, w, h } = setupCanvas('c-tornado');
+      for (let i = 0; i < 5000; i++) {
+        const y = Math.random() * 15 - 1;
+        const funnelR = 0.3 + y * 0.15;
+        const angle = Math.random() * Math.PI * 2;
+        const r = funnelR * (0.5 + Math.random());
+        const x = r * Math.cos(angle);
+        const z = r * Math.sin(angle);
+        const { px, py, d: dd } = project(x, (y-5)*1.5, z, w, h, 10, 20);
+        const norm = y / 15;
+        const hu = 20 + norm * 20;
+        const li = 15 + norm * 25;
+        ctx.fillStyle = hsl(hu, 50 - norm*30, li, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Fireworks ---
+    function drawFireworks() {
+      const { ctx, w, h } = setupCanvas('c-fireworks');
+      for (let g = 0; g < 6; g++) {
+        const cx = (Math.sin(g*2.1) * 0.5) * 15;
+        const cy = 3 + Math.cos(g*1.7) * 3;
+        const cz = (Math.cos(g*3.1) * 0.3) * 10;
+        const hu = (g / 6) * 360;
+        const t = 0.5 + g * 0.2;
+        for (let j = 0; j < 400; j++) {
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.acos(2*Math.random()-1);
+          const spd = 4 + Math.random() * 4;
+          const x = cx + spd*Math.sin(phi)*Math.cos(theta)*t;
+          const y = cy + spd*Math.sin(phi)*Math.sin(theta)*t - 2*t*t;
+          const z = cz + spd*Math.cos(phi)*t;
+          const { px, py, d: dd } = project(x, y, z, w, h, 5, 30);
+          const fade = Math.max(0, 1 - t/2);
+          ctx.fillStyle = hsl(hu, 70, 20+fade*30, 0.3*dd*fade);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- De Jong ---
+    function drawDeJong() {
+      const { ctx, w, h } = setupCanvas('c-dejong');
+      const a=-2.24, b=0.43, c=-0.65, d=-2.43;
+      let x=0.1, y=0.1, z=0.1;
+      for (let i = 0; i < 12000; i++) {
+        const nx = Math.sin(a*y) - Math.cos(b*x);
+        const ny = Math.sin(c*x) - Math.cos(d*y);
+        const nz = Math.sin(a*x) - Math.cos(b*z);
+        x=nx; y=ny; z=nz;
+        if (i > 10) {
+          const r = Math.sqrt(x*x+y*y+z*z);
+          const { px, py, d: dd } = project(x, y, z, w, h, 40, 12);
+          const hu = r * 120 + 180;
+          ctx.fillStyle = hsl(hu%360, 60, 25, 0.2);
+          ctx.beginPath();
+          ctx.arc(px, py, 0.6, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Galaxy Collision ---
+    function drawGalaxyCollision() {
+      const { ctx, w, h } = setupCanvas('c-galaxycollision');
+      // Two interacting spiral disks with a tidal bridge between them
+      const galaxies = [
+        { cx: -5,  cz:  1.5, hue: 215, sign:  1 }, // blue
+        { cx:  5,  cz: -1.5, hue:  20, sign: -1 }, // orange
+      ];
+      galaxies.forEach(g => {
+        for (let i = 0; i < 4500; i++) {
+          const t = i / 4500;
+          const r = Math.sqrt(t) * 5;
+          const arm = i % 2;
+          const angle = t * Math.PI * 5 + arm * Math.PI + g.sign * 0.2;
+          // Tidal distortion: outer stars stretched toward other galaxy
+          const pull = Math.max(0, (r - 2.5)) * 0.35 * g.sign;
+          const x = g.cx + r * Math.cos(angle) - pull;
+          const z = g.cz + r * Math.sin(angle) * 0.85;
+          const y = (Math.random() - 0.5) * 0.35 / (1 + r * 0.3);
+          const { px, py, d: dd } = project(x, y, z, w, h, 8, 22);
+          const li = 28 + 28 * Math.exp(-r * 0.35);
+          ctx.fillStyle = hsl(g.hue, 70, li, 0.35 * dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.9*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      });
+    }
+
+    // --- Chua ---
+    function drawChua() {
+      const { ctx, w, h } = setupCanvas('c-chua');
+      const alpha=15.6, beta=28, m0=-1.143, m1=-0.714, dt=0.005;
+      const f = (x) => m1*x + 0.5*(m0-m1)*(Math.abs(x+1)-Math.abs(x-1));
+      let x=0.7, y=0, z=0;
+      for (let i = 0; i < 12000; i++) {
+        const dx = alpha*(y-x-f(x));
+        const dy = x-y+z;
+        const dz = -beta*y;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 300) {
+          const { px, py, d: dd } = project(x*3.5, y*3.5, z*3.5, w, h, 6, 25);
+          const hu = x > 0 ? 180 : 20;
+          const li = 25 + Math.min(Math.sqrt(dx*dx+dy*dy+dz*dz)/3, 0.4)*40;
+          ctx.fillStyle = hsl(hu, 70, li, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Pickover ---
+    function drawPickover() {
+      const { ctx, w, h } = setupCanvas('c-pickover');
+      const a=2.24, b=0.43, c=-0.65, d=2.43;
+      let x=0.1, y=0.1, z=0.1;
+      for (let i = 0; i < 12000; i++) {
+        const nx = Math.sin(a*y) - z*Math.cos(b*x);
+        const ny = z*Math.sin(c*x) - Math.cos(d*y);
+        const nz = Math.sin(x);
+        x=nx; y=ny; z=nz;
+        if (i > 10) {
+          const r = Math.sqrt(x*x+y*y+z*z);
+          const { px, py, d: dd } = project(x*3.5, y*3.5, z*3.5, w, h, 10, 15);
+          const hu = r*80+180;
+          ctx.fillStyle = hsl(hu%360, 65, 28, 0.22);
+          ctx.beginPath();
+          ctx.arc(px, py, 0.6, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Chladni ---
+    function drawChladni() {
+      const { ctx, w, h } = setupCanvas('c-chladni');
+      const n = 5, m = 7, L = 10;
+      const amp = (x, z) => Math.cos(n*Math.PI*x/L)*Math.cos(m*Math.PI*z/L) - Math.cos(m*Math.PI*x/L)*Math.cos(n*Math.PI*z/L);
+      // Draw particles biased to low-amplitude regions
+      let tries = 0;
+      let drawn = 0;
+      while (drawn < 5000 && tries < 60000) {
+        const x = (Math.random()-0.5)*10;
+        const z = (Math.random()-0.5)*10;
+        const a = Math.abs(amp(x, z));
+        if (a < 0.15 + Math.random() * 0.2) {
+          const { px, py, d: dd } = project(x, -2, z, w, h, 10, 15);
+          const hu = 200 - a*200;
+          ctx.fillStyle = hsl(hu, 70, 30+a*15, 0.35*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+          ctx.fill();
+          drawn++;
+        }
+        tries++;
+      }
+    }
+
+    // --- Plasma Ball ---
+    function drawPlasma() {
+      const { ctx, w, h } = setupCanvas('c-plasma');
+      for (let branch = 0; branch < 16; branch++) {
+        const theta0 = (branch / 16) * Math.PI * 2;
+        const phi0 = Math.acos(2*((branch*0.61)%1)-1);
+        const baseX = Math.sin(phi0)*Math.cos(theta0);
+        const baseY = Math.cos(phi0);
+        const baseZ = Math.sin(phi0)*Math.sin(theta0);
+        for (let j = 0; j < 200; j++) {
+          const along = j / 200;
+          const r = along * 6;
+          const wig = along * 0.6;
+          const perpX = Math.sin(along * 8 + branch*3)*wig;
+          const perpY = Math.cos(along * 10 + branch*2)*wig;
+          const x = baseX*r + perpX;
+          const y = baseY*r + perpY;
+          const z = baseZ*r;
+          const { px, py, d: dd } = project(x, y, z, w, h, 9, 25);
+          const intensity = 1 - along;
+          const hu = 280 - intensity*80;
+          const li = 15 + intensity * 35;
+          ctx.fillStyle = hsl(hu, 70, li, 0.35*dd*intensity);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+
+    // --- Supernova ---
+    function drawSupernova() {
+      const { ctx, w, h } = setupCanvas('c-supernova');
+      const golden = (1+Math.sqrt(5))/2;
+      for (let i = 0; i < 6000; i++) {
+        const theta = 2*Math.PI*i/golden;
+        const phi = Math.acos(1-2*(i+0.5)/6000);
+        const velVar = 0.5 + ((i*1.618)%1) * 0.8;
+        const r = 4 * velVar + Math.sin(i*0.05)*0.3;
+        const x = r*Math.sin(phi)*Math.cos(theta);
+        const y = r*Math.cos(phi);
+        const z = r*Math.sin(phi)*Math.sin(theta);
+        const temp = 0.5 + ((i*0.73)%1)*0.5;
+        const { px, py, d: dd } = project(x, y, z, w, h, 10, 18);
+        let hu, li;
+        if (temp > 0.7) { hu = 220; li = 40; }
+        else if (temp > 0.4) { hu = 40; li = 35; }
+        else { hu = 10; li = 20; }
+        ctx.fillStyle = hsl(hu, 70, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Menger Sponge ---
+    function drawMenger() {
+      const { ctx, w, h } = setupCanvas('c-menger');
+      function inMenger(p) {
+        p = [(p[0]+1)*0.5, (p[1]+1)*0.5, (p[2]+1)*0.5];
+        for (let i = 0; i < 3; i++) {
+          p = [p[0]*3, p[1]*3, p[2]*3];
+          const c = [Math.floor(p[0]), Math.floor(p[1]), Math.floor(p[2])];
+          let cross = 0;
+          if (((c[0]%3)+3)%3 === 1) cross++;
+          if (((c[1]%3)+3)%3 === 1) cross++;
+          if (((c[2]%3)+3)%3 === 1) cross++;
+          if (cross >= 2) return false;
+          p = [p[0]-c[0], p[1]-c[1], p[2]-c[2]];
+        }
+        return true;
+      }
+      let drawn = 0, tries = 0;
+      while (drawn < 4000 && tries < 30000) {
+        const p = [Math.random()*2-1, Math.random()*2-1, Math.random()*2-1];
+        if (inMenger(p)) {
+          const { px, py, d: dd } = project(p[0]*5, p[1]*5, p[2]*5, w, h, 11, 15);
+          const dc = Math.sqrt(p[0]*p[0]+p[1]*p[1]+p[2]*p[2]);
+          const hu = 20 + dc * 40;
+          ctx.fillStyle = hsl(hu, 70, 25+dc*15, 0.35*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.4, 0.9*dd), 0, Math.PI*2);
+          ctx.fill();
+          drawn++;
+        }
+        tries++;
+      }
+    }
+
+    // --- Fractal Tree ---
+    function drawTree() {
+      const { ctx, w, h } = setupCanvas('c-tree');
+      function branch(x, y, z, dx, dy, dz, len, level) {
+        if (level > 5 || len < 0.3) return;
+        const hu = 30 - level * 8 + Math.max(level - 3, 0) * 40;
+        const steps = 20;
+        for (let s = 0; s < steps; s++) {
+          const t = s / steps;
+          const nx = x + dx * len * t;
+          const ny = y + dy * len * t;
+          const nz = z + dz * len * t;
+          const { px, py, d: dd } = project(nx, ny, nz, w, h, 12, 25);
+          const li = 20 + level * 5;
+          ctx.fillStyle = hsl(hu, 65, li, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+        const ex = x + dx * len, ey = y + dy * len, ez = z + dz * len;
+        for (let k = -1; k <= 1; k++) {
+          const ang = k * 0.6;
+          const ca = Math.cos(ang), sa = Math.sin(ang);
+          const ndx = dx * ca - dy * sa;
+          const ndy = dx * sa + dy * ca;
+          const ndz = dz * ca + (k===0 ? 0 : 0.3);
+          const l = Math.sqrt(ndx*ndx+ndy*ndy+ndz*ndz);
+          branch(ex, ey, ez, ndx/l, ndy/l, ndz/l, len * 0.7, level + 1);
+        }
+      }
+      branch(0, -6, 0, 0, 1, 0, 4, 0);
+    }
+
+    // --- Starfield Warp ---
+    function drawWarp() {
+      const { ctx, w, h } = setupCanvas('c-warp');
+      for (let i = 0; i < 2500; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const r = 0.3 + Math.random() * 18;
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi) - 8;
+        const { px, py, d: dd } = project(x, y, z, w, h, 8, 6);
+        const rNorm = r / 20;
+        const li = 50 - rNorm * 40;
+        const hu = 220 - rNorm * 30;
+        ctx.fillStyle = hsl(hu, 40, li, 0.5*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd*(1-rNorm*0.7)), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Lu-Chen ---
+    function drawLuChen() {
+      const { ctx, w, h } = setupCanvas('c-luchen');
+      const pts = [];
+      let x = 5, y = 5, z = 5;
+      const a = 36, b = 3, c = 20, dt = 0.002;
+      for (let i = 0; i < 15000; i++) {
+        const dx = a*(y-x), dy = -x*z+c*y, dz = x*y-b*z;
+        x += dx*dt; y += dy*dt; z += dz*dt;
+        if (i > 400) pts.push({ x: x*0.7, y: y*0.7, z: (z-20)*0.7, speed: Math.sqrt(dx*dx+dy*dy+dz*dz) });
+      }
+      pts.forEach(p => {
+        const { px, py, d: dd } = project(p.x, p.y, p.z, w, h, 4, 50);
+        const hu = (Math.atan2(p.y, p.x)/Math.PI+1)*180 + 300;
+        const li = 25 + Math.min(p.speed/250, 0.4)*40;
+        ctx.fillStyle = hsl(hu % 360, 70, li, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.4, 1.0*dd), 0, Math.PI*2);
+        ctx.fill();
+      });
+    }
+
     // Render all previews
     const drawAll = () => {
       drawLorenz(); drawAizawa(); drawThomas(); drawTorusKnot();
       drawHalvorsen(); drawRossler(); drawFibonacci();
       drawChen(); drawGalaxy(); drawDNA(); drawClifford(); drawLissajous();
+      drawFourWing(); drawDadras(); drawHarmonics(); drawMagnetic();
+      drawNoseHoover(); drawOcean(); drawShimizu(); drawVortex();
+      drawAurora(); drawRabinovich(); drawJellyfish(); drawBurkeShaw();
+      drawFlowerLife(); drawMandala(); drawParadox();
+      drawCurlNoise(); drawSupershape(); drawBlackHole(); drawHopalong();
+      drawKlein(); drawTornado(); drawFireworks(); drawDeJong();
+      drawGalaxyCollision();
+      drawChua(); drawPickover(); drawChladni(); drawPlasma(); drawSupernova();
+      drawMenger(); drawTree(); drawWarp(); drawLuChen();
     };
     requestAnimationFrame(drawAll);
     window.addEventListener('resize', drawAll);
