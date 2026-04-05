@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://danlex.github.io/particles/sitemap.xml

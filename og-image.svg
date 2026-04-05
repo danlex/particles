@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#151528"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </radialGradient>
+    <radialGradient id="p1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7cf" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#7cf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="p2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f7c" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#f7c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="p3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fc7" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#fc7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Swirling particle field (manually arranged for visual impact) -->
+  <g opacity="0.9">
+    <!-- Lorenz-like trajectory dots -->
+    <g fill="#7cf" opacity="0.7">
+      <circle cx="400" cy="300" r="2"/>
+      <circle cx="420" cy="290" r="2"/>
+      <circle cx="440" cy="285" r="2"/>
+      <circle cx="460" cy="285" r="2"/>
+      <circle cx="480" cy="290" r="2"/>
+      <circle cx="500" cy="300" r="2"/>
+      <circle cx="520" cy="315" r="2"/>
+      <circle cx="540" cy="335" r="2"/>
+      <circle cx="560" cy="360" r="2"/>
+      <circle cx="575" cy="385" r="2"/>
+      <circle cx="585" cy="410" r="2"/>
+      <circle cx="585" cy="430" r="2"/>
+      <circle cx="575" cy="445" r="2"/>
+    </g>
+    <g fill="#f7c" opacity="0.7">
+      <circle cx="700" cy="300" r="2"/>
+      <circle cx="680" cy="290" r="2"/>
+      <circle cx="660" cy="285" r="2"/>
+      <circle cx="640" cy="285" r="2"/>
+      <circle cx="620" cy="290" r="2"/>
+      <circle cx="600" cy="300" r="2"/>
+      <circle cx="580" cy="315" r="2"/>
+      <circle cx="580" cy="340" r="2"/>
+      <circle cx="595" cy="365" r="2"/>
+      <circle cx="615" cy="385" r="2"/>
+      <circle cx="640" cy="395" r="2"/>
+      <circle cx="665" cy="390" r="2"/>
+      <circle cx="685" cy="375" r="2"/>
+    </g>
+    <g fill="#fc7" opacity="0.7">
+      <circle cx="500" cy="200" r="2"/>
+      <circle cx="520" cy="195" r="2"/>
+      <circle cx="540" cy="200" r="2"/>
+      <circle cx="560" cy="210" r="2"/>
+      <circle cx="580" cy="225" r="2"/>
+      <circle cx="600" cy="245" r="2"/>
+      <circle cx="615" cy="265" r="2"/>
+      <circle cx="625" cy="290" r="2"/>
+      <circle cx="625" cy="315" r="2"/>
+      <circle cx="615" cy="340" r="2"/>
+    </g>
+  </g>
+
+  <!-- Glow orbs -->
+  <circle cx="500" cy="315" r="80" fill="url(#p1)"/>
+  <circle cx="600" cy="315" r="80" fill="url(#p2)"/>
+  <circle cx="550" cy="280" r="60" fill="url(#p3)"/>
+
+  <!-- Title -->
+  <text x="600" y="510" font-family="Courier New, monospace" font-size="72" font-weight="400" fill="#ffffff" text-anchor="middle" letter-spacing="8">PARTICLES</text>
+  <text x="600" y="560" font-family="Courier New, monospace" font-size="20" fill="#888" text-anchor="middle" letter-spacing="4">45 GPU ANIMATIONS — THREE.JS + WEBGL</text>
+</svg>
