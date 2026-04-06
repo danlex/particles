@@ -631,12 +631,6 @@
       if (el) el.value = val;
     });
 
-    document.getElementById('audio-controls').style.display = 'none';
-    const micBtn = document.getElementById('audio-mic-btn');
-    if (micBtn) { micBtn.textContent = 'Use Microphone'; micBtn.classList.remove('copied'); }
-    const fileBtn = document.getElementById('audio-file-btn');
-    if (fileBtn) { fileBtn.textContent = 'Choose File'; fileBtn.classList.remove('copied'); }
-
     showToast('Audio stopped');
   }
 
@@ -665,12 +659,33 @@
     recBtn.style.color = 'rgba(255,100,100,0.5)';
     toolbar.appendChild(recBtn);
 
-    // Audio button
-    const audioBtn = document.createElement('button');
-    audioBtn.className = 'tool-btn';
-    audioBtn.innerHTML = '&#9835;'; // music note
-    audioBtn.title = 'Audio Reactive Mode';
-    toolbar.appendChild(audioBtn);
+    // Mic button (one-click start/stop)
+    const micBtn = document.createElement('button');
+    micBtn.className = 'tool-btn';
+    micBtn.innerHTML = '&#127908;'; // microphone
+    micBtn.title = 'Listen to Music (Mic)';
+    toolbar.appendChild(micBtn);
+
+    // Upload MP3 button (one-click file picker)
+    const uploadBtn = document.createElement('button');
+    uploadBtn.className = 'tool-btn';
+    uploadBtn.innerHTML = '&#9835;'; // music note
+    uploadBtn.title = 'Upload MP3';
+    toolbar.appendChild(uploadBtn);
+
+    // Hidden file input
+    const audioFileInput = document.createElement('input');
+    audioFileInput.type = 'file';
+    audioFileInput.accept = 'audio/*';
+    audioFileInput.style.display = 'none';
+    document.body.appendChild(audioFileInput);
+
+    // Hidden sensitivity (default 1.5)
+    const audioSensEl = document.createElement('input');
+    audioSensEl.type = 'hidden';
+    audioSensEl.id = 'audio-sensitivity';
+    audioSensEl.value = '1.5';
+    document.body.appendChild(audioSensEl);
 
     // Embed button
     const embedBtn = document.createElement('button');
@@ -700,13 +715,60 @@
       }
     });
 
-    // Audio panel (created lazily)
-    let audioPanel = null;
-    audioBtn.addEventListener('click', () => {
-      if (!audioPanel) audioPanel = createAudioPanel();
-      audioPanel.classList.toggle('open');
-      // Close info panel if open
-      if (panel) panel.classList.remove('open');
+    // Mic button: one-click toggle
+    micBtn.addEventListener('click', async () => {
+      if (audioActive) {
+        stopAudio();
+        micBtn.classList.remove('recording');
+        micBtn.innerHTML = '&#127908;';
+        return;
+      }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        initAudio();
+        audioSource = audioCtx.createMediaStreamSource(stream);
+        audioSource.connect(analyser);
+        startAudioLoop();
+        micBtn.classList.add('recording');
+        micBtn.innerHTML = '&#9632;'; // stop square
+        showToast('Listening — play some music!');
+      } catch (e) {
+        showToast('Microphone access denied');
+      }
+    });
+
+    // Upload button: one-click file picker
+    uploadBtn.addEventListener('click', () => {
+      if (audioActive) {
+        stopAudio();
+        uploadBtn.classList.remove('recording');
+        uploadBtn.innerHTML = '&#9835;';
+        return;
+      }
+      audioFileInput.click();
+    });
+
+    audioFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      initAudio();
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const buffer = await audioCtx.decodeAudioData(ev.target.result);
+        if (audioSource && audioSource.disconnect) try { audioSource.disconnect(); } catch(e) {}
+        audioSource = audioCtx.createBufferSource();
+        audioSource.buffer = buffer;
+        audioSource.loop = true;
+        audioSource.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        audioSource.start(0);
+        startAudioLoop();
+        uploadBtn.classList.add('recording');
+        uploadBtn.innerHTML = '&#9632;'; // stop square
+        showToast('Playing: ' + file.name);
+      };
+      reader.readAsArrayBuffer(file);
+      audioFileInput.value = ''; // reset so same file can be re-selected
     });
 
     // Embed button (quick copy without opening panel)
@@ -716,11 +778,17 @@
       copyToClipboard(code, embedBtn);
     });
 
-    // ESC to close panels
+    // ESC to close panels + stop audio
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (panel) panel.classList.remove('open');
-        if (audioPanel) audioPanel.classList.remove('open');
+        if (audioActive) {
+          stopAudio();
+          micBtn.classList.remove('recording');
+          micBtn.innerHTML = '&#127908;';
+          uploadBtn.classList.remove('recording');
+          uploadBtn.innerHTML = '&#9835;';
+        }
       }
     });
   }
