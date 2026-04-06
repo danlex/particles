@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 63 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 63 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 63 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 67 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 67 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 67 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 63 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 63 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 67 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 67 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 63 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 63 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 67 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 67 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 63 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 67 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 63 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 67 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 61,
     "author": {
       "@type": "Person",
@@ -1285,6 +1285,70 @@
         <div class="card-tags">
           <span class="card-tag">Astrophysics</span>
           <span class="card-tag">Voronoi Filaments</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="kelvin-helmholtz.html">
+      <div class="card-preview">
+        <canvas id="c-kh"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Kelvin-Helmholtz</div>
+        <div class="card-desc">Two fluid layers shearing past each other curl into mesmerizing spiral vortex rolls. Jupiter's atmospheric bands.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fluid Dynamics</span>
+          <span class="card-tag">Instability</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="chaotic-billiards.html">
+      <div class="card-preview">
+        <canvas id="c-billiards"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chaotic Billiards</div>
+        <div class="card-desc">Particles bouncing inside a Bunimovich stadium. Regular island chains visible amid the churning chaotic sea.</div>
+        <div class="card-tags">
+          <span class="card-tag">Chaos Theory</span>
+          <span class="card-tag">Hamiltonian</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="conformal-flow.html">
+      <div class="card-preview">
+        <canvas id="c-conformal"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Conformal Flow</div>
+        <div class="card-desc">Joukowski conformal mapping transforms flow around a circle into elegant swooping airfoil streamlines.</div>
+        <div class="card-tags">
+          <span class="card-tag">Complex Analysis</span>
+          <span class="card-tag">Aerodynamics</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="particle-life.html">
+      <div class="card-preview">
+        <canvas id="c-particlelife"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Particle Life</div>
+        <div class="card-desc">Six color species with asymmetric attraction rules self-organize into orbiting clusters and cell-like structures.</div>
+        <div class="card-tags">
+          <span class="card-tag">Artificial Life</span>
+          <span class="card-tag">Emergent</span>
           <span class="card-particles">65,536 particles</span>
         </div>
       </div>
@@ -2763,7 +2827,85 @@
       drawWaves(); drawMetaballs(); drawBZ(); drawPhyllotaxis();
       drawPendulum(); drawNBody(); drawTuring(); drawEMWave();
       drawTrefoil(); drawCosmicWeb();
+      drawKH(); drawBilliards(); drawConformal(); drawParticleLife();
     };
+
+    // --- Kelvin-Helmholtz ---
+    function drawKH() {
+      const { ctx, w, h } = setupCanvas('c-kh');
+      for (let i = 0; i < 5000; i++) {
+        const x = (Math.random()-0.5)*32;
+        const y = (Math.random()-0.5)*8;
+        const band = y > 0 ? 1 : 0;
+        const { px, py, d: dd } = project(x*0.8, y*0.8, 0, w, h, 5, 15);
+        const hu = band ? 29 : 216;
+        ctx.fillStyle = hsl(hu, 70, 27, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Chaotic Billiards ---
+    function drawBilliards() {
+      const { ctx, w, h } = setupCanvas('c-billiards');
+      const a = 3, R = 2;
+      for (let i = 0; i < 4000; i++) {
+        let x, y;
+        do {
+          x = (Math.random()-0.5)*12;
+          y = (Math.random()-0.5)*4;
+        } while ((x>a&&Math.sqrt((x-a)**2+y**2)>R)||(x<-a&&Math.sqrt((x+a)**2+y**2)>R));
+        const angMom = x * (Math.random()-0.5) - y * (Math.random()-0.5);
+        const { px, py, d: dd } = project(x*1.5, y*1.5, 0, w, h, 8, 15);
+        const hu = (angMom * 30 + 180 + 360) % 360;
+        ctx.fillStyle = hsl(hu, 65, 25, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Conformal Flow ---
+    function drawConformal() {
+      const { ctx, w, h } = setupCanvas('c-conformal');
+      for (let i = 0; i < 4000; i++) {
+        const x = (Math.random()-0.5)*20;
+        const y = (Math.random()-0.5)*12;
+        const r2 = x*x+y*y;
+        const r = Math.sqrt(r2)+0.01;
+        if (r < 1.3) continue;
+        const speed = 2 * (1 + 1.44/(r2)) + 4/(6.28*r2);
+        const { px, py, d: dd } = project(x, y, 0, w, h, 7, 15);
+        const hu = (216 - Math.min(speed*14, 180) + 360) % 360;
+        const li = 12 + Math.min(speed*6, 25);
+        ctx.fillStyle = hsl(hu, 60, li, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Particle Life ---
+    function drawParticleLife() {
+      const { ctx, w, h } = setupCanvas('c-particlelife');
+      for (let i = 0; i < 4000; i++) {
+        const species = i % 6;
+        const angle = Math.random()*Math.PI*2;
+        const r = 1+Math.random()*5;
+        const cx = 5*Math.sin(species*1.047);
+        const cy = 5*Math.cos(species*1.571);
+        const x = cx + r*Math.cos(angle)*(0.3+Math.random()*0.7);
+        const y = cy + r*Math.sin(angle)*(0.3+Math.random()*0.7);
+        const z = Math.sin(species*0.628+1)*2;
+        const { px, py, d: dd } = project(x*1.3, y*1.3, z*1.3, w, h, 5, 22);
+        const hu = (species/6)*360;
+        ctx.fillStyle = hsl(hu, 70, 27, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
 
     // --- Trefoil Knot ---
     function drawTrefoil() {
