@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 82 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 82 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 82 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 86 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 86 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 86 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 82 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 82 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 86 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 86 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 82 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 82 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 86 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 86 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 82 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 86 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 82 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 86 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 61,
     "author": {
       "@type": "Person",
@@ -1594,6 +1594,42 @@
       </div>
     </a>
 
+    <a class="card" href="neural-network.html">
+      <div class="card-preview"><canvas id="c-neuralnet"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Neural Network</div>
+        <div class="card-desc">Activation pulses propagate through 6 layers of neurons. Connections light up as signals pass through.</div>
+        <div class="card-tags"><span class="card-tag">Machine Learning</span><span class="card-tag">Neural</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="convection.html">
+      <div class="card-preview"><canvas id="c-convection"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Convection</div>
+        <div class="card-desc">Rayleigh-Benard convection cells. Hot particles rise, cool at top, sink — hexagonal patterns like the sun's surface.</div>
+        <div class="card-tags"><span class="card-tag">Thermodynamics</span><span class="card-tag">Convection Cells</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="lorentz-force.html">
+      <div class="card-preview"><canvas id="c-lorentz2"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Lorentz Force</div>
+        <div class="card-desc">Charged particles spiral along magnetic field lines. Red positive, blue negative — particle accelerator physics.</div>
+        <div class="card-tags"><span class="card-tag">Electromagnetism</span><span class="card-tag">Helical</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="soliton.html">
+      <div class="card-preview"><canvas id="c-soliton"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Soliton</div>
+        <div class="card-desc">Stable wave packets that pass through each other without breaking. KdV solitons on a particle surface.</div>
+        <div class="card-tags"><span class="card-tag">Nonlinear Dynamics</span><span class="card-tag">Wave Packet</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
   </div>
 
   <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
@@ -2025,7 +2061,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 82 * 30 - 15;
+        const gz = Math.floor(i / 80) / 86 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3072,7 +3108,94 @@
       drawMurmuration(); drawPendWave(); drawGravLens(); drawCrystal();
       drawQuantum(); drawSmoke(); drawSandDunes(); drawBifurcation();
       drawMitosis(); drawGradDesc(); drawPrimes();
+      drawNeuralNet(); drawConvection(); drawLorentz2(); drawSoliton();
     };
+
+    function drawNeuralNet() {
+      const { ctx, w, h } = setupCanvas('c-neuralnet');
+      for (let layer=0;layer<6;layer++) {
+        const x=(layer/5-0.5)*16;
+        for (let n=0;n<30;n++) {
+          const ny=(n%6/6-0.5)*8;
+          const nz=(Math.floor(n/6)/5-0.5)*8;
+          const fire=Math.sin(layer*0.8)*0.5+0.5;
+          const { px, py, d: dd } = project(x, ny, nz, w, h, 6, 20);
+          const hu=fire>0.5?29:216;
+          ctx.fillStyle = hsl(hu, 60, 8+fire*30, 0.4*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.5, 1.2*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+        if (layer<5) {
+          for (let c=0;c<40;c++) {
+            const along=c/40;
+            const x2=((layer+along)/5-0.5)*16;
+            const y2=(Math.random()-0.5)*6;
+            const { px, py, d: dd } = project(x2, y2, 0, w, h, 6, 20);
+            ctx.fillStyle = hsl(180, 50, 12, 0.15*dd);
+            ctx.beginPath();
+            ctx.arc(px, py, Math.max(0.2, 0.4*dd), 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    function drawConvection() {
+      const { ctx, w, h } = setupCanvas('c-convection');
+      for (let i=0;i<4000;i++) {
+        const x=(Math.random()-0.5)*20;
+        const z=(Math.random()-0.5)*20;
+        const y=(Math.random()-0.5)*8;
+        const temp=((y+4)/8);
+        const { px, py, d: dd } = project(x, y-2, z, w, h, 4, 18);
+        const hu=Math.floor(216-temp*213);
+        ctx.fillStyle = hsl(((hu%360)+360)%360, 60, 12+temp*20, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    function drawLorentz2() {
+      const { ctx, w, h } = setupCanvas('c-lorentz2');
+      for (let i=0;i<3000;i++) {
+        const charge=i%2?1:-1;
+        const t=i*0.01;
+        const omega=charge*1.5;
+        const phase=omega*t+Math.random()*6.28;
+        const gr=1+Math.random()*2;
+        const gx=(Math.random()-0.5)*10;
+        const gy=(Math.random()-0.5)*10;
+        const gz=(Math.random()-0.5)*10;
+        const x=gx+gr*Math.cos(phase);
+        const y=gy+gr*Math.sin(phase);
+        const { px, py, d: dd } = project(x*0.8, y*0.8, gz*0.8, w, h, 6, 20);
+        const hu=charge>0?0:216;
+        ctx.fillStyle = hsl(hu, 70, 30, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    function drawSoliton() {
+      const { ctx, w, h } = setupCanvas('c-soliton');
+      for (let i=0;i<4000;i++) {
+        const gx=(i%63)/63*24-12;
+        const gz=Math.floor(i/63)/63*24-12;
+        const sech=x=>1/Math.cosh(x);
+        let ht=2*sech(gx*1)**2+1.2*sech((gx-3)*0.7)**2+1.5*sech((gx*0.7+gz*0.7)*0.8)**2;
+        ht*=0.6;
+        const { px, py, d: dd } = project(gx, ht-2, gz, w, h, 4, 14);
+        const hu=198-Math.min(ht*40,80);
+        const li=10+Math.min(ht*15,30);
+        ctx.fillStyle = hsl(((hu%360)+360)%360, 65, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
 
     // --- Mitosis ---
     function drawMitosis() {
