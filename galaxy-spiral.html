@@ -304,6 +304,8 @@
     // PARTICLE RENDERING (custom shader reads GPU texture)
     // =============================================
     const vertexShader = `
+      uniform vec3 uMouseWorld;
+      uniform float uMouseStrength;
       uniform sampler2D uPositionTexture;
       uniform sampler2D uSeedTexture;
       uniform float uHueShift;
@@ -338,6 +340,10 @@
         float height = seedVal.z;
 
         vec3 pos = vec3(x, y, z);
+        // Mouse displacement
+        vec3 toM = uMouseWorld - pos;
+        float mDist = length(toM);
+        pos += toM * uMouseStrength * 0.5 / (mDist * mDist + 2.0);
 
         // Color: hue from radius (warm yellow/white center -> blue outer arms)
         // Center (radius~0): hue ~0.12 (warm yellow), outer (radius~8): hue ~0.6 (blue)
@@ -385,6 +391,8 @@
       vertexShader,
       fragmentShader,
       uniforms: {
+        uMouseWorld: { value: new THREE.Vector3(0, 0, -1000) },
+        uMouseStrength: { value: 0.0 },
         uPositionTexture: { value: null },
         uSeedTexture: { value: seedTexture },
         uHueShift: { value: 0.0 },
@@ -418,6 +426,21 @@
     });
 
     // =============================================
+    // Mouse interaction
+    const mouse = new THREE.Vector2();
+    const mouse3D = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
+    let mouseActive = false;
+
+    renderer.domElement.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / innerHeight) * 2 + 1;
+      mouseActive = true;
+      raycaster.setFromCamera(mouse, camera);
+      mouse3D.copy(raycaster.ray.direction).multiplyScalar(15).add(camera.position);
+    });
+    renderer.domElement.addEventListener('mouseleave', () => { mouseActive = false; });
+
     // ANIMATION LOOP (CPU does zero particle work)
     // =============================================
     let lastTime = performance.now();
@@ -439,6 +462,15 @@
       bloomPass.strength = parseFloat(bloomSlider.value);
       material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
       material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
+
+      // Update mouse uniforms
+      if (mouseActive) {
+        material.uniforms.uMouseWorld.value.copy(mouse3D);
+        material.uniforms.uMouseStrength.value = 1.0;
+      } else {
+        material.uniforms.uMouseStrength.value *= 0.95;
+      }
+
 
       // Run GPU computation (Galaxy spiral on GPU)
       gpuCompute.compute();

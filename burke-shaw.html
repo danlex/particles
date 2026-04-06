@@ -211,6 +211,8 @@
     seedTexture(posTex0);
 
     const positionShader = `
+      uniform vec3 uMouse;
+      uniform float uMouseActive;
       uniform float uDt;
       uniform float uSpeed;
       uniform float uFrame;
@@ -262,6 +264,17 @@
 
         float speed = length(vec3(dx1, dy1, dz1));
 
+        // Mouse attraction
+        if (uMouseActive > 0.01) {
+          vec3 toMouse = uMouse - vec3(x, y, z);
+          float mouseDist = length(toMouse);
+          float mouseForce = uMouseActive * 0.3 / (mouseDist * mouseDist + 1.0);
+          x += toMouse.x * mouseForce * dt;
+          y += toMouse.y * mouseForce * dt;
+          z += toMouse.z * mouseForce * dt;
+        }
+
+
         gl_FragColor = vec4(x, y, z, speed);
       }
     `;
@@ -272,6 +285,8 @@
     posVar.material.uniforms.uDt = { value: 0.003 };
     posVar.material.uniforms.uSpeed = { value: 1.0 };
     posVar.material.uniforms.uFrame = { value: 0.0 };
+    posVar.material.uniforms.uMouse = { value: new THREE.Vector3(0, 0, -1000) };
+    posVar.material.uniforms.uMouseActive = { value: 0.0 };
 
     posVar.wrapS = THREE.RepeatWrapping;
     posVar.wrapT = THREE.RepeatWrapping;
@@ -385,6 +400,21 @@
     });
 
     // Animation Loop
+    // Mouse interaction
+    const mouse = new THREE.Vector2();
+    const mouse3D = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
+    let mouseActive = false;
+
+    renderer.domElement.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / innerHeight) * 2 + 1;
+      mouseActive = true;
+      raycaster.setFromCamera(mouse, camera);
+      mouse3D.copy(raycaster.ray.direction).multiplyScalar(15).add(camera.position);
+    });
+    renderer.domElement.addEventListener('mouseleave', () => { mouseActive = false; });
+
     let lastTime = performance.now();
     let frameCount = 0;
 
@@ -403,6 +433,15 @@
       bloomPass.strength = parseFloat(bloomSlider.value);
       material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
       material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
+
+      // Update mouse uniforms
+      if (mouseActive) {
+        posVar.material.uniforms.uMouse.value.copy(mouse3D);
+        posVar.material.uniforms.uMouseActive.value = 1.0;
+      } else {
+        posVar.material.uniforms.uMouseActive.value *= 0.95;
+      }
+
 
       gpuCompute.compute();
 

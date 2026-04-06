@@ -183,11 +183,62 @@
       letter-spacing: 2px;
       text-transform: uppercase;
     }
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1140px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+    .filter-btn {
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 6px 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-btn:hover {
+      border-color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+    }
+    .filter-btn.active {
+      border-color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.05);
+    }
+    .card.hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>GPU Particle Animations</h1>
   <p class="subtitle">65,536 particles each — fully GPU computed — Three.js r160</p>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="strange attractor">Attractors</button>
+    <button class="filter-btn" data-filter="iterated map">Iterated Maps</button>
+    <button class="filter-btn" data-filter="fractal">Fractals</button>
+    <button class="filter-btn" data-filter="physics">Physics</button>
+    <button class="filter-btn" data-filter="astrophysics">Astrophysics</button>
+    <button class="filter-btn" data-filter="nature">Nature</button>
+    <button class="filter-btn" data-filter="topology">Topology</button>
+    <button class="filter-btn" data-filter="sacred geometry">Sacred Geometry</button>
+    <button class="filter-btn" data-filter="parametric">Parametric</button>
+    <button class="filter-btn" data-filter="chemistry">Chemistry</button>
+    <button class="filter-btn" data-filter="flow field">Flow Fields</button>
+    <button class="filter-btn" data-filter="implicit surface">Surfaces</button>
+    <button class="filter-btn" id="random-btn" style="margin-left: 8px;">Random</button>
+  </div>
 
   <div class="grid">
     <a class="card" href="lorenz-attractor.html">
@@ -2748,6 +2799,36 @@
     }
     requestAnimationFrame(drawAll);
     window.addEventListener('resize', drawAll);
+
+    // Dynamic animation count in subtitle
+    document.querySelector('.subtitle').textContent =
+      `${document.querySelectorAll('.card').length} animations — 65,536 particles each — fully GPU computed — Three.js r160`;
+
+    // Category filtering
+    document.querySelectorAll('.filter-btn:not(#random-btn)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn:not(#random-btn)').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.card').forEach(card => {
+          if (filter === 'all') {
+            card.classList.remove('hidden');
+          } else {
+            const tags = card.querySelector('.card-tags').textContent.toLowerCase();
+            card.classList.toggle('hidden', !tags.includes(filter));
+          }
+        });
+      });
+    });
+
+    // Random animation button
+    document.getElementById('random-btn').addEventListener('click', () => {
+      const cards = document.querySelectorAll('.card:not(.hidden)');
+      if (cards.length > 0) {
+        const idx = Math.floor(Math.random() * cards.length);
+        window.location.href = cards[idx].href;
+      }
+    });
   </script>
 </body>
 </html>
