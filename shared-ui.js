@@ -368,6 +368,279 @@
   }
 
   // =========================================
+  // AUDIO REACTIVITY
+  // =========================================
+  let audioCtx = null;
+  let analyser = null;
+  let audioSource = null;
+  let audioActive = false;
+  let audioFreqData = null;
+  let audioAnimFrame = null;
+
+  // Store original slider values to restore when audio stops
+  let originalValues = {};
+
+  function createAudioPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'info-panel';
+    panel.id = 'audio-panel';
+    panel.innerHTML = `
+      <div class="info-panel-header">
+        <h2>Audio Reactive</h2>
+        <button class="info-panel-close">&times;</button>
+      </div>
+      <div class="info-panel-body">
+        <div class="info-section">
+          <h3>Choose Audio Source</h3>
+          <p>Particles will react to music in real-time. Bass drives scale, mids drive speed, highs drive bloom.</p>
+        </div>
+
+        <div class="info-section">
+          <h3>Microphone</h3>
+          <p>Use your mic to capture ambient sound or play music near your device.</p>
+          <button class="copy-btn" id="audio-mic-btn">Use Microphone</button>
+        </div>
+
+        <div class="info-section">
+          <h3>Audio File</h3>
+          <p>Upload an MP3, WAV, or OGG file to drive the particles.</p>
+          <input type="file" id="audio-file-input" accept="audio/*" style="display:none;">
+          <button class="copy-btn" id="audio-file-btn">Choose File</button>
+          <div id="audio-file-name" style="margin-top:8px;font-size:10px;color:rgba(255,255,255,0.3);"></div>
+        </div>
+
+        <div class="info-section" id="audio-controls" style="display:none;">
+          <h3>Audio Visualizer</h3>
+          <canvas id="audio-viz" width="420" height="80" style="width:100%;height:80px;border-radius:8px;background:rgba(255,255,255,0.03);"></canvas>
+          <div style="margin-top:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);">Sensitivity</span>
+              <input type="range" id="audio-sensitivity" min="0.5" max="3" step="0.1" value="1.5" style="width:200px;">
+            </div>
+          </div>
+          <button class="copy-btn" id="audio-stop-btn" style="margin-top:8px;">Stop Audio</button>
+        </div>
+
+        <div class="info-section">
+          <h3>How It Works</h3>
+          <p>
+            <b>Bass (20-200 Hz)</b> &rarr; Particle scale (zoom pulse)<br>
+            <b>Mids (200-2000 Hz)</b> &rarr; Simulation speed<br>
+            <b>Highs (2000-16000 Hz)</b> &rarr; Bloom intensity<br>
+            <b>Volume</b> &rarr; Particle size<br>
+            <b>Beat detection</b> &rarr; Hue shift on drops
+          </p>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(panel);
+
+    // Close
+    panel.querySelector('.info-panel-close').addEventListener('click', () => {
+      panel.classList.remove('open');
+    });
+
+    // Mic button
+    document.getElementById('audio-mic-btn').addEventListener('click', async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        initAudio();
+        audioSource = audioCtx.createMediaStreamSource(stream);
+        audioSource.connect(analyser);
+        startAudioLoop();
+        document.getElementById('audio-controls').style.display = 'block';
+        document.getElementById('audio-mic-btn').textContent = 'Listening...';
+        document.getElementById('audio-mic-btn').classList.add('copied');
+        showToast('Microphone active — play some music!');
+      } catch (e) {
+        showToast('Microphone access denied');
+      }
+    });
+
+    // File button
+    document.getElementById('audio-file-btn').addEventListener('click', () => {
+      document.getElementById('audio-file-input').click();
+    });
+
+    document.getElementById('audio-file-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('audio-file-name').textContent = file.name;
+
+      initAudio();
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const buffer = await audioCtx.decodeAudioData(ev.target.result);
+        if (audioSource && audioSource.disconnect) audioSource.disconnect();
+        audioSource = audioCtx.createBufferSource();
+        audioSource.buffer = buffer;
+        audioSource.loop = true;
+        audioSource.connect(analyser);
+        analyser.connect(audioCtx.destination); // play through speakers
+        audioSource.start(0);
+        startAudioLoop();
+        document.getElementById('audio-controls').style.display = 'block';
+        document.getElementById('audio-file-btn').textContent = 'Playing';
+        document.getElementById('audio-file-btn').classList.add('copied');
+        showToast('Audio playing — particles are reacting!');
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    // Stop button
+    document.getElementById('audio-stop-btn').addEventListener('click', () => {
+      stopAudio();
+    });
+
+    return panel;
+  }
+
+  function initAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.8;
+    audioFreqData = new Uint8Array(analyser.frequencyBinCount);
+
+    // Save original slider values
+    const sliders = ['speed', 'bloom', 'size', 'hueShift'];
+    sliders.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) originalValues[id] = parseFloat(el.value);
+    });
+  }
+
+  function startAudioLoop() {
+    audioActive = true;
+    let prevBass = 0;
+    let hueAccum = 0;
+
+    function tick() {
+      if (!audioActive) return;
+      audioAnimFrame = requestAnimationFrame(tick);
+
+      analyser.getByteFrequencyData(audioFreqData);
+      const bins = audioFreqData.length; // 128
+
+      // Frequency band averages (0-255 range)
+      let bass = 0, mids = 0, highs = 0, total = 0;
+      const bassEnd = Math.floor(bins * 0.08);   // ~200Hz
+      const midEnd = Math.floor(bins * 0.4);     // ~2000Hz
+
+      for (let i = 0; i < bins; i++) {
+        const v = audioFreqData[i];
+        total += v;
+        if (i < bassEnd) bass += v;
+        else if (i < midEnd) mids += v;
+        else highs += v;
+      }
+
+      bass /= bassEnd || 1;
+      mids /= (midEnd - bassEnd) || 1;
+      highs /= (bins - midEnd) || 1;
+      total /= bins;
+
+      // Normalize to 0-1
+      const bassN = bass / 255;
+      const midsN = mids / 255;
+      const highsN = highs / 255;
+      const volN = total / 255;
+
+      const sens = parseFloat(document.getElementById('audio-sensitivity')?.value || 1.5);
+
+      // Beat detection (bass spike)
+      const isBeat = bassN > prevBass + 0.15 && bassN > 0.4;
+      prevBass = bassN * 0.7 + prevBass * 0.3;
+
+      if (isBeat) hueAccum += 0.08;
+
+      // Modulate sliders
+      const speedEl = document.getElementById('speed');
+      const bloomEl = document.getElementById('bloom');
+      const sizeEl = document.getElementById('size');
+      const hueEl = document.getElementById('hueShift');
+
+      if (speedEl) {
+        const base = originalValues.speed || 1;
+        speedEl.value = base + midsN * 2.0 * sens;
+      }
+      if (bloomEl) {
+        const base = originalValues.bloom || 0.4;
+        bloomEl.value = base + highsN * 1.5 * sens;
+      }
+      if (sizeEl) {
+        const base = originalValues.size || 1;
+        sizeEl.value = base + volN * 1.5 * sens;
+      }
+      if (hueEl) {
+        hueEl.value = (hueAccum + bassN * 0.1 * sens) % 1;
+      }
+
+      // Draw visualizer
+      const vizCanvas = document.getElementById('audio-viz');
+      if (vizCanvas) {
+        const ctx = vizCanvas.getContext('2d');
+        const w = vizCanvas.width, h = vizCanvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const barW = w / bins;
+        for (let i = 0; i < bins; i++) {
+          const v = audioFreqData[i] / 255;
+          const barH = v * h;
+
+          // Color: bass=red, mids=green, highs=blue
+          let r = 100, g = 100, b = 100;
+          if (i < bassEnd) { r = 255; g = 80; b = 60; }
+          else if (i < midEnd) { r = 60; g = 220; b = 120; }
+          else { r = 80; g = 140; b = 255; }
+
+          ctx.fillStyle = `rgba(${r},${g},${b},${0.5 + v * 0.5})`;
+          ctx.fillRect(i * barW, h - barH, barW - 1, barH);
+        }
+
+        // Beat indicator
+        if (isBeat) {
+          ctx.fillStyle = 'rgba(255,255,255,0.15)';
+          ctx.fillRect(0, 0, w, h);
+        }
+      }
+    }
+
+    tick();
+  }
+
+  function stopAudio() {
+    audioActive = false;
+    if (audioAnimFrame) cancelAnimationFrame(audioAnimFrame);
+    if (audioSource) {
+      try { audioSource.disconnect(); } catch(e) {}
+      if (audioSource.stop) try { audioSource.stop(); } catch(e) {}
+    }
+    if (audioCtx) {
+      audioCtx.close();
+      audioCtx = null;
+      analyser = null;
+      audioSource = null;
+    }
+
+    // Restore original slider values
+    Object.entries(originalValues).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+
+    document.getElementById('audio-controls').style.display = 'none';
+    const micBtn = document.getElementById('audio-mic-btn');
+    if (micBtn) { micBtn.textContent = 'Use Microphone'; micBtn.classList.remove('copied'); }
+    const fileBtn = document.getElementById('audio-file-btn');
+    if (fileBtn) { fileBtn.textContent = 'Choose File'; fileBtn.classList.remove('copied'); }
+
+    showToast('Audio stopped');
+  }
+
+  // =========================================
   // BUILD TOOLBAR
   // =========================================
   function init() {
@@ -391,6 +664,13 @@
     recBtn.title = 'Record Video';
     recBtn.style.color = 'rgba(255,100,100,0.5)';
     toolbar.appendChild(recBtn);
+
+    // Audio button
+    const audioBtn = document.createElement('button');
+    audioBtn.className = 'tool-btn';
+    audioBtn.innerHTML = '&#9835;'; // music note
+    audioBtn.title = 'Audio Reactive Mode';
+    toolbar.appendChild(audioBtn);
 
     // Embed button
     const embedBtn = document.createElement('button');
@@ -420,6 +700,15 @@
       }
     });
 
+    // Audio panel (created lazily)
+    let audioPanel = null;
+    audioBtn.addEventListener('click', () => {
+      if (!audioPanel) audioPanel = createAudioPanel();
+      audioPanel.classList.toggle('open');
+      // Close info panel if open
+      if (panel) panel.classList.remove('open');
+    });
+
     // Embed button (quick copy without opening panel)
     embedBtn.addEventListener('click', () => {
       const embedUrl = pageUrl.replace(/^http:/, 'https:');
@@ -427,10 +716,11 @@
       copyToClipboard(code, embedBtn);
     });
 
-    // ESC to close panel
+    // ESC to close panels
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && panel) {
-        panel.classList.remove('open');
+      if (e.key === 'Escape') {
+        if (panel) panel.classList.remove('open');
+        if (audioPanel) audioPanel.classList.remove('open');
       }
     });
   }
