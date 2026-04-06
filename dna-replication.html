@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNA Replication — Particles</title>
+  <meta name="description" content="A double helix that unzips at a replication fork — two strands separate and new complementary strands form behind. 65,536 GPU-driven particles simulate the molecular machinery of life.">
+  <meta name="author" content="Alexandru DAN">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://danlex.github.io/particles/dna-replication.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danlex.github.io/particles/dna-replication.html">
+  <meta property="og:title" content="DNA Replication — Particles">
+  <meta property="og:description" content="A double helix that unzips at a replication fork — two strands separate and new complementary strands form behind. 65,536 GPU-driven particles simulate the molecular machinery of life.">
+  <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
+  <meta property="og:site_name" content="Particles">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DNA Replication — Particles">
+  <meta name="twitter:description" content="A double helix that unzips at a replication fork — two strands separate and new complementary strands form behind. 65,536 GPU-driven particles simulate the molecular machinery of life.">
+  <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
+    canvas { display: block; }
+    #controls {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 28px;
+      z-index: 10;
+      align-items: center;
+    }
+    .ctrl-group {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .ctrl-group label {
+      color: rgba(255,255,255,0.4); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .ctrl-group input[type="range"] {
+      -webkit-appearance: none; width: 100px; height: 3px;
+      background: rgba(255,255,255,0.15); border-radius: 2px; outline: none;
+    }
+    .ctrl-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: #fff; cursor: pointer;
+    }
+    #info {
+      position: fixed; top: 24px; left: 28px; z-index: 10;
+    }
+    #info h1 {
+      color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    #info p {
+      color: rgba(255,255,255,0.25); font-size: 10px;
+      margin-top: 6px; letter-spacing: 1px;
+    }
+    #fps {
+      position: fixed; top: 24px; right: 28px;
+      color: rgba(255,255,255,0.2); font-size: 10px;
+      letter-spacing: 1px; z-index: 10;
+    }
+    #back {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+    }
+    #back a {
+      color: rgba(255,255,255,0.2); font-size: 9px; text-decoration: none;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    #back a:hover { color: rgba(255,255,255,0.5); }
+      .zoom-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5); font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      font-family: monospace;
+    }
+    .zoom-btn:hover { background: rgba(255,255,255,0.12); }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h1>DNA Replication</h1>
+    <p id="particle-count"></p>
+  </div>
+  <div id="fps"></div>
+  <div id="back"><a href="index.html">Gallery</a></div>
+  <div id="controls">
+    <div class="ctrl-group">
+      <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
+      <label>Speed</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.5">
+      <label>Bloom</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
+      <label>Size</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="hueShift" min="0" max="1" step="0.01" value="0">
+      <label>Hue</label>
+    </div>
+    <button class="zoom-btn" id="zoomOut">−</button>
+    <button class="zoom-btn" id="zoomIn">+</button>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+    const WIDTH = 256;
+    const PARTICLE_COUNT = WIDTH * WIDTH;
+
+    // Scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
+    camera.position.set(5, 0, 15);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(1);
+    document.body.appendChild(renderer.domElement);
+
+    const orbitControls = new OrbitControls(camera, renderer.domElement);
+    orbitControls.enableDamping = true;
+    orbitControls.dampingFactor = 0.05;
+    orbitControls.autoRotate = true;
+    orbitControls.autoRotateSpeed = 0.5;
+
+    // Post-processing
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(innerWidth / 2, innerHeight / 2),
+      0.5, 0.3, 0.8
+    );
+    composer.addPass(bloomPass);
+
+    // GPU Computation
+    const gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
+    const posTex0 = gpuCompute.createTexture();
+
+    function seedTexture(tex) {
+      const data = tex.image.data;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const idx = i * 4;
+        data[idx]     = (Math.random() * 2.0 - 1.0) * 10.0;
+        data[idx + 1] = (Math.random() * 2.0 - 1.0) * 10.0;
+        data[idx + 2] = (Math.random() * 2.0 - 1.0) * 10.0;
+        data[idx + 3] = 0;
+      }
+    }
+
+    seedTexture(posTex0);
+
+    const positionShader = `
+      uniform vec3 uMouse;
+      uniform float uMouseActive;
+      uniform float uDt;
+      uniform float uSpeed;
+      uniform float uFrame;
+      uniform float uTime;
+
+      #define PI 3.14159265359
+
+      float hash(vec2 p) {
+        vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+        p3 += dot(p3, p3.yzx + 33.33);
+        return fract((p3.x + p3.y) * p3.z);
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution.xy;
+        float idx = gl_FragCoord.y * resolution.x + gl_FragCoord.x;
+        float total = resolution.x * resolution.y;
+
+        float t = uTime * uSpeed;
+
+        // 4 strands: original pair (unzipping) + 2 new daughter strands
+        float strandGroup = floor(idx / (total / 4.0));
+        float localIdx = mod(idx, total / 4.0);
+        float localTotal = total / 4.0;
+
+        // Position along the helix
+        float along = localIdx / localTotal; // 0 to 1
+        float helixPos = along * 20.0 - 10.0; // -10 to 10 along y axis
+
+        // Replication fork position (moves along the helix)
+        float forkY = mod(t * 1.5, 20.0) - 10.0;
+
+        // Helix parameters
+        float R = 1.5; // helix radius
+        float pitch = 2.0; // turns per unit length
+        float helixAngle = helixPos * pitch * 2.0 * PI;
+
+        // Strand offsets (opposite sides of helix)
+        float strandOffset = (mod(strandGroup, 2.0) < 1.0) ? 0.0 : PI;
+
+        float x, y, z;
+        y = helixPos;
+
+        bool isOriginal = strandGroup < 2.0;
+
+        if (isOriginal) {
+          // Original strands: together before fork, separating after
+          float separation = smoothstep(forkY - 1.0, forkY + 1.0, helixPos);
+          float sepDist = separation * 2.0;
+          float side = (strandGroup < 1.0) ? 1.0 : -1.0;
+
+          x = R * cos(helixAngle + strandOffset) + side * sepDist;
+          z = R * sin(helixAngle + strandOffset) * (1.0 - separation * 0.5);
+        } else {
+          // Daughter strands: only visible after the fork
+          float visibility = smoothstep(forkY + 0.5, forkY + 2.0, helixPos);
+          if (visibility < 0.01) {
+            // Hide unformed daughter strand
+            x = 0.0; y = -100.0; z = 0.0;
+            gl_FragColor = vec4(x, y, z, 0.0);
+            return;
+          }
+
+          float side = (strandGroup < 3.0) ? 1.0 : -1.0;
+          float sepDist = 2.0;
+          // New strand pairs with original
+          float partnerOffset = (strandGroup < 3.0) ? PI : 0.0;
+
+          x = R * cos(helixAngle + partnerOffset) + side * sepDist;
+          z = R * sin(helixAngle + partnerOffset) * 0.5;
+        }
+
+        // Slight random spread for volume
+        float spread = hash(vec2(idx, 5.0)) * 0.15;
+        x += (hash(vec2(idx, 6.0)) - 0.5) * spread;
+        z += (hash(vec2(idx, 7.0)) - 0.5) * spread;
+
+        float nearFork = exp(-pow(helixPos - forkY, 2.0) * 0.5);
+
+        // Mouse attraction
+        vec3 p = vec3(x, y, z);
+        if (uMouseActive > 0.01) {
+          vec3 toMouse = uMouse - p;
+          float mouseDist = length(toMouse);
+          float mouseForce = uMouseActive * 0.3 / (mouseDist * mouseDist + 1.0);
+          p += toMouse * mouseForce * uDt * uSpeed;
+          x = p.x; y = p.y; z = p.z;
+        }
+
+        gl_FragColor = vec4(x, y, z, strandGroup / 4.0 + nearFork * 0.3);
+      }
+    `;
+
+    const posVar = gpuCompute.addVariable('texturePosition', positionShader, posTex0);
+    gpuCompute.setVariableDependencies(posVar, [posVar]);
+
+    posVar.material.uniforms.uDt = { value: 0.03 };
+    posVar.material.uniforms.uSpeed = { value: 1.0 };
+    posVar.material.uniforms.uFrame = { value: 0.0 };
+    posVar.material.uniforms.uTime = { value: 0.0 };
+    posVar.material.uniforms.uMouse = { value: new THREE.Vector3(0, 0, -1000) };
+    posVar.material.uniforms.uMouseActive = { value: 0.0 };
+
+    posVar.wrapS = THREE.RepeatWrapping;
+    posVar.wrapT = THREE.RepeatWrapping;
+
+    const err = gpuCompute.init();
+    if (err !== null) console.error('GPU Computation init error:', err);
+
+    // Particle Rendering
+    const vertexShader = `
+      uniform sampler2D uPositionTexture;
+      uniform float uHueShift;
+      uniform float uPointSize;
+      uniform float uScale;
+      attribute vec2 aTexCoord;
+      varying vec3 vColor;
+
+      vec3 hsl2rgb(float h, float s, float l) {
+        float c = (1.0 - abs(2.0 * l - 1.0)) * s;
+        float h6 = h * 6.0;
+        float x = c * (1.0 - abs(mod(h6, 2.0) - 1.0));
+        float m = l - c * 0.5;
+        vec3 rgb;
+        if (h6 < 1.0) rgb = vec3(c, x, 0.0);
+        else if (h6 < 2.0) rgb = vec3(x, c, 0.0);
+        else if (h6 < 3.0) rgb = vec3(0.0, c, x);
+        else if (h6 < 4.0) rgb = vec3(0.0, x, c);
+        else if (h6 < 5.0) rgb = vec3(x, 0.0, c);
+        else rgb = vec3(c, 0.0, x);
+        return rgb + m;
+      }
+
+      void main() {
+        vec4 posData = texture2D(uPositionTexture, aTexCoord);
+        vec3 pos = posData.xyz * uScale;
+        float w = posData.w;
+
+        // Strand group from w: base strand info + nearFork brightness
+        float strandVal = fract(w); // fractional part encodes nearFork boost
+        float strandBase = w - strandVal;
+
+        // Determine hue based on strand group
+        // Original strands (0, 0.25) = blue/cyan, Daughter strands (0.5, 0.75) = green/magenta
+        float hue;
+        if (strandBase < 0.125) hue = 0.55; // strand 0: blue
+        else if (strandBase < 0.375) hue = 0.48; // strand 1: cyan
+        else if (strandBase < 0.625) hue = 0.33; // strand 2: green
+        else hue = 0.85; // strand 3: magenta
+
+        hue = fract(hue + uHueShift);
+
+        // nearFork boosts brightness
+        float nearFork = clamp(strandVal / 0.3, 0.0, 1.0);
+        float saturation = 0.6 + nearFork * 0.2;
+        float lightness = 0.12 + nearFork * 0.2;
+
+        vColor = hsl2rgb(hue, saturation, lightness);
+
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        gl_PointSize = uPointSize * (55.0 / -mvPosition.z);
+        gl_PointSize = max(gl_PointSize, 0.3);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `;
+
+    const fragmentShader = `
+      varying vec3 vColor;
+      void main() {
+        float d = length(gl_PointCoord - 0.5) * 2.0;
+        if (d > 1.0) discard;
+        float alpha = (1.0 - d * d) * 0.18;
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `;
+
+    const geometry = new THREE.BufferGeometry();
+    const texCoords = new Float32Array(PARTICLE_COUNT * 2);
+    for (let j = 0; j < WIDTH; j++) {
+      for (let i = 0; i < WIDTH; i++) {
+        const idx = (j * WIDTH + i) * 2;
+        texCoords[idx]     = (i + 0.5) / WIDTH;
+        texCoords[idx + 1] = (j + 0.5) / WIDTH;
+      }
+    }
+    const dummyPositions = new Float32Array(PARTICLE_COUNT * 3);
+    geometry.setAttribute('position', new THREE.BufferAttribute(dummyPositions, 3));
+    geometry.setAttribute('aTexCoord', new THREE.BufferAttribute(texCoords, 2));
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        uPositionTexture: { value: null },
+        uHueShift: { value: 0.0 },
+        uPointSize: { value: 1.5 },
+        uScale: { value: 1.0 },
+      },
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    const pivot = new THREE.Group(); pivot.add(points); scene.add(pivot);
+
+    // UI
+    document.getElementById('particle-count').textContent =
+      `${PARTICLE_COUNT.toLocaleString()} particles — fully GPU computed`;
+
+    const speedSlider = document.getElementById('speed');
+    const bloomSlider = document.getElementById('bloom');
+    const sizeSlider = document.getElementById('size');
+    const hueSlider = document.getElementById('hueShift');
+    const fpsEl = document.getElementById('fps');
+
+    document.getElementById('zoomIn').addEventListener('click', () => {
+      material.uniforms.uScale.value *= 1.15;
+    });
+    document.getElementById('zoomOut').addEventListener('click', () => {
+      material.uniforms.uScale.value *= 0.85;
+    });
+
+    // Animation Loop
+    // Mouse interaction
+    const mouse = new THREE.Vector2();
+    const mouse3D = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
+    let mouseActive = false;
+
+    renderer.domElement.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / innerHeight) * 2 + 1;
+      mouseActive = true;
+      raycaster.setFromCamera(mouse, camera);
+      mouse3D.copy(raycaster.ray.direction).multiplyScalar(15).add(camera.position);
+    });
+    renderer.domElement.addEventListener('mouseleave', () => { mouseActive = false; });
+
+    let lastTime = performance.now();
+    let frameCount = 0;
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        fpsEl.textContent = `${frameCount} FPS`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      posVar.material.uniforms.uSpeed.value = parseFloat(speedSlider.value);
+      posVar.material.uniforms.uFrame.value += 1.0;
+      posVar.material.uniforms.uTime.value += 0.016 * parseFloat(speedSlider.value);
+      bloomPass.strength = parseFloat(bloomSlider.value);
+      material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
+      material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
+
+      // Update mouse uniforms
+      if (mouseActive) {
+        posVar.material.uniforms.uMouse.value.copy(mouse3D);
+        posVar.material.uniforms.uMouseActive.value = 1.0;
+      } else {
+        posVar.material.uniforms.uMouseActive.value *= 0.95;
+      }
+
+
+      gpuCompute.compute();
+
+      material.uniforms.uPositionTexture.value =
+        gpuCompute.getCurrentRenderTarget(posVar).texture;
+
+      pivot.rotation.x += 0.0008;
+      orbitControls.update();
+      composer.render();
+    }
+
+    animate(performance.now());
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      composer.setSize(innerWidth, innerHeight);
+    });
+  </script>
+  <script src="shared-ui.js"></script>
+</body>
+</html>
