@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 61 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 61 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 61 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 63 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 63 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 63 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 61 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 61 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 63 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 63 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 61 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 61 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 63 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 63 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 61 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 63 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 61 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 63 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 61,
     "author": {
       "@type": "Person",
@@ -1253,6 +1253,38 @@
         <div class="card-tags">
           <span class="card-tag">Electromagnetism</span>
           <span class="card-tag">Transverse Wave</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="trefoil-knot.html">
+      <div class="card-preview">
+        <canvas id="c-trefoil"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Trefoil Knot</div>
+        <div class="card-desc">Particles flowing through a trefoil knot tube. The simplest non-trivial knot in mathematics, alive with circulating particles.</div>
+        <div class="card-tags">
+          <span class="card-tag">Topology</span>
+          <span class="card-tag">Knot Theory</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="cosmic-web.html">
+      <div class="card-preview">
+        <canvas id="c-cosmicweb"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Cosmic Web</div>
+        <div class="card-desc">The large-scale structure of the universe. Particles form filaments connecting galaxy clusters with vast voids between.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Voronoi Filaments</span>
           <span class="card-particles">65,536 particles</span>
         </div>
       </div>
@@ -2730,7 +2762,65 @@
       drawMobius(); drawApollonian(); drawGyroid(); drawQuaternionJulia(); drawLichtenberg();
       drawWaves(); drawMetaballs(); drawBZ(); drawPhyllotaxis();
       drawPendulum(); drawNBody(); drawTuring(); drawEMWave();
+      drawTrefoil(); drawCosmicWeb();
     };
+
+    // --- Trefoil Knot ---
+    function drawTrefoil() {
+      const { ctx, w, h } = setupCanvas('c-trefoil');
+      for (let i = 0; i < 5000; i++) {
+        const u = (i/5000) * Math.PI * 2;
+        const v = Math.random() * Math.PI * 2;
+        const R = 4, r = 1.2;
+        const cx = 0.3*R*(Math.sin(u)+2*Math.sin(2*u));
+        const cy = 0.3*R*(Math.cos(u)-2*Math.cos(2*u));
+        const cz = 0.3*R*(-Math.sin(3*u))*0.8;
+        const du = 0.001;
+        const cx2 = 0.3*R*(Math.sin(u+du)+2*Math.sin(2*(u+du)));
+        const cy2 = 0.3*R*(Math.cos(u+du)-2*Math.cos(2*(u+du)));
+        const cz2 = 0.3*R*(-Math.sin(3*(u+du)))*0.8;
+        let Tx=cx2-cx,Ty=cy2-cy,Tz=cz2-cz;
+        const Tl=Math.sqrt(Tx*Tx+Ty*Ty+Tz*Tz)+0.001;
+        Tx/=Tl;Ty/=Tl;Tz/=Tl;
+        let Nx=-Ty,Ny=Tx,Nz=0;
+        const Nl=Math.sqrt(Nx*Nx+Ny*Ny)+0.001;
+        Nx/=Nl;Ny/=Nl;
+        const Bx=Ty*Nz-Tz*Ny,By=Tz*Nx-Tx*Nz,Bz=Tx*Ny-Ty*Nx;
+        const tr=r*0.5;
+        const px=cx+tr*(Nx*Math.cos(v)+Bx*Math.sin(v));
+        const py=cy+tr*(Ny*Math.cos(v)+By*Math.sin(v));
+        const pz=cz+tr*(Nz*Math.cos(v)+Bz*Math.sin(v));
+        const { px: ppx, py: ppy, d: dd } = project(px*1.5,py*1.5,pz*1.5, w, h, 10, 18);
+        const hu = (u/(Math.PI*2))*360;
+        ctx.fillStyle = hsl(hu, 70, 30, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(ppx, ppy, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Cosmic Web ---
+    function drawCosmicWeb() {
+      const { ctx, w, h } = setupCanvas('c-cosmicweb');
+      const clusters = [];
+      for (let i=0;i<16;i++) clusters.push([Math.sin(i*1.7)*8,Math.cos(i*2.3)*8,Math.sin(i*0.9+i*i*0.1)*8]);
+      for (let i=0;i<4000;i++) {
+        const x=(Math.random()-0.5)*20,y=(Math.random()-0.5)*20,z=(Math.random()-0.5)*20;
+        let d1=1e10,d2=1e10;
+        for (const c of clusters) {
+          const d=Math.sqrt((x-c[0])**2+(y-c[1])**2+(z-c[2])**2);
+          if(d<d1){d2=d1;d1=d;}else if(d<d2){d2=d;}
+        }
+        const edgeness=Math.abs(d1-d2)/(d1+d2+0.01);
+        if(edgeness>0.4) continue;
+        const { px, py, d: dd } = project(x, y, z, w, h, 4, 25);
+        const li=12+(1-edgeness)*25;
+        ctx.fillStyle = hsl(240-edgeness*40, 50+edgeness*30, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
 
     // --- Double Pendulum ---
     function drawPendulum() {

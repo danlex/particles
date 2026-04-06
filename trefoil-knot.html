@@ -3,21 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobius Flow — Particles</title>
-  <meta name="description" content="Particles flowing along a Mobius strip surface. The one-sided topology visible as particles return on the opposite side.">
+  <title>Trefoil Knot — Particles</title>
+  <meta name="description" content="Particles flowing through a trefoil knot tube. The simplest non-trivial knot in mathematics, alive with circulating particles.">
   <meta name="author" content="Alexandru DAN">
   <meta name="theme-color" content="#050505">
-  <link rel="canonical" href="https://danlex.github.io/particles/mobius-flow.html">
+  <link rel="canonical" href="https://danlex.github.io/particles/trefoil-knot.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://danlex.github.io/particles/mobius-flow.html">
-  <meta property="og:title" content="Mobius Flow — Particles">
-  <meta property="og:description" content="Particles flowing along a Mobius strip surface. The one-sided topology visible as particles return on the opposite side.">
+  <meta property="og:url" content="https://danlex.github.io/particles/trefoil-knot.html">
+  <meta property="og:title" content="Trefoil Knot — Particles">
+  <meta property="og:description" content="Particles flowing through a trefoil knot tube. The simplest non-trivial knot in mathematics, alive with circulating particles.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:site_name" content="Particles">
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Mobius Flow — Particles">
-  <meta name="twitter:description" content="Particles flowing along a Mobius strip surface. The one-sided topology visible as particles return on the opposite side.">
+  <meta name="twitter:title" content="Trefoil Knot — Particles">
+  <meta name="twitter:description" content="Particles flowing through a trefoil knot tube. The simplest non-trivial knot in mathematics, alive with circulating particles.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -92,7 +96,7 @@
 </head>
 <body>
   <div id="info">
-    <h1>Mobius Flow</h1>
+    <h1>Trefoil Knot</h1>
     <p id="particle-count"></p>
   </div>
   <div id="fps"></div>
@@ -140,7 +144,7 @@
     // Scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
-    camera.position.set(0, 6, 22);
+    camera.position.set(0, 3, 16);
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.setSize(innerWidth, innerHeight);
@@ -166,22 +170,76 @@
     const gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
     const posTex0 = gpuCompute.createTexture();
 
-    // Seed is not strictly needed since position is fully parametric,
-    // but initialize to zero for consistency.
-    (function seedTexture(tex) {
+    function seedTexture(tex) {
       const data = tex.image.data;
+      const PI = Math.PI;
+      const golden = 1.6180339887;
+      const R = 4.0;
+      const r = 1.2;
+
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const idx = i * 4;
-        data[idx]     = 0;
-        data[idx + 1] = 0;
-        data[idx + 2] = 0;
-        data[idx + 3] = 0;
+
+        // Distribute particles using golden ratio for uniform coverage
+        const u = (i * golden % 1.0) * 2.0 * PI;
+        const v = (i * golden * golden % 1.0) * 2.0 * PI;
+
+        // Trefoil knot center curve
+        const cx = 0.3 * R * (Math.sin(u) + 2.0 * Math.sin(2.0 * u));
+        const cy = 0.3 * R * (Math.cos(u) - 2.0 * Math.cos(2.0 * u));
+        const cz = 0.3 * R * (-Math.sin(3.0 * u)) * 0.8;
+
+        // Compute tangent via finite difference
+        const du = 0.001;
+        const cx2 = 0.3 * R * (Math.sin(u + du) + 2.0 * Math.sin(2.0 * (u + du)));
+        const cy2 = 0.3 * R * (Math.cos(u + du) - 2.0 * Math.cos(2.0 * (u + du)));
+        const cz2 = 0.3 * R * (-Math.sin(3.0 * (u + du))) * 0.8;
+
+        let tx = cx2 - cx, ty = cy2 - cy, tz = cz2 - cz;
+        const tLen = Math.sqrt(tx * tx + ty * ty + tz * tz);
+        tx /= tLen; ty /= tLen; tz /= tLen;
+
+        // Normal and binormal (Frenet frame)
+        let nx = ty * 0.0 - tz * 1.0;
+        let ny = tz * 0.0 - tx * 0.0;
+        let nz = tx * 1.0 - ty * 0.0;
+        // cross(T, up) where up = (0,1,0)
+        nx = tz * 0.0 - ty * 0.0;  // Tz*0 - Ty*0... let me redo
+        // cross(T, (0,1,0)) = (Tz*1 - 0, 0 - Tx*0... no
+        // T x up = (Ty*0 - Tz*1, Tz*0 - Tx*0, Tx*1 - Ty*0) = (-Tz, 0, Tx)
+        nx = -tz;
+        ny = 0;
+        nz = tx;
+        const nLen = Math.sqrt(nx * nx + ny * ny + nz * nz);
+        if (nLen > 0.0001) { nx /= nLen; ny /= nLen; nz /= nLen; }
+
+        // Binormal = T x N
+        const bx = ty * nz - tz * ny;
+        const by = tz * nx - tx * nz;
+        const bz = tx * ny - ty * nx;
+
+        // Tube cross-section
+        const tubeR = r * (0.3 + 0.7 * ((i * 0.000137) % 1.0));
+        const px = cx + tubeR * (nx * Math.cos(v) + bx * Math.sin(v));
+        const py = cy + tubeR * (ny * Math.cos(v) + by * Math.sin(v));
+        const pz = cz + tubeR * (nz * Math.cos(v) + bz * Math.sin(v));
+
+        const speed = (u / (2.0 * PI)) % 1.0;
+
+        data[idx]     = px;
+        data[idx + 1] = py;
+        data[idx + 2] = pz;
+        data[idx + 3] = speed;
       }
-    })(posTex0);
+    }
+
+    seedTexture(posTex0);
 
     const positionShader = `
       uniform float uTime;
       uniform float uSpeed;
+      uniform vec3 uMouse;
+      uniform float uMouseActive;
 
       #define PI 3.14159265359
 
@@ -191,22 +249,55 @@
         float total = resolution.x * resolution.y;
         float golden = 1.6180339887;
 
-        // Fixed particle parameters
-        float v_raw = fract(idx * golden); // 0..1
-        float v = v_raw * 2.0 - 1.0; // -1..1 (width position)
+        // Each particle: position along the knot (u) + tube cross-section (v, w)
+        float u = fract(idx * golden) * 2.0 * PI;
+        float v = fract(idx * golden * golden) * 2.0 * PI;
 
-        // u animates around the strip
-        float u_offset = fract(idx * 0.0001) * PI * 2.0; // starting phase
-        float u = u_offset + uTime * 0.4 * uSpeed;
-        u = mod(u, 4.0 * PI); // allow 2 full trips around to show the twist
+        // Animate: particles flow along the knot
+        u += uTime * 0.5 * uSpeed;
 
-        float R = 5.0;
-        float halfU = u * 0.5;
-        float x = (R + v * cos(halfU)) * cos(u);
-        float y = (R + v * cos(halfU)) * sin(u);
-        float z = v * sin(halfU);
+        // Trefoil knot parametric equations
+        float R = 4.0;
+        float r = 1.2;
 
-        gl_FragColor = vec4(x, y, z, v_raw);
+        // Knot center curve: trefoil
+        float cx = R * (sin(u) + 2.0 * sin(2.0 * u));
+        float cy = R * (cos(u) - 2.0 * cos(2.0 * u));
+        float cz = R * (-sin(3.0 * u)) * 0.8;
+
+        // Scale down
+        cx *= 0.3; cy *= 0.3; cz *= 0.3;
+
+        // Compute tangent, normal, binormal (Frenet frame)
+        float du = 0.001;
+        float cx2 = 0.3 * R * (sin(u+du) + 2.0 * sin(2.0*(u+du)));
+        float cy2 = 0.3 * R * (cos(u+du) - 2.0 * cos(2.0*(u+du)));
+        float cz2 = 0.3 * R * (-sin(3.0*(u+du))) * 0.8;
+
+        vec3 T = normalize(vec3(cx2-cx, cy2-cy, cz2-cz));
+        vec3 up = vec3(0.0, 1.0, 0.0);
+        vec3 N = normalize(cross(T, up));
+        vec3 B = cross(T, N);
+
+        // Tube cross-section position
+        float tubeR = r * (0.3 + 0.7 * fract(idx * 0.000137));
+        float px = cx + tubeR * (N.x * cos(v) + B.x * sin(v));
+        float py = cy + tubeR * (N.y * cos(v) + B.y * sin(v));
+        float pz = cz + tubeR * (N.z * cos(v) + B.z * sin(v));
+
+        // Mouse attraction
+        if (uMouseActive > 0.01) {
+          vec3 pos = vec3(px, py, pz);
+          vec3 toMouse = uMouse - pos;
+          float mouseDist = length(toMouse);
+          float mouseForce = uMouseActive * 0.3 / (mouseDist * mouseDist + 1.0);
+          px += toMouse.x * mouseForce * 0.016;
+          py += toMouse.y * mouseForce * 0.016;
+          pz += toMouse.z * mouseForce * 0.016;
+        }
+
+        float speed = fract(u / (2.0 * PI));
+        gl_FragColor = vec4(px, py, pz, speed);
       }
     `;
 
@@ -215,6 +306,8 @@
 
     posVar.material.uniforms.uTime = { value: 0.0 };
     posVar.material.uniforms.uSpeed = { value: 1.0 };
+    posVar.material.uniforms.uMouse = { value: new THREE.Vector3(0, 0, -1000) };
+    posVar.material.uniforms.uMouseActive = { value: 0.0 };
 
     posVar.wrapS = THREE.RepeatWrapping;
     posVar.wrapT = THREE.RepeatWrapping;
@@ -224,12 +317,11 @@
 
     // Particle Rendering
     const vertexShader = `
-      uniform vec3 uMouseWorld;
-      uniform float uMouseStrength;
       uniform sampler2D uPositionTexture;
       uniform float uHueShift;
       uniform float uPointSize;
       uniform float uScale;
+      uniform vec3 uMouseWorld;
       attribute vec2 aTexCoord;
       varying vec3 vColor;
 
@@ -253,19 +345,19 @@
         float x = posData.x;
         float y = posData.y;
         float z = posData.z;
-        float v_raw = posData.w;
-        float v = v_raw * 2.0 - 1.0;
+        float speed = posData.w;
 
         vec3 pos = vec3(x, y, z) * uScale;
-        // Mouse displacement
-        vec3 toM = uMouseWorld - pos;
-        float mDist = length(toM);
-        pos += toM * uMouseStrength * 0.5 / (mDist * mDist + 2.0);
 
-        // Cool palette: blue-cyan-purple. v_raw drives hue, angular position adds variation.
-        float hue = fract(0.55 + v * 0.2 + atan(y, x) * 0.1 + uHueShift);
+        // Mouse displacement
+        vec3 toMouse = uMouseWorld - pos;
+        float mouseDist = length(toMouse);
+        pos += toMouse * 0.02 / (mouseDist * mouseDist + 4.0);
+
+        // Color: position along knot (w) for rainbow, tube variation
+        float hue = fract(speed + uHueShift);
         float saturation = 0.85;
-        float lightness = 0.12 + abs(v) * 0.15;
+        float lightness = 0.12 + speed * 0.08;
 
         vColor = hsl2rgb(hue, saturation, lightness);
 
@@ -303,12 +395,11 @@
       vertexShader,
       fragmentShader,
       uniforms: {
-        uMouseWorld: { value: new THREE.Vector3(0, 0, -1000) },
-        uMouseStrength: { value: 0.0 },
         uPositionTexture: { value: null },
         uHueShift: { value: 0.0 },
-        uPointSize: { value: 1.0 },
+        uPointSize: { value: 1.5 },
         uScale: { value: 1.5 },
+        uMouseWorld: { value: new THREE.Vector3(0, 0, -1000) },
       },
       transparent: true,
       blending: THREE.AdditiveBlending,
@@ -353,7 +444,6 @@
 
     let lastTime = performance.now();
     let frameCount = 0;
-    const startTime = performance.now();
 
     function animate(now) {
       requestAnimationFrame(animate);
@@ -366,17 +456,18 @@
       }
 
       posVar.material.uniforms.uSpeed.value = parseFloat(speedSlider.value);
-      posVar.material.uniforms.uTime.value = (now - startTime) * 0.001;
+      posVar.material.uniforms.uTime.value += 0.016;
       bloomPass.strength = parseFloat(bloomSlider.value);
       material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
       material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
 
       // Update mouse uniforms
       if (mouseActive) {
+        posVar.material.uniforms.uMouse.value.copy(mouse3D);
+        posVar.material.uniforms.uMouseActive.value = 1.0;
         material.uniforms.uMouseWorld.value.copy(mouse3D);
-        material.uniforms.uMouseStrength.value = 1.0;
       } else {
-        material.uniforms.uMouseStrength.value *= 0.95;
+        posVar.material.uniforms.uMouseActive.value *= 0.95;
       }
 
 
