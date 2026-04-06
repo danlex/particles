@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 57 GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 57 GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="A gallery of 57 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and GPUComputationRenderer. Strange attractors, fractals, physics simulations, and sacred geometry.">
+  <title>Particles — 61 GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 61 GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="A gallery of 61 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and GPUComputationRenderer. Strange attractors, fractals, physics simulations, and sacred geometry.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz, fractal, shader, creative coding, generative art, GPUComputationRenderer, mathematical visualization">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -17,16 +17,16 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 57 GPU Particle Animations">
-  <meta property="og:description" content="A gallery of 57 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL.">
+  <meta property="og:title" content="Particles — 61 GPU Particle Animations">
+  <meta property="og:description" content="A gallery of 61 real-time GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:site_name" content="Particles">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 57 GPU Particle Animations">
-  <meta name="twitter:description" content="A gallery of 57 real-time GPU particle animations. 65,536 particles each, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 61 GPU Particle Animations">
+  <meta name="twitter:description" content="A gallery of 61 real-time GPU particle animations. 65,536 particles each, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
 
   <!-- Icons -->
@@ -40,7 +40,7 @@
     "@type": "WebSite",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 57 real-time GPU particle animations built with Three.js and GPUComputationRenderer.",
+    "description": "A gallery of 61 real-time GPU particle animations built with Three.js and GPUComputationRenderer.",
     "author": {
       "@type": "Person",
       "name": "Alexandru DAN"
@@ -1097,6 +1097,70 @@
         <div class="card-tags">
           <span class="card-tag">Botany</span>
           <span class="card-tag">Golden Angle</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="double-pendulum.html">
+      <div class="card-preview">
+        <canvas id="c-pendulum"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Double Pendulum</div>
+        <div class="card-desc">65,536 double pendulums diverge from near-identical starts. Chaos theory made visible in swirling trajectories.</div>
+        <div class="card-tags">
+          <span class="card-tag">Chaos Theory</span>
+          <span class="card-tag">Sensitive Dependence</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="n-body.html">
+      <div class="card-preview">
+        <canvas id="c-nbody"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">N-Body Gravity</div>
+        <div class="card-desc">Particles orbit 4 massive gravitational attractors. Orbital streams merge and diverge in a gravitational dance.</div>
+        <div class="card-tags">
+          <span class="card-tag">Gravity</span>
+          <span class="card-tag">Orbital Dynamics</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="turing-patterns.html">
+      <div class="card-preview">
+        <canvas id="c-turing"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Turing Patterns</div>
+        <div class="card-desc">Reaction-diffusion patterns on a sphere. Particles drift into leopard spots and zebra stripes.</div>
+        <div class="card-tags">
+          <span class="card-tag">Morphogenesis</span>
+          <span class="card-tag">Spots &amp; Stripes</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="em-wave.html">
+      <div class="card-preview">
+        <canvas id="c-emwave"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">EM Wave</div>
+        <div class="card-desc">Electric and magnetic fields oscillating perpendicularly as an electromagnetic wave propagates through space.</div>
+        <div class="card-tags">
+          <span class="card-tag">Electromagnetism</span>
+          <span class="card-tag">Transverse Wave</span>
           <span class="card-particles">65,536 particles</span>
         </div>
       </div>
@@ -2573,7 +2637,115 @@
       drawSprott(); drawHopf(); drawFireflies();
       drawMobius(); drawApollonian(); drawGyroid(); drawQuaternionJulia(); drawLichtenberg();
       drawWaves(); drawMetaballs(); drawBZ(); drawPhyllotaxis();
+      drawPendulum(); drawNBody(); drawTuring(); drawEMWave();
     };
+
+    // --- Double Pendulum ---
+    function drawPendulum() {
+      const { ctx, w, h } = setupCanvas('c-pendulum');
+      for (let i = 0; i < 3000; i++) {
+        const t1 = Math.PI + (Math.random()-0.5)*0.01;
+        const t2 = Math.PI + (Math.random()-0.5)*0.01;
+        // Simulate a few steps
+        let th1=t1, th2=t2, w1=(Math.random()-0.5)*0.5, w2=(Math.random()-0.5)*0.5;
+        const steps = 50 + Math.floor(Math.random()*200);
+        for (let s=0; s<steps; s++) {
+          const d=th1-th2;
+          const den=3-Math.cos(2*d);
+          const a1=(-9.81*(2*Math.sin(th1))-Math.sin(th1-2*th2)-2*Math.sin(d)*(w2*w2+w1*w1*Math.cos(d)))/(3*den);
+          const a2=(2*Math.sin(d)*(w1*w1*2+9.81*Math.cos(th1)+w2*w2*Math.cos(d)))/(3*den);
+          w1+=a1*0.015; w2+=a2*0.015;
+          th1+=w1*0.015; th2+=w2*0.015;
+          w1*=0.9999; w2*=0.9999;
+        }
+        const x = 3*Math.sin(th1)+3*Math.sin(th2);
+        const y = -3*Math.cos(th1)-3*Math.cos(th2);
+        const z = Math.sin(i*0.01)*0.5;
+        const { px, py, d: dd } = project(x*1.2, y*1.2, z, w, h, 12, 15);
+        const spd = Math.sqrt(w1*w1+w2*w2);
+        const hu = spd > 2 ? 20 : 200;
+        const li = 15 + Math.min(spd*5, 30);
+        ctx.fillStyle = hsl(hu, 70, li, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- N-Body ---
+    function drawNBody() {
+      const { ctx, w, h } = setupCanvas('c-nbody');
+      const attractors = [[5,0,0],[-5,2,-5],[3,-3,4],[-4,3,-3]];
+      for (let i=0; i<4000; i++) {
+        const theta=Math.random()*Math.PI*2;
+        const phi=Math.acos(2*Math.random()-1);
+        const r=2+Math.random()*6;
+        let x=r*Math.sin(phi)*Math.cos(theta);
+        let y=r*Math.sin(phi)*Math.sin(theta);
+        let z=r*Math.cos(phi);
+        const { px, py, d: dd } = project(x*1.2, y*1.2, z*1.2, w, h, 5, 25);
+        // Color by nearest attractor
+        let minD=Infinity, nearest=0;
+        for (let a=0;a<4;a++) {
+          const d2=(x-attractors[a][0])**2+(y-attractors[a][1])**2+(z-attractors[a][2])**2;
+          if(d2<minD){minD=d2;nearest=a;}
+        }
+        const hu = nearest*90+60;
+        const li = 15+Math.exp(-minD*0.05)*25;
+        ctx.fillStyle = hsl(hu%360, 65, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Turing Patterns ---
+    function drawTuring() {
+      const { ctx, w, h } = setupCanvas('c-turing');
+      const N=5000, golden=(1+Math.sqrt(5))/2, R=6;
+      for (let i=0;i<N;i++) {
+        const theta=2*Math.PI*i/golden;
+        const phi=Math.acos(1-2*(i+0.5)/N);
+        const px_s=Math.sin(phi)*Math.cos(theta);
+        const py_s=Math.cos(phi);
+        const pz_s=Math.sin(phi)*Math.sin(theta);
+        // Turing field
+        let f=Math.sin(4*px_s*R)*Math.sin(4*py_s*R)*Math.cos(4*pz_s*R);
+        f+=0.5*Math.cos(6*py_s*R)*Math.sin(6*pz_s*R)*Math.cos(6*px_s*R);
+        const field = f > 0 ? Math.min(f, 1) : 0;
+        const x=px_s*R, y=py_s*R, z=pz_s*R;
+        const { px, py, d: dd } = project(x*1.2, y*1.2, z*1.2, w, h, 6, 22);
+        const hu = field > 0.3 ? 29 : 252;
+        const li = 8+field*30;
+        ctx.fillStyle = hsl(hu, 70, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- EM Wave ---
+    function drawEMWave() {
+      const { ctx, w, h } = setupCanvas('c-emwave');
+      for (let i=0; i<4000; i++) {
+        const isE = i < 2000;
+        const localI = isE ? i : i-2000;
+        const zPos = (localI/2000)*30-15;
+        const spread = (Math.random()-0.5)*2;
+        const wave = 3*Math.sin(1.2*zPos);
+        const env = wave * Math.abs(spread);
+        let x, y;
+        if (isE) { x = spread*0.08; y = env; }
+        else { x = env; y = spread*0.08; }
+        const { px, py, d: dd } = project(x+3, y, zPos, w, h, 4, 20);
+        const hu = isE ? 10 : 210;
+        const li = 12+Math.abs(wave/3)*25;
+        ctx.fillStyle = hsl(hu, 70, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
     requestAnimationFrame(drawAll);
     window.addEventListener('resize', drawAll);
   </script>
