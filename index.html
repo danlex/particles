@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 67 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 67 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 67 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 71 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 71 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 71 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 67 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 67 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 71 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 71 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 67 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 67 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 71 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 71 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 67 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 71 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 67 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 71 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 61,
     "author": {
       "@type": "Person",
@@ -1349,6 +1349,70 @@
         <div class="card-tags">
           <span class="card-tag">Artificial Life</span>
           <span class="card-tag">Emergent</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="physarum.html">
+      <div class="card-preview">
+        <canvas id="c-physarum"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Physarum</div>
+        <div class="card-desc">Slime mold transport network. 65K agents sense and steer through an evolving field, forming organic vein-like patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Emergent</span>
+          <span class="card-tag">Slime Mold</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="kuramoto-sync.html">
+      <div class="card-preview">
+        <canvas id="c-kuramoto"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Kuramoto Sync</div>
+        <div class="card-desc">65K oscillators snap from chaotic rainbow noise into synchronized pulsating color waves as coupling crosses the threshold.</div>
+        <div class="card-tags">
+          <span class="card-tag">Phase Transition</span>
+          <span class="card-tag">Synchronization</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="magnetic-pendulum.html">
+      <div class="card-preview">
+        <canvas id="c-magpendulum"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Magnetic Pendulum</div>
+        <div class="card-desc">A pendulum over 3 magnets. Basin boundaries form a fractal as particles settle toward different attractors.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fractal</span>
+          <span class="card-tag">Basin Boundaries</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="attractor-morph.html">
+      <div class="card-preview">
+        <canvas id="c-morphattractor"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Attractor Morph</div>
+        <div class="card-desc">Continuous metamorphosis between Lorenz, Aizawa, Thomas, and Halvorsen strange attractors.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Morphing</span>
           <span class="card-particles">65,536 particles</span>
         </div>
       </div>
@@ -2828,7 +2892,95 @@
       drawPendulum(); drawNBody(); drawTuring(); drawEMWave();
       drawTrefoil(); drawCosmicWeb();
       drawKH(); drawBilliards(); drawConformal(); drawParticleLife();
+      drawPhysarum(); drawKuramoto(); drawMagPendulum(); drawMorphAttractor();
     };
+
+    // --- Physarum ---
+    function drawPhysarum() {
+      const { ctx, w, h } = setupCanvas('c-physarum');
+      // Simulate agents following noise
+      for (let i = 0; i < 3000; i++) {
+        let x = (Math.random()-0.5)*12;
+        let y = (Math.random()-0.5)*12;
+        let z = (Math.random()-0.5)*12;
+        let heading = Math.random() * Math.PI * 2;
+        for (let s = 0; s < 8; s++) {
+          x += Math.cos(heading) * 0.3;
+          z += Math.sin(heading) * 0.3;
+          heading += (Math.random()-0.5) * 0.8;
+        }
+        const { px, py, d: dd } = project(x*1.3, y*1.3, z*1.3, w, h, 4, 22);
+        const hu = (heading / 6.28 * 108 + 108) % 360;
+        ctx.fillStyle = hsl(hu, 60, 27, 0.3*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Kuramoto Sync ---
+    function drawKuramoto() {
+      const { ctx, w, h } = setupCanvas('c-kuramoto');
+      const N = 5000, golden = (1+Math.sqrt(5))/2, R = 6;
+      for (let i = 0; i < N; i++) {
+        const theta = 2*Math.PI*i/golden;
+        const phi = Math.acos(1-2*(i+0.5)/N);
+        const x = R*Math.sin(phi)*Math.cos(theta);
+        const y = R*Math.cos(phi);
+        const z = R*Math.sin(phi)*Math.sin(theta);
+        const phase = Math.random() * Math.PI * 2;
+        const { px, py, d: dd } = project(x*1.2, y*1.2, z*1.2, w, h, 6, 20);
+        const hu = (phase / 6.28) * 360;
+        const li = 12 + 20 * (0.5 + 0.5 * Math.sin(phase));
+        ctx.fillStyle = hsl(hu, 85, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Magnetic Pendulum ---
+    function drawMagPendulum() {
+      const { ctx, w, h } = setupCanvas('c-magpendulum');
+      const magR = 3;
+      const m1 = [magR, 0], m2 = [-magR*0.5, magR*0.866], m3 = [-magR*0.5, -magR*0.866];
+      for (let i = 0; i < 4000; i++) {
+        const x = (Math.random()-0.5)*12;
+        const y = (Math.random()-0.5)*12;
+        const d1 = Math.sqrt((x-m1[0])**2+(y-m1[1])**2);
+        const d2 = Math.sqrt((x-m2[0])**2+(y-m2[1])**2);
+        const d3 = Math.sqrt((x-m3[0])**2+(y-m3[1])**2);
+        let hu;
+        if (d1<d2&&d1<d3) hu = 0;
+        else if (d2<d3) hu = 120;
+        else hu = 240;
+        const { px, py, d: dd } = project(x*1.2, y*1.2-2, 0, w, h, 6, 15);
+        ctx.fillStyle = hsl(hu, 70, 25, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // --- Attractor Morph ---
+    function drawMorphAttractor() {
+      const { ctx, w, h } = setupCanvas('c-morphattractor');
+      let x=0.1, y=0, z=0;
+      for (let i = 0; i < 12000; i++) {
+        const sigma=10,rho=28,beta=2.667;
+        const dx=sigma*(y-x), dy=x*(rho-z)-y, dz=x*y-beta*z;
+        x+=dx*0.003; y+=dy*0.003; z+=dz*0.003;
+        if (i > 200) {
+          const { px, py, d: dd } = project(x*0.08, y*0.08, (z-25)*0.08, w, h, 12, 15);
+          const hu = 180;
+          const li = 20 + Math.min(Math.sqrt(dx*dx+dy*dy)*0.02, 20);
+          ctx.fillStyle = hsl(hu, 70, li, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.8*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
 
     // --- Kelvin-Helmholtz ---
     function drawKH() {
