@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gyroid — Particles</title>
+  <meta name="description" content="Particles confined to the Schoen gyroid minimal surface. An infinite crystalline lattice tiling 3D space.">
+  <meta name="author" content="Alexandru DAN">
+  <meta name="theme-color" content="#050505">
+  <link rel="canonical" href="https://danlex.github.io/particles/gyroid.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danlex.github.io/particles/gyroid.html">
+  <meta property="og:title" content="Gyroid — Particles">
+  <meta property="og:description" content="Particles confined to the Schoen gyroid minimal surface. An infinite crystalline lattice tiling 3D space.">
+  <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
+  <meta property="og:site_name" content="Particles">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gyroid — Particles">
+  <meta name="twitter:description" content="Particles confined to the Schoen gyroid minimal surface. An infinite crystalline lattice tiling 3D space.">
+  <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
+    canvas { display: block; }
+    #controls {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 28px;
+      z-index: 10;
+      align-items: center;
+    }
+    .ctrl-group {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .ctrl-group label {
+      color: rgba(255,255,255,0.4); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .ctrl-group input[type="range"] {
+      -webkit-appearance: none; width: 100px; height: 3px;
+      background: rgba(255,255,255,0.15); border-radius: 2px; outline: none;
+    }
+    .ctrl-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px;
+      border-radius: 50%; background: #fff; cursor: pointer;
+    }
+    #info {
+      position: fixed; top: 24px; left: 28px; z-index: 10;
+    }
+    #info h1 {
+      color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    #info p {
+      color: rgba(255,255,255,0.25); font-size: 10px;
+      margin-top: 6px; letter-spacing: 1px;
+    }
+    #fps {
+      position: fixed; top: 24px; right: 28px;
+      color: rgba(255,255,255,0.2); font-size: 10px;
+      letter-spacing: 1px; z-index: 10;
+    }
+    #back {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 10;
+    }
+    #back a {
+      color: rgba(255,255,255,0.2); font-size: 9px; text-decoration: none;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    #back a:hover { color: rgba(255,255,255,0.5); }
+      .zoom-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5); font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      font-family: monospace;
+    }
+    .zoom-btn:hover { background: rgba(255,255,255,0.12); }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h1>Gyroid</h1>
+    <p id="particle-count"></p>
+  </div>
+  <div id="fps"></div>
+  <div id="back"><a href="index.html">Gallery</a></div>
+  <div id="controls">
+    <div class="ctrl-group">
+      <input type="range" id="speed" min="0.1" max="5" step="0.1" value="1">
+      <label>Speed</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.4">
+      <label>Bloom</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="size" min="0.5" max="4" step="0.1" value="1.0">
+      <label>Size</label>
+    </div>
+    <div class="ctrl-group">
+      <input type="range" id="hueShift" min="0" max="1" step="0.01" value="0">
+      <label>Hue</label>
+    </div>
+    <button class="zoom-btn" id="zoomOut">−</button>
+    <button class="zoom-btn" id="zoomIn">+</button>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+    const WIDTH = 256;
+    const PARTICLE_COUNT = WIDTH * WIDTH;
+
+    // Scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
+    camera.position.set(0, 3, 26);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(1);
+    document.body.appendChild(renderer.domElement);
+
+    const orbitControls = new OrbitControls(camera, renderer.domElement);
+    orbitControls.enableDamping = true;
+    orbitControls.dampingFactor = 0.05;
+    orbitControls.autoRotate = true;
+    orbitControls.autoRotateSpeed = 0.5;
+
+    // Post-processing
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(innerWidth / 2, innerHeight / 2),
+      0.4, 0.3, 0.85
+    );
+    composer.addPass(bloomPass);
+
+    // GPU Computation
+    const gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
+    const posTex0 = gpuCompute.createTexture();
+
+    function seedTexture(tex) {
+      const data = tex.image.data;
+      function gy(x, y, z) {
+        return Math.sin(x)*Math.cos(y) + Math.sin(y)*Math.cos(z) + Math.sin(z)*Math.cos(x);
+      }
+      function grad(x, y, z) {
+        return [
+          Math.cos(x)*Math.cos(y) - Math.sin(z)*Math.sin(x),
+          -Math.sin(x)*Math.sin(y) + Math.cos(y)*Math.cos(z),
+          -Math.sin(y)*Math.sin(z) + Math.cos(z)*Math.cos(x)
+        ];
+      }
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        let x = (Math.random()-0.5) * 16;
+        let y = (Math.random()-0.5) * 16;
+        let z = (Math.random()-0.5) * 16;
+        // Project onto gyroid surface via Newton steps
+        for (let k = 0; k < 5; k++) {
+          const f = gy(x, y, z);
+          const g = grad(x, y, z);
+          const gLen2 = g[0]*g[0]+g[1]*g[1]+g[2]*g[2] + 0.001;
+          x -= f * g[0] / gLen2;
+          y -= f * g[1] / gLen2;
+          z -= f * g[2] / gLen2;
+        }
+        const idx = i * 4;
+        data[idx]     = x;
+        data[idx + 1] = y;
+        data[idx + 2] = z;
+        data[idx + 3] = Math.sqrt(x*x + y*y + z*z);
+      }
+    }
+
+    seedTexture(posTex0);
+
+    const positionShader = `
+      uniform float uDt;
+      uniform float uSpeed;
+      uniform float uFrame;
+      uniform float uTime;
+
+      float hash(vec2 p) {
+        vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+        p3 += dot(p3, p3.yzx + 33.33);
+        return fract((p3.x + p3.y) * p3.z);
+      }
+
+      float gyroid(vec3 p) {
+        return sin(p.x)*cos(p.y) + sin(p.y)*cos(p.z) + sin(p.z)*cos(p.x);
+      }
+
+      vec3 gyroidGrad(vec3 p) {
+        return vec3(
+          cos(p.x)*cos(p.y) - sin(p.z)*sin(p.x),
+          -sin(p.x)*sin(p.y) + cos(p.y)*cos(p.z),
+          -sin(p.y)*sin(p.z) + cos(p.z)*cos(p.x)
+        );
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution.xy;
+        vec4 pos = texture2D(texturePosition, uv);
+        vec3 p = pos.xyz;
+
+        // Tangential drift: cross product of gradient and a noise vector
+        vec3 g = gyroidGrad(p);
+        vec3 noiseVec = vec3(
+          sin(p.y * 0.3 + uTime * 0.5),
+          cos(p.z * 0.3 + uTime * 0.4),
+          sin(p.x * 0.3 + uTime * 0.3)
+        );
+        vec3 tangent = cross(normalize(g), noiseVec);
+
+        float dt = uDt * uSpeed;
+        p += tangent * dt * 2.0;
+
+        // Project back to the surface via Newton step
+        float f = gyroid(p);
+        vec3 gNew = gyroidGrad(p);
+        float gLen2 = dot(gNew, gNew) + 0.001;
+        p -= f * gNew / gLen2;
+
+        // Keep particles in bounds: reset if they escape
+        float bound = 9.0;
+        if (abs(p.x) > bound || abs(p.y) > bound || abs(p.z) > bound) {
+          float h1 = hash(uv * 500.0 + uFrame * 0.1);
+          float h2 = hash(uv * 700.0 + uFrame * 0.1 + 50.0);
+          float h3 = hash(uv * 900.0 + uFrame * 0.1 + 100.0);
+          p = vec3(h1, h2, h3) * 16.0 - 8.0;
+          for (int i = 0; i < 3; i++) {
+            float f2 = gyroid(p);
+            vec3 g2 = gyroidGrad(p);
+            p -= f2 * g2 / (dot(g2, g2) + 0.001);
+          }
+        }
+
+        // Store distance from origin in w for coloring
+        float d = length(p);
+        gl_FragColor = vec4(p, d);
+      }
+    `;
+
+    const posVar = gpuCompute.addVariable('texturePosition', positionShader, posTex0);
+    gpuCompute.setVariableDependencies(posVar, [posVar]);
+
+    posVar.material.uniforms.uDt = { value: 0.02 };
+    posVar.material.uniforms.uSpeed = { value: 1.0 };
+    posVar.material.uniforms.uFrame = { value: 0.0 };
+    posVar.material.uniforms.uTime = { value: 0.0 };
+
+    posVar.wrapS = THREE.RepeatWrapping;
+    posVar.wrapT = THREE.RepeatWrapping;
+
+    const err = gpuCompute.init();
+    if (err !== null) console.error('GPU Computation init error:', err);
+
+    // Particle Rendering
+    const vertexShader = `
+      uniform sampler2D uPositionTexture;
+      uniform float uHueShift;
+      uniform float uPointSize;
+      uniform float uScale;
+      attribute vec2 aTexCoord;
+      varying vec3 vColor;
+
+      vec3 hsl2rgb(float h, float s, float l) {
+        float c = (1.0 - abs(2.0 * l - 1.0)) * s;
+        float h6 = h * 6.0;
+        float x = c * (1.0 - abs(mod(h6, 2.0) - 1.0));
+        float m = l - c * 0.5;
+        vec3 rgb;
+        if (h6 < 1.0) rgb = vec3(c, x, 0.0);
+        else if (h6 < 2.0) rgb = vec3(x, c, 0.0);
+        else if (h6 < 3.0) rgb = vec3(0.0, c, x);
+        else if (h6 < 4.0) rgb = vec3(0.0, x, c);
+        else if (h6 < 5.0) rgb = vec3(x, 0.0, c);
+        else rgb = vec3(c, 0.0, x);
+        return rgb + m;
+      }
+
+      void main() {
+        vec4 posData = texture2D(uPositionTexture, aTexCoord);
+        vec3 pos = posData.xyz * uScale;
+        float d = posData.w;
+
+        // Color: distance from origin drives hue for rainbow lattice look
+        float hue = fract(d * 0.05 + uHueShift);
+        float saturation = 0.85;
+        float lightness = 0.12 + 0.08 * sin(d);
+
+        vColor = hsl2rgb(hue, saturation, lightness);
+
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        gl_PointSize = uPointSize * (55.0 / -mvPosition.z);
+        gl_PointSize = max(gl_PointSize, 0.3);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `;
+
+    const fragmentShader = `
+      varying vec3 vColor;
+      void main() {
+        float d = length(gl_PointCoord - 0.5) * 2.0;
+        if (d > 1.0) discard;
+        float alpha = (1.0 - d * d) * 0.18;
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `;
+
+    const geometry = new THREE.BufferGeometry();
+    const texCoords = new Float32Array(PARTICLE_COUNT * 2);
+    for (let j = 0; j < WIDTH; j++) {
+      for (let i = 0; i < WIDTH; i++) {
+        const idx = (j * WIDTH + i) * 2;
+        texCoords[idx]     = (i + 0.5) / WIDTH;
+        texCoords[idx + 1] = (j + 0.5) / WIDTH;
+      }
+    }
+    const dummyPositions = new Float32Array(PARTICLE_COUNT * 3);
+    geometry.setAttribute('position', new THREE.BufferAttribute(dummyPositions, 3));
+    geometry.setAttribute('aTexCoord', new THREE.BufferAttribute(texCoords, 2));
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        uPositionTexture: { value: null },
+        uHueShift: { value: 0.0 },
+        uPointSize: { value: 1.0 },
+        uScale: { value: 0.9 },
+      },
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const points = new THREE.Points(geometry, material);
+    const pivot = new THREE.Group(); pivot.add(points); scene.add(pivot);
+
+    // UI
+    document.getElementById('particle-count').textContent =
+      `${PARTICLE_COUNT.toLocaleString()} particles — fully GPU computed`;
+
+    const speedSlider = document.getElementById('speed');
+    const bloomSlider = document.getElementById('bloom');
+    const sizeSlider = document.getElementById('size');
+    const hueSlider = document.getElementById('hueShift');
+    const fpsEl = document.getElementById('fps');
+
+    document.getElementById('zoomIn').addEventListener('click', () => {
+      material.uniforms.uScale.value *= 1.15;
+    });
+    document.getElementById('zoomOut').addEventListener('click', () => {
+      material.uniforms.uScale.value *= 0.85;
+    });
+
+    // Animation Loop
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let timeAccum = 0;
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        fpsEl.textContent = `${frameCount} FPS`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      posVar.material.uniforms.uSpeed.value = parseFloat(speedSlider.value);
+      posVar.material.uniforms.uFrame.value += 1.0;
+      timeAccum += 0.016 * parseFloat(speedSlider.value);
+      posVar.material.uniforms.uTime.value = timeAccum;
+      bloomPass.strength = parseFloat(bloomSlider.value);
+      material.uniforms.uHueShift.value = parseFloat(hueSlider.value);
+      material.uniforms.uPointSize.value = parseFloat(sizeSlider.value);
+
+      gpuCompute.compute();
+
+      material.uniforms.uPositionTexture.value =
+        gpuCompute.getCurrentRenderTarget(posVar).texture;
+
+      pivot.rotation.x += 0.0008;
+      orbitControls.update();
+      composer.render();
+    }
+
+    animate(performance.now());
+
+    // Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      composer.setSize(innerWidth, innerHeight);
+    });
+  </script>
+</body>
+</html>
