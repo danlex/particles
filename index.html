@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 86 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 86 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 86 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 88 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 88 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 88 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 86 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 86 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 88 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 88 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 86 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 86 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 88 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 88 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 86 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 88 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 86 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 88 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 61,
     "author": {
       "@type": "Person",
@@ -1630,6 +1630,24 @@
       </div>
     </a>
 
+    <a class="card" href="fish-swarm.html">
+      <div class="card-preview"><canvas id="c-fishswarm"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Fish Swarm</div>
+        <div class="card-desc">65K fish school together, split around a predator, and merge back. Silvery cohesive swarm with figure-eight migration.</div>
+        <div class="card-tags"><span class="card-tag">Flocking</span><span class="card-tag">Predator-Prey</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="ant-colony.html">
+      <div class="card-preview"><canvas id="c-antcolony"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Ant Colony</div>
+        <div class="card-desc">65K ants march between nest and food sources. Pheromone-like noise fields guide self-organizing trail networks.</div>
+        <div class="card-tags"><span class="card-tag">Swarm Intelligence</span><span class="card-tag">Trail Following</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
   </div>
 
   <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
@@ -2061,7 +2079,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 86 * 30 - 15;
+        const gz = Math.floor(i / 80) / 88 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3109,7 +3127,53 @@
       drawQuantum(); drawSmoke(); drawSandDunes(); drawBifurcation();
       drawMitosis(); drawGradDesc(); drawPrimes();
       drawNeuralNet(); drawConvection(); drawLorentz2(); drawSoliton();
+      drawFishSwarm(); drawAntColony();
     };
+
+    function drawFishSwarm() {
+      const { ctx, w, h } = setupCanvas('c-fishswarm');
+      for (let i=0;i<3000;i++) {
+        const a=Math.random()*Math.PI*2;
+        const p=Math.acos(2*Math.random()-1);
+        const r=0.5+Math.random()*2.5;
+        const x=r*Math.sin(p)*Math.cos(a);
+        const y=r*Math.cos(p);
+        const z=r*Math.sin(p)*Math.sin(a);
+        const { px, py, d: dd } = project(x,y,z,w,h,15,15);
+        ctx.fillStyle = hsl(198, 40, 12+Math.random()*15, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    function drawAntColony() {
+      const { ctx, w, h } = setupCanvas('c-antcolony');
+      // Draw trails as lines of dots from center to food sources
+      const foods = [[6,6],[-7,5],[5,-6],[-5,-5]];
+      for (const f of foods) {
+        for (let j=0;j<150;j++) {
+          const t=j/150;
+          const x=f[0]*t+(Math.random()-0.5)*1.5*t;
+          const z=f[1]*t+(Math.random()-0.5)*1.5*t;
+          const { px, py, d: dd } = project(x*1.2,-0.5-2,z*1.2,w,h,5,12);
+          ctx.fillStyle = hsl(22, 50, 24, 0.3*dd);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, 0.6*dd), 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+      // Scattered ants
+      for (let i=0;i<1500;i++) {
+        const x=(Math.random()-0.5)*16;
+        const z=(Math.random()-0.5)*16;
+        const { px, py, d: dd } = project(x*1.2,-0.5-2,z*1.2,w,h,5,12);
+        ctx.fillStyle = hsl(22, 50, 20, 0.15*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.2, 0.4*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
 
     function drawNeuralNet() {
       const { ctx, w, h } = setupCanvas('c-neuralnet');
