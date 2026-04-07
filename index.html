@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 96 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 96 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 96 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 100 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 100 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 100 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 96 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 96 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 100 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 100 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 96 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 96 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 100 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 100 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 96 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 100 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 96 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 100 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 61,
     "author": {
       "@type": "Person",
@@ -1720,6 +1720,42 @@
       </div>
     </a>
 
+    <a class="card" href="pulsar.html">
+      <div class="card-preview"><canvas id="c-pulsar"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Pulsar</div>
+        <div class="card-desc">A rotating neutron star emitting twin radiation beams from tilted magnetic poles. Cosmic lighthouse.</div>
+        <div class="card-tags"><span class="card-tag">Astrophysics</span><span class="card-tag">Neutron Star</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="solar-wind.html">
+      <div class="card-preview"><canvas id="c-solarwind"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Solar Wind</div>
+        <div class="card-desc">Particles stream radially from a star in a Parker spiral pattern. Fast and slow wind create compression regions.</div>
+        <div class="card-tags"><span class="card-tag">Space Physics</span><span class="card-tag">Parker Spiral</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="sorting.html">
+      <div class="card-preview"><canvas id="c-sorting"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Sorting</div>
+        <div class="card-desc">65K-element sorting algorithm visualization. A sweep frontier progressively orders scrambled bars.</div>
+        <div class="card-tags"><span class="card-tag">Computer Science</span><span class="card-tag">Algorithm</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="blood-flow.html">
+      <div class="card-preview"><canvas id="c-bloodflow"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Blood Flow</div>
+        <div class="card-desc">Cardiovascular circulation with heartbeat pulse. Red arteries, blue veins, slow capillaries — the circulatory system.</div>
+        <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Cardiovascular</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
   </div>
 
   <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
@@ -2151,7 +2187,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 96 * 30 - 15;
+        const gz = Math.floor(i / 80) / 100 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3202,7 +3238,89 @@
       drawFishSwarm(); drawAntColony();
       drawVortexSt(); drawPenrose(); drawEarthquake(); drawSoapBubble();
       drawRings(); drawDNARep(); drawWaterwheel(); drawCalabiYau();
+      drawPulsar(); drawSolarWind(); drawSorting(); drawBloodFlow();
     };
+
+    function drawPulsar() {
+      const { ctx, w, h } = setupCanvas('c-pulsar');
+      // Magnetosphere
+      for (let i=0;i<1000;i++) {
+        const theta=Math.random()*Math.PI;
+        const phi=Math.random()*Math.PI*2;
+        const Rmax=2+Math.random()*3;
+        const r=Rmax*Math.sin(theta)**2;
+        const x=r*Math.sin(theta)*Math.cos(phi);
+        const y=r*Math.cos(theta);
+        const z=r*Math.sin(theta)*Math.sin(phi);
+        const { px, py, d: dd } = project(x*1.5,y*1.5,z*1.5,w,h,8,15);
+        ctx.fillStyle = hsl(252, 60, 15, 0.25*dd);
+        ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.6*dd),0,Math.PI*2);ctx.fill();
+      }
+      // Beams
+      for (let i=0;i<800;i++) {
+        const along=Math.random()*10;
+        const spread=along*0.08;
+        const side=i<400?1:-1;
+        const x=spread*(Math.random()-0.5)*2;
+        const y=side*along;
+        const z=spread*(Math.random()-0.5)*2;
+        const int=1/(along*0.3+0.5);
+        const { px, py, d: dd } = project(x*1.5,y*1.5,z*1.5,w,h,8,15);
+        ctx.fillStyle = hsl(187, 70, 8+Math.min(int*35,40), 0.4*dd);
+        ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.7*dd),0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    function drawSolarWind() {
+      const { ctx, w, h } = setupCanvas('c-solarwind');
+      for (let i=0;i<3000;i++) {
+        const theta=Math.random()*Math.PI*2;
+        const phi=Math.acos(2*Math.random()-1);
+        const r=0.5+Math.random()*12;
+        const x=r*Math.sin(phi)*Math.cos(theta+r*0.1);
+        const y=r*Math.sin(phi)*Math.sin(theta+r*0.1);
+        const z=r*Math.cos(phi);
+        const speed=4+2*Math.abs(Math.cos(phi));
+        const { px, py, d: dd } = project(x,y-2,z,w,h,4,18);
+        const li=8+Math.min(speed*4,30);
+        ctx.fillStyle = hsl(43-speed*2, 70, li, 0.3*dd);
+        ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.6*dd),0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    function drawSorting() {
+      const { ctx, w, h } = setupCanvas('c-sorting');
+      for (let i=0;i<2000;i++) {
+        const col=i/2000;
+        const sorted=col<0.5;
+        const val=sorted?col*2:Math.random();
+        const x=(col-0.5)*16;
+        const y=val*8-4;
+        const { px, py, d: dd } = project(x,y,0,w,h,5,15);
+        const hu=sorted?120:val*360;
+        const li=sorted?25:15;
+        ctx.fillStyle = hsl(hu,70,li,0.3*dd);
+        ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.5*dd),0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    function drawBloodFlow() {
+      const { ctx, w, h } = setupCanvas('c-bloodflow');
+      const R=5, r=1.5;
+      for (let i=0;i<4000;i++) {
+        const angle=Math.random()*Math.PI*2;
+        const tubeA=Math.random()*Math.PI*2;
+        const tubeR=Math.random()*r;
+        const phase=((angle/(Math.PI*2))+0.5)%1;
+        const x=(R+tubeR*Math.cos(tubeA))*Math.cos(angle);
+        const y=tubeR*Math.sin(tubeA);
+        const z=(R+tubeR*Math.cos(tubeA))*Math.sin(angle);
+        const { px, py, d: dd } = project(x*1.2,y*1.2,z*1.2,w,h,5,18);
+        const hu=phase<0.5?phase*2*300:180+(phase-0.5)*2*(-120+360)%360;
+        ctx.fillStyle = hsl(((hu%360)+360)%360,70,22,0.35*dd);
+        ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.7*dd),0,Math.PI*2);ctx.fill();
+      }
+    }
 
     function drawRings() {
       const { ctx, w, h } = setupCanvas('c-rings');
