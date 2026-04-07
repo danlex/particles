@@ -4194,8 +4194,124 @@
         ctx.fill();
       }
     }
-    requestAnimationFrame(drawAll);
-    window.addEventListener('resize', drawAll);
+    // Lazy-load thumbnails: only draw when card scrolls into view
+    const drawFns = {};
+    document.querySelectorAll('.card-preview canvas').forEach(canvas => {
+      const id = canvas.id;
+      // Map canvas id to draw function name
+      const fnName = 'draw' + id.replace('c-', '').replace(/(^|-)(\w)/g, (m, d, c) => c.toUpperCase());
+      drawFns[id] = fnName;
+    });
+
+    const drawnSet = new Set();
+    function drawCard(canvas) {
+      const id = canvas.id;
+      if (drawnSet.has(id)) return;
+      drawnSet.add(id);
+      // Try direct function name mapping
+      const fnName = drawFns[id];
+      if (fnName && typeof window[fnName] === 'function') {
+        try { window[fnName](); } catch(e) { console.warn('Draw error:', id, e); }
+        return;
+      }
+      // Fallback: try all registered draw functions by canvas id
+      try { drawAll(); } catch(e) {}
+    }
+
+    // Expose draw functions to window scope for lazy loading
+    const allDrawFns = {
+      'c-lorenz': drawLorenz, 'c-aizawa': drawAizawa, 'c-thomas': drawThomas,
+      'c-torus': drawTorusKnot, 'c-halvorsen': drawHalvorsen, 'c-rossler': drawRossler,
+      'c-fibonacci': drawFibonacci, 'c-chen': drawChen, 'c-galaxy': drawGalaxy,
+      'c-dna': drawDNA, 'c-clifford': drawClifford, 'c-lissajous': drawLissajous,
+      'c-fourwing': drawFourWing, 'c-dadras': drawDadras, 'c-harmonics': drawHarmonics,
+      'c-magnetic': drawMagnetic, 'c-nosehoover': drawNoseHoover, 'c-ocean': drawOcean,
+      'c-shimizu': drawShimizu, 'c-vortex': drawVortex, 'c-aurora': drawAurora,
+      'c-rabinovich': drawRabinovich, 'c-jellyfish': drawJellyfish, 'c-burkeshaw': drawBurkeShaw,
+      'c-flowerlife': drawFlowerLife, 'c-mandala': drawMandala, 'c-paradox': drawParadox,
+      'c-curlnoise': drawCurlNoise, 'c-supershape': drawSupershape, 'c-blackhole': drawBlackHole,
+      'c-hopalong': drawHopalong, 'c-klein': drawKlein, 'c-tornado': drawTornado,
+      'c-fireworks': drawFireworks, 'c-dejong': drawDeJong, 'c-galaxycollision': drawGalaxyCollision,
+      'c-chua': drawChua, 'c-pickover': drawPickover, 'c-chladni': drawChladni,
+      'c-plasma': drawPlasma, 'c-supernova': drawSupernova, 'c-menger': drawMenger,
+      'c-tree': drawTree, 'c-warp': drawWarp, 'c-luchen': drawLuChen,
+      'c-sprott': drawSprott, 'c-hopf': drawHopf, 'c-fireflies': drawFireflies,
+      'c-mobius': drawMobius, 'c-apollonian': drawApollonian, 'c-gyroid': drawGyroid,
+      'c-quatjulia': drawQuaternionJulia, 'c-lichtenberg': drawLichtenberg,
+      'c-waves': drawWaves, 'c-metaballs': drawMetaballs, 'c-bz': drawBZ,
+      'c-phyllotaxis': drawPhyllotaxis, 'c-pendulum': drawPendulum, 'c-nbody': drawNBody,
+      'c-turing': drawTuring, 'c-emwave': drawEMWave, 'c-trefoil': drawTrefoil,
+      'c-cosmicweb': drawCosmicWeb, 'c-kh': drawKH, 'c-billiards': drawBilliards,
+      'c-conformal': drawConformal, 'c-particlelife': drawParticleLife,
+      'c-physarum': drawPhysarum, 'c-kuramoto': drawKuramoto,
+      'c-magpendulum': drawMagPendulum, 'c-morphattractor': drawMorphAttractor,
+      'c-murmuration': drawMurmuration, 'c-pendwave': drawPendWave,
+      'c-gravlens': drawGravLens, 'c-crystal': drawCrystal,
+      'c-quantum': drawQuantum, 'c-smoke': drawSmoke,
+      'c-sanddunes': drawSandDunes, 'c-bifurcation': drawBifurcation,
+      'c-mitosis': drawMitosis, 'c-graddesc': drawGradDesc, 'c-primes': drawPrimes,
+      'c-neuralnet': drawNeuralNet, 'c-convection': drawConvection,
+      'c-lorentz2': drawLorentz2, 'c-soliton': drawSoliton,
+      'c-fishswarm': drawFishSwarm, 'c-antcolony': drawAntColony,
+      'c-vortexst': drawVortexSt, 'c-penrose': drawPenrose,
+      'c-earthquake': drawEarthquake, 'c-soapbubble': drawSoapBubble,
+      'c-rings': drawRings, 'c-dnarep': drawDNARep,
+      'c-waterwheel': drawWaterwheel, 'c-calabiyau': drawCalabiYau,
+      'c-pulsar': drawPulsar, 'c-solarwind': drawSolarWind,
+      'c-sorting': drawSorting, 'c-bloodflow': drawBloodFlow,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const canvas = entry.target.querySelector('canvas');
+          if (canvas && !drawnSet.has(canvas.id)) {
+            const fn = allDrawFns[canvas.id];
+            if (fn) {
+              drawnSet.add(canvas.id);
+              try { fn(); } catch(e) { console.warn('Draw error:', canvas.id, e); }
+            }
+          }
+        }
+      });
+    }, { rootMargin: '200px' });
+
+    document.querySelectorAll('.card-preview').forEach(el => observer.observe(el));
+
+    // Also draw visible ones immediately
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.card-preview').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 200) {
+          const canvas = el.querySelector('canvas');
+          if (canvas && !drawnSet.has(canvas.id)) {
+            const fn = allDrawFns[canvas.id];
+            if (fn) {
+              drawnSet.add(canvas.id);
+              try { fn(); } catch(e) {}
+            }
+          }
+        }
+      });
+    });
+
+    // Redraw on resize
+    window.addEventListener('resize', () => {
+      drawnSet.clear();
+      document.querySelectorAll('.card-preview').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 200) {
+          const canvas = el.querySelector('canvas');
+          if (canvas) {
+            const fn = allDrawFns[canvas.id];
+            if (fn) {
+              drawnSet.add(canvas.id);
+              try { fn(); } catch(e) {}
+            }
+          }
+        }
+      });
+    });
 
     // Dynamic animation count in subtitle
     document.querySelector('.subtitle').textContent =
