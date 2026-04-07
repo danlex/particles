@@ -3500,8 +3500,8 @@
         const gx=(i%71)/71*24-12;
         const gz=Math.floor(i/71)/71*24-12;
         const dist=Math.sqrt(gx*gx+gz*gz);
-        const pWave=Math.exp(-(dist-5)**2*2)*2*Math.sin(dist*3)*0.5;
-        const sWave=Math.exp(-(dist-3)**2*1.5)*1.5*Math.cos(dist*2.5)*0.5;
+        const pWave=Math.exp(-((dist-5)**2)*2)*2*Math.sin(dist*3)*0.5;
+        const sWave=Math.exp(-((dist-3)**2)*1.5)*1.5*Math.cos(dist*2.5)*0.5;
         const ht=(pWave+sWave)*0.5;
         const intensity=Math.abs(ht);
         const { px, py, d: dd } = project(gx,ht-3,gz,w,h,4,14);
