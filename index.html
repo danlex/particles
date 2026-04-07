@@ -258,6 +258,46 @@
     .card.hidden {
       display: none;
     }
+    .pagination {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 40px;
+      max-width: 1140px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.35);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-width: 38px;
+      text-align: center;
+    }
+    .page-btn:hover {
+      border-color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+    }
+    .page-btn.active {
+      border-color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.05);
+    }
+    .page-info {
+      font-size: 9px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 12px;
+    }
   </style>
 </head>
 <body>
@@ -282,775 +322,115 @@
   </div>
 
   <div class="grid">
-    <a class="card" href="lorenz-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-lorenz"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="vortex-street.html">
+      <div class="card-preview"><canvas id="c-vortexst"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Lorenz Attractor</div>
-        <div class="card-desc">The iconic butterfly of chaos theory. Two-winged strange attractor with sensitive dependence on initial conditions.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">RK2</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Vortex Street</div>
+        <div class="card-desc">Von Karman vortex shedding behind a cylinder. Alternating vortices form the classic fluid dynamics pattern.</div>
+        <div class="card-tags"><span class="card-tag">Fluid Dynamics</span><span class="card-tag">Vortex Shedding</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="aizawa-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-aizawa"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="penrose-tiling.html">
+      <div class="card-preview"><canvas id="c-penrose"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Aizawa Attractor</div>
-        <div class="card-desc">A spherical shell-like chaotic attractor producing toroidal structures with intricate surface patterns.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Toroidal</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Penrose Tiling</div>
+        <div class="card-desc">Aperiodic quasicrystal with 5-fold symmetry. Five wave interference creates the non-repeating Penrose pattern.</div>
+        <div class="card-tags"><span class="card-tag">Quasicrystal</span><span class="card-tag">Aperiodic</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="thomas-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-thomas"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="earthquake.html">
+      <div class="card-preview"><canvas id="c-earthquake"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Thomas Attractor</div>
-        <div class="card-desc">Cyclically symmetric knotted paths. Slow, meandering attractor producing beautiful intertwined loops.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Cyclic Symmetry</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Earthquake</div>
+        <div class="card-desc">Seismic waves radiating from an epicenter. P-waves arrive first, then S-waves, then rolling surface waves.</div>
+        <div class="card-tags"><span class="card-tag">Seismology</span><span class="card-tag">Wave Propagation</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="torus-knot.html">
-      <div class="card-preview">
-        <canvas id="c-torus"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="soap-bubble.html">
+      <div class="card-preview"><canvas id="c-soapbubble"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Torus Knot</div>
-        <div class="card-desc">Particles flowing along a (3,7) torus knot — a complex curve wrapping a torus, never self-intersecting.</div>
-        <div class="card-tags">
-          <span class="card-tag">Parametric Curve</span>
-          <span class="card-tag">Flowing</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Soap Bubble</div>
+        <div class="card-desc">Iridescent soap bubbles merging and reforming. Thin-film interference creates rainbow color shifts across the surface.</div>
+        <div class="card-tags"><span class="card-tag">Optics</span><span class="card-tag">Thin Film</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="halvorsen-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-halvorsen"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="planetary-rings.html">
+      <div class="card-preview"><canvas id="c-rings"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Halvorsen Attractor</div>
-        <div class="card-desc">A churning, tri-lobed chaotic form with three-fold rotational symmetry and turbulent dynamics.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Tri-lobed</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Planetary Rings</div>
+        <div class="card-desc">Saturn-like rings with Cassini gaps, density waves from shepherd moons, and differential Keplerian rotation.</div>
+        <div class="card-tags"><span class="card-tag">Astrophysics</span><span class="card-tag">Orbital</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="rossler-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-rossler"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="dna-replication.html">
+      <div class="card-preview"><canvas id="c-dnarep"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Rossler Attractor</div>
-        <div class="card-desc">A band-like spiral with a dramatic sharp fold. One of the simplest systems exhibiting chaos.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Spiral Fold</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">DNA Replication</div>
+        <div class="card-desc">A double helix unzips at a replication fork. Daughter strands form behind as the fork advances.</div>
+        <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Molecular</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="fibonacci-sphere.html">
-      <div class="card-preview">
-        <canvas id="c-fibonacci"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="waterwheel.html">
+      <div class="card-preview"><canvas id="c-waterwheel"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Fibonacci Sphere</div>
-        <div class="card-desc">Golden ratio distribution on a sphere with breathing waves and spiral rotation. Nature's most elegant pattern.</div>
-        <div class="card-tags">
-          <span class="card-tag">Nature-Inspired</span>
-          <span class="card-tag">Phyllotaxis</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Waterwheel</div>
+        <div class="card-desc">The Lorenz/Malkus waterwheel — the physical system behind chaos theory. Water fills, spills, and reverses chaotically.</div>
+        <div class="card-tags"><span class="card-tag">Chaos Theory</span><span class="card-tag">Physical System</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="chen-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-chen"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="calabi-yau.html">
+      <div class="card-preview"><canvas id="c-calabiyau"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Chen Attractor</div>
-        <div class="card-desc">A double-scroll chaotic attractor with fast, turbulent dynamics and butterfly-like structure.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Double Scroll</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Calabi-Yau</div>
+        <div class="card-desc">A 6D manifold from string theory projected to 3D. Jewel-like folded geometry that morphs as the projection sweeps.</div>
+        <div class="card-tags"><span class="card-tag">String Theory</span><span class="card-tag">Higher Dimensions</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="galaxy-spiral.html">
-      <div class="card-preview">
-        <canvas id="c-galaxy"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="pulsar.html">
+      <div class="card-preview"><canvas id="c-pulsar"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Galaxy Spiral</div>
-        <div class="card-desc">Four-arm spiral galaxy with differential rotation. Inner stars orbit faster than outer ones.</div>
-        <div class="card-tags">
-          <span class="card-tag">Astrophysics</span>
-          <span class="card-tag">Differential Rotation</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Pulsar</div>
+        <div class="card-desc">A rotating neutron star emitting twin radiation beams from tilted magnetic poles. Cosmic lighthouse.</div>
+        <div class="card-tags"><span class="card-tag">Astrophysics</span><span class="card-tag">Neutron Star</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="dna-helix.html">
-      <div class="card-preview">
-        <canvas id="c-dna"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="solar-wind.html">
+      <div class="card-preview"><canvas id="c-solarwind"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">DNA Helix</div>
-        <div class="card-desc">Double helix with connecting bridges. Two intertwined strands scrolling through space.</div>
-        <div class="card-tags">
-          <span class="card-tag">Biology</span>
-          <span class="card-tag">Parametric</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Solar Wind</div>
+        <div class="card-desc">Particles stream radially from a star in a Parker spiral pattern. Fast and slow wind create compression regions.</div>
+        <div class="card-tags"><span class="card-tag">Space Physics</span><span class="card-tag">Parker Spiral</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="clifford-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-clifford"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="sorting.html">
+      <div class="card-preview"><canvas id="c-sorting"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">Clifford Attractor</div>
-        <div class="card-desc">A feathery 2D iterated map creating dense, organic patterns through simple trigonometric rules.</div>
-        <div class="card-tags">
-          <span class="card-tag">Iterated Map</span>
-          <span class="card-tag">Generative Art</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Sorting</div>
+        <div class="card-desc">65K-element sorting algorithm visualization. A sweep frontier progressively orders scrambled bars.</div>
+        <div class="card-tags"><span class="card-tag">Computer Science</span><span class="card-tag">Algorithm</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="lissajous.html">
-      <div class="card-preview">
-        <canvas id="c-lissajous"></canvas>
-        <div class="play-hint"></div>
-      </div>
+    <a class="card" data-created="2026-04-07" href="blood-flow.html">
+      <div class="card-preview"><canvas id="c-bloodflow"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
-        <div class="card-title">3D Lissajous</div>
-        <div class="card-desc">Hypnotic harmonograph curves in 3D. Evolving phase parameters create endlessly morphing patterns.</div>
-        <div class="card-tags">
-          <span class="card-tag">Parametric</span>
-          <span class="card-tag">Phase Animation</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
+        <div class="card-title">Blood Flow</div>
+        <div class="card-desc">Cardiovascular circulation with heartbeat pulse. Red arteries, blue veins, slow capillaries — the circulatory system.</div>
+        <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Cardiovascular</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
-    <a class="card" href="four-wing-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-fourwing"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Four-Wing Attractor</div>
-        <div class="card-desc">The Qi chaotic system producing a striking four-lobed butterfly structure with complex inter-wing dynamics.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Four-Lobed</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="dadras-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-dadras"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Dadras Attractor</div>
-        <div class="card-desc">A wispy, cloud-like chaotic system with two lobes. The Dadras-Momeni equations produce ethereal flowing forms.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Cloud-like</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="spherical-harmonics.html">
-      <div class="card-preview">
-        <canvas id="c-harmonics"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Spherical Harmonics</div>
-        <div class="card-desc">Morphing organic shapes from harmonic wave functions on a sphere. Animated coefficients create endlessly evolving surfaces.</div>
-        <div class="card-tags">
-          <span class="card-tag">Harmonic Surface</span>
-          <span class="card-tag">Morphing</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="magnetic-field.html">
-      <div class="card-preview">
-        <canvas id="c-magnetic"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Magnetic Field</div>
-        <div class="card-desc">Particles tracing 3D dipole magnetic field lines. Graceful arcs flow from pole to pole through the equatorial plane.</div>
-        <div class="card-tags">
-          <span class="card-tag">Physics</span>
-          <span class="card-tag">Field Lines</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="nose-hoover.html">
-      <div class="card-preview">
-        <canvas id="c-nosehoover"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Nose-Hoover Attractor</div>
-        <div class="card-desc">A torus-like chaotic system from thermodynamic oscillator equations. Smooth flow on a donut-shaped manifold.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Toroidal</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="ocean-surface.html">
-      <div class="card-preview">
-        <canvas id="c-ocean"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Ocean Surface</div>
-        <div class="card-desc">Gerstner wave equations on a particle grid. Three overlapping wave systems create a realistic ocean surface.</div>
-        <div class="card-tags">
-          <span class="card-tag">Physics</span>
-          <span class="card-tag">Waves</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="shimizu-morioka.html">
-      <div class="card-preview">
-        <canvas id="c-shimizu"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Shimizu-Morioka Attractor</div>
-        <div class="card-desc">A Lorenz variant with smoother, wider butterfly wings. Elegant transitions between the two lobes.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Butterfly</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="vortex-rings.html">
-      <div class="card-preview">
-        <canvas id="c-vortex"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Vortex Rings</div>
-        <div class="card-desc">Toroidal vortex flow — particles circulate through a smoke ring, driven by poloidal circulation dynamics.</div>
-        <div class="card-tags">
-          <span class="card-tag">Fluid Dynamics</span>
-          <span class="card-tag">Toroidal Flow</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="aurora.html">
-      <div class="card-preview">
-        <canvas id="c-aurora"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Aurora Borealis</div>
-        <div class="card-desc">Shimmering curtain waves of light, mimicking the northern lights with layered sinusoidal displacement.</div>
-        <div class="card-tags">
-          <span class="card-tag">Nature</span>
-          <span class="card-tag">Curtain Waves</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="rabinovich-fabrikant.html">
-      <div class="card-preview">
-        <canvas id="c-rabinovich"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Rabinovich-Fabrikant</div>
-        <div class="card-desc">An intricately folded chaotic attractor with complex self-intersecting loops and delicate structure.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Folded</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="jellyfish.html">
-      <div class="card-preview">
-        <canvas id="c-jellyfish"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Jellyfish</div>
-        <div class="card-desc">A pulsating bell dome with trailing tentacles. Rhythmic contraction drives the flowing organic form.</div>
-        <div class="card-tags">
-          <span class="card-tag">Nature</span>
-          <span class="card-tag">Organic</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="burke-shaw.html">
-      <div class="card-preview">
-        <canvas id="c-burkeshaw"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Burke-Shaw Attractor</div>
-        <div class="card-desc">A pretzel-like twisted chaotic system with fast dynamics and intricate self-crossing trajectories.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Twisted</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="flower-of-life.html">
-      <div class="card-preview">
-        <canvas id="c-flowerlife"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Flower of Life</div>
-        <div class="card-desc">Sacred geometry — 19 overlapping circles in hexagonal arrangement, rotating through 3D space with golden hues.</div>
-        <div class="card-tags">
-          <span class="card-tag">Sacred Geometry</span>
-          <span class="card-tag">Hexagonal</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="mandala.html">
-      <div class="card-preview">
-        <canvas id="c-mandala"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Mandala</div>
-        <div class="card-desc">Concentric rings with petal symmetry, differential rotation, and 3D breathing. Jewel-toned radial harmony.</div>
-        <div class="card-tags">
-          <span class="card-tag">Sacred Geometry</span>
-          <span class="card-tag">Radial Symmetry</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="geometric-paradox.html">
-      <div class="card-preview">
-        <canvas id="c-paradox"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Geometric Paradox</div>
-        <div class="card-desc">Morphing between impossible shapes — Penrose triangle, Necker cube, and Möbius strip in continuous transformation.</div>
-        <div class="card-tags">
-          <span class="card-tag">Impossible Geometry</span>
-          <span class="card-tag">Morphing</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="curl-noise.html">
-      <div class="card-preview">
-        <canvas id="c-curlnoise"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Curl Noise Flow</div>
-        <div class="card-desc">Divergence-free noise field creates ethereal smoke-like tendrils. Classic Shadertoy / demoscene technique.</div>
-        <div class="card-tags">
-          <span class="card-tag">Flow Field</span>
-          <span class="card-tag">Demoscene</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="supershape.html">
-      <div class="card-preview">
-        <canvas id="c-supershape"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Supershape</div>
-        <div class="card-desc">Gielis superformula morphs spheres into starfish, flowers, and crystals with animated parameters.</div>
-        <div class="card-tags">
-          <span class="card-tag">Superformula</span>
-          <span class="card-tag">Morphing</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="black-hole.html">
-      <div class="card-preview">
-        <canvas id="c-blackhole"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Black Hole</div>
-        <div class="card-desc">Accretion disk with Keplerian orbits spiraling inward. Inner particles glow blue-white, outer ones burn red.</div>
-        <div class="card-tags">
-          <span class="card-tag">Astrophysics</span>
-          <span class="card-tag">Accretion Disk</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="hopalong-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-hopalong"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Hopalong Attractor</div>
-        <div class="card-desc">Barry Martin's iterated map creates intricate mandala-like orbital patterns through simple square-root rules.</div>
-        <div class="card-tags">
-          <span class="card-tag">Iterated Map</span>
-          <span class="card-tag">Generative Art</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="klein-bottle.html">
-      <div class="card-preview">
-        <canvas id="c-klein"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Klein Bottle</div>
-        <div class="card-desc">A 4D non-orientable surface immersed in 3D. No inside or outside — topology made visible.</div>
-        <div class="card-tags">
-          <span class="card-tag">Topology</span>
-          <span class="card-tag">4D Surface</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="tornado.html">
-      <div class="card-preview">
-        <canvas id="c-tornado"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Tornado</div>
-        <div class="card-desc">A spiraling vortex funnel with turbulent dynamics. Particles accelerate inward and lift upward.</div>
-        <div class="card-tags">
-          <span class="card-tag">Weather</span>
-          <span class="card-tag">Vortex</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="fireworks.html">
-      <div class="card-preview">
-        <canvas id="c-fireworks"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Fireworks</div>
-        <div class="card-desc">Eight staggered bursts exploding radially with gravity arcs. Each burst a different color.</div>
-        <div class="card-tags">
-          <span class="card-tag">Simulation</span>
-          <span class="card-tag">Ballistics</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="dejong-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-dejong"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">De Jong Attractor</div>
-        <div class="card-desc">Peter de Jong's iterated map — intricate symmetric lace patterns from simple trigonometric rules.</div>
-        <div class="card-tags">
-          <span class="card-tag">Iterated Map</span>
-          <span class="card-tag">Lace Patterns</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="galaxy-collision.html">
-      <div class="card-preview">
-        <canvas id="c-galaxycollision"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Galaxy Collision</div>
-        <div class="card-desc">Two spiral galaxies orbit and merge, their stars drawn into luminous tidal streams by mutual gravitation.</div>
-        <div class="card-tags">
-          <span class="card-tag">Astrophysics</span>
-          <span class="card-tag">Tidal Streams</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="chua-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-chua"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Chua Attractor</div>
-        <div class="card-desc">Leon Chua's famous chaotic circuit — a double-scroll shape born from a single piecewise-linear nonlinearity.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Double Scroll</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="pickover-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-pickover"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Pickover Attractor</div>
-        <div class="card-desc">Clifford Pickover's 3D iterated map generates feathery, organic forms from four trigonometric rules.</div>
-        <div class="card-tags">
-          <span class="card-tag">Iterated Map</span>
-          <span class="card-tag">Feathery</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="chladni.html">
-      <div class="card-preview">
-        <canvas id="c-chladni"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Chladni Patterns</div>
-        <div class="card-desc">Particles on a vibrating plate settle onto nodal lines. Cycling vibration modes create evolving symmetric patterns.</div>
-        <div class="card-tags">
-          <span class="card-tag">Physics</span>
-          <span class="card-tag">Standing Waves</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="plasma-ball.html">
-      <div class="card-preview">
-        <canvas id="c-plasma"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Plasma Ball</div>
-        <div class="card-desc">Sixteen electric arcs branch from a central core to the glowing surface. Classic tesla-globe aesthetic.</div>
-        <div class="card-tags">
-          <span class="card-tag">Electricity</span>
-          <span class="card-tag">Branching</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="supernova.html">
-      <div class="card-preview">
-        <canvas id="c-supernova"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Supernova</div>
-        <div class="card-desc">A cyclic stellar explosion with shockwave dynamics. Particles rage from hot blue-white to cooling red embers.</div>
-        <div class="card-tags">
-          <span class="card-tag">Astrophysics</span>
-          <span class="card-tag">Explosion</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="menger-sponge.html">
-      <div class="card-preview">
-        <canvas id="c-menger"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Menger Sponge</div>
-        <div class="card-desc">A recursive 3D fractal cube. Each iteration removes the center of every subcube, carving infinite surface area.</div>
-        <div class="card-tags">
-          <span class="card-tag">Fractal</span>
-          <span class="card-tag">Recursive</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="fractal-tree.html">
-      <div class="card-preview">
-        <canvas id="c-tree"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Fractal Tree</div>
-        <div class="card-desc">Recursive 3D branching from trunk to leaves. Each level splits and shrinks, swaying gently in the breeze.</div>
-        <div class="card-tags">
-          <span class="card-tag">Fractal</span>
-          <span class="card-tag">Branching</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="starfield-warp.html">
-      <div class="card-preview">
-        <canvas id="c-warp"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Starfield Warp</div>
-        <div class="card-desc">Classic hyperspace effect — stars streaking outward from center with velocity-based brightness.</div>
-        <div class="card-tags">
-          <span class="card-tag">Sci-Fi</span>
-          <span class="card-tag">Radial Flow</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="lu-chen-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-luchen"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Lu-Chen Attractor</div>
-        <div class="card-desc">A twisted variant of the Chen attractor with complex topology. Larger scale chaos with dramatic folds.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Twisted</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="sprott-attractor.html">
-      <div class="card-preview">
-        <canvas id="c-sprott"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Sprott Attractor</div>
-        <div class="card-desc">J.C. Sprott's minimalist chaotic system. Three elegantly simple equations produce complex attractor dynamics.</div>
-        <div class="card-tags">
-          <span class="card-tag">Strange Attractor</span>
-          <span class="card-tag">Minimalist</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="hopf-fibration.html">
-      <div class="card-preview">
-        <canvas id="c-hopf"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Hopf Fibration</div>
-        <div class="card-desc">Linked circles on a 3-sphere stereographically projected to 3D. A beautiful topological object where fibers never intersect.</div>
-        <div class="card-tags">
-          <span class="card-tag">Topology</span>
-          <span class="card-tag">Linked Circles</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="fireflies.html">
-      <div class="card-preview">
-        <canvas id="c-fireflies"></canvas>
-        <div class="play-hint"></div>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Fireflies</div>
-        <div class="card-desc">Wandering particles with pulsing brightness, like fireflies in a summer night. Calm, organic, meditative.</div>
-        <div class="card-tags">
-          <span class="card-tag">Nature</span>
-          <span class="card-tag">Pulsing</span>
-          <span class="card-particles">65,536 particles</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="mobius-flow.html">
+    <a class="card" data-created="2026-04-06" href="mobius-flow.html">
       <div class="card-preview">
         <canvas id="c-mobius"></canvas>
         <div class="play-hint"></div>
@@ -1066,7 +446,7 @@
       </div>
     </a>
 
-    <a class="card" href="apollonian-gasket.html">
+    <a class="card" data-created="2026-04-06" href="apollonian-gasket.html">
       <div class="card-preview">
         <canvas id="c-apollonian"></canvas>
         <div class="play-hint"></div>
@@ -1082,7 +462,7 @@
       </div>
     </a>
 
-    <a class="card" href="gyroid.html">
+    <a class="card" data-created="2026-04-06" href="gyroid.html">
       <div class="card-preview">
         <canvas id="c-gyroid"></canvas>
         <div class="play-hint"></div>
@@ -1098,7 +478,7 @@
       </div>
     </a>
 
-    <a class="card" href="quaternion-julia.html">
+    <a class="card" data-created="2026-04-06" href="quaternion-julia.html">
       <div class="card-preview">
         <canvas id="c-quatjulia"></canvas>
         <div class="play-hint"></div>
@@ -1114,7 +494,7 @@
       </div>
     </a>
 
-    <a class="card" href="lichtenberg.html">
+    <a class="card" data-created="2026-04-06" href="lichtenberg.html">
       <div class="card-preview">
         <canvas id="c-lichtenberg"></canvas>
         <div class="play-hint"></div>
@@ -1130,7 +510,7 @@
       </div>
     </a>
 
-    <a class="card" href="wave-interference.html">
+    <a class="card" data-created="2026-04-06" href="wave-interference.html">
       <div class="card-preview">
         <canvas id="c-waves"></canvas>
         <div class="play-hint"></div>
@@ -1146,7 +526,7 @@
       </div>
     </a>
 
-    <a class="card" href="metaballs.html">
+    <a class="card" data-created="2026-04-06" href="metaballs.html">
       <div class="card-preview">
         <canvas id="c-metaballs"></canvas>
         <div class="play-hint"></div>
@@ -1162,7 +542,7 @@
       </div>
     </a>
 
-    <a class="card" href="bz-spirals.html">
+    <a class="card" data-created="2026-04-06" href="bz-spirals.html">
       <div class="card-preview">
         <canvas id="c-bz"></canvas>
         <div class="play-hint"></div>
@@ -1178,7 +558,7 @@
       </div>
     </a>
 
-    <a class="card" href="phyllotaxis.html">
+    <a class="card" data-created="2026-04-06" href="phyllotaxis.html">
       <div class="card-preview">
         <canvas id="c-phyllotaxis"></canvas>
         <div class="play-hint"></div>
@@ -1194,7 +574,7 @@
       </div>
     </a>
 
-    <a class="card" href="double-pendulum.html">
+    <a class="card" data-created="2026-04-06" href="double-pendulum.html">
       <div class="card-preview">
         <canvas id="c-pendulum"></canvas>
         <div class="play-hint"></div>
@@ -1210,7 +590,7 @@
       </div>
     </a>
 
-    <a class="card" href="n-body.html">
+    <a class="card" data-created="2026-04-06" href="n-body.html">
       <div class="card-preview">
         <canvas id="c-nbody"></canvas>
         <div class="play-hint"></div>
@@ -1226,7 +606,7 @@
       </div>
     </a>
 
-    <a class="card" href="turing-patterns.html">
+    <a class="card" data-created="2026-04-06" href="turing-patterns.html">
       <div class="card-preview">
         <canvas id="c-turing"></canvas>
         <div class="play-hint"></div>
@@ -1242,7 +622,7 @@
       </div>
     </a>
 
-    <a class="card" href="em-wave.html">
+    <a class="card" data-created="2026-04-06" href="em-wave.html">
       <div class="card-preview">
         <canvas id="c-emwave"></canvas>
         <div class="play-hint"></div>
@@ -1258,7 +638,7 @@
       </div>
     </a>
 
-    <a class="card" href="trefoil-knot.html">
+    <a class="card" data-created="2026-04-06" href="trefoil-knot.html">
       <div class="card-preview">
         <canvas id="c-trefoil"></canvas>
         <div class="play-hint"></div>
@@ -1274,7 +654,7 @@
       </div>
     </a>
 
-    <a class="card" href="cosmic-web.html">
+    <a class="card" data-created="2026-04-06" href="cosmic-web.html">
       <div class="card-preview">
         <canvas id="c-cosmicweb"></canvas>
         <div class="play-hint"></div>
@@ -1290,7 +670,7 @@
       </div>
     </a>
 
-    <a class="card" href="kelvin-helmholtz.html">
+    <a class="card" data-created="2026-04-06" href="kelvin-helmholtz.html">
       <div class="card-preview">
         <canvas id="c-kh"></canvas>
         <div class="play-hint"></div>
@@ -1306,7 +686,7 @@
       </div>
     </a>
 
-    <a class="card" href="chaotic-billiards.html">
+    <a class="card" data-created="2026-04-06" href="chaotic-billiards.html">
       <div class="card-preview">
         <canvas id="c-billiards"></canvas>
         <div class="play-hint"></div>
@@ -1322,7 +702,7 @@
       </div>
     </a>
 
-    <a class="card" href="conformal-flow.html">
+    <a class="card" data-created="2026-04-06" href="conformal-flow.html">
       <div class="card-preview">
         <canvas id="c-conformal"></canvas>
         <div class="play-hint"></div>
@@ -1338,7 +718,7 @@
       </div>
     </a>
 
-    <a class="card" href="particle-life.html">
+    <a class="card" data-created="2026-04-06" href="particle-life.html">
       <div class="card-preview">
         <canvas id="c-particlelife"></canvas>
         <div class="play-hint"></div>
@@ -1354,7 +734,7 @@
       </div>
     </a>
 
-    <a class="card" href="physarum.html">
+    <a class="card" data-created="2026-04-06" href="physarum.html">
       <div class="card-preview">
         <canvas id="c-physarum"></canvas>
         <div class="play-hint"></div>
@@ -1370,7 +750,7 @@
       </div>
     </a>
 
-    <a class="card" href="kuramoto-sync.html">
+    <a class="card" data-created="2026-04-06" href="kuramoto-sync.html">
       <div class="card-preview">
         <canvas id="c-kuramoto"></canvas>
         <div class="play-hint"></div>
@@ -1386,7 +766,7 @@
       </div>
     </a>
 
-    <a class="card" href="magnetic-pendulum.html">
+    <a class="card" data-created="2026-04-06" href="magnetic-pendulum.html">
       <div class="card-preview">
         <canvas id="c-magpendulum"></canvas>
         <div class="play-hint"></div>
@@ -1402,7 +782,7 @@
       </div>
     </a>
 
-    <a class="card" href="attractor-morph.html">
+    <a class="card" data-created="2026-04-06" href="attractor-morph.html">
       <div class="card-preview">
         <canvas id="c-morphattractor"></canvas>
         <div class="play-hint"></div>
@@ -1418,7 +798,7 @@
       </div>
     </a>
 
-    <a class="card" href="murmuration.html">
+    <a class="card" data-created="2026-04-06" href="murmuration.html">
       <div class="card-preview">
         <canvas id="c-murmuration"></canvas>
         <div class="play-hint"></div>
@@ -1434,7 +814,7 @@
       </div>
     </a>
 
-    <a class="card" href="pendulum-wave.html">
+    <a class="card" data-created="2026-04-06" href="pendulum-wave.html">
       <div class="card-preview">
         <canvas id="c-pendwave"></canvas>
         <div class="play-hint"></div>
@@ -1450,7 +830,7 @@
       </div>
     </a>
 
-    <a class="card" href="gravitational-lensing.html">
+    <a class="card" data-created="2026-04-06" href="gravitational-lensing.html">
       <div class="card-preview">
         <canvas id="c-gravlens"></canvas>
         <div class="play-hint"></div>
@@ -1466,7 +846,7 @@
       </div>
     </a>
 
-    <a class="card" href="crystal-growth.html">
+    <a class="card" data-created="2026-04-06" href="crystal-growth.html">
       <div class="card-preview">
         <canvas id="c-crystal"></canvas>
         <div class="play-hint"></div>
@@ -1482,7 +862,7 @@
       </div>
     </a>
 
-    <a class="card" href="quantum-orbital.html">
+    <a class="card" data-created="2026-04-06" href="quantum-orbital.html">
       <div class="card-preview">
         <canvas id="c-quantum"></canvas>
         <div class="play-hint"></div>
@@ -1498,7 +878,7 @@
       </div>
     </a>
 
-    <a class="card" href="smoke.html">
+    <a class="card" data-created="2026-04-06" href="smoke.html">
       <div class="card-preview">
         <canvas id="c-smoke"></canvas>
         <div class="play-hint"></div>
@@ -1514,7 +894,7 @@
       </div>
     </a>
 
-    <a class="card" href="sand-dunes.html">
+    <a class="card" data-created="2026-04-06" href="sand-dunes.html">
       <div class="card-preview">
         <canvas id="c-sanddunes"></canvas>
         <div class="play-hint"></div>
@@ -1530,7 +910,7 @@
       </div>
     </a>
 
-    <a class="card" href="bifurcation.html">
+    <a class="card" data-created="2026-04-06" href="bifurcation.html">
       <div class="card-preview">
         <canvas id="c-bifurcation"></canvas>
         <div class="play-hint"></div>
@@ -1546,7 +926,7 @@
       </div>
     </a>
 
-    <a class="card" href="mitosis.html">
+    <a class="card" data-created="2026-04-06" href="mitosis.html">
       <div class="card-preview">
         <canvas id="c-mitosis"></canvas>
         <div class="play-hint"></div>
@@ -1562,7 +942,7 @@
       </div>
     </a>
 
-    <a class="card" href="gradient-descent.html">
+    <a class="card" data-created="2026-04-06" href="gradient-descent.html">
       <div class="card-preview">
         <canvas id="c-graddesc"></canvas>
         <div class="play-hint"></div>
@@ -1578,7 +958,7 @@
       </div>
     </a>
 
-    <a class="card" href="prime-spiral.html">
+    <a class="card" data-created="2026-04-06" href="prime-spiral.html">
       <div class="card-preview">
         <canvas id="c-primes"></canvas>
         <div class="play-hint"></div>
@@ -1594,7 +974,7 @@
       </div>
     </a>
 
-    <a class="card" href="neural-network.html">
+    <a class="card" data-created="2026-04-06" href="neural-network.html">
       <div class="card-preview"><canvas id="c-neuralnet"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
         <div class="card-title">Neural Network</div>
@@ -1603,7 +983,7 @@
       </div>
     </a>
 
-    <a class="card" href="convection.html">
+    <a class="card" data-created="2026-04-06" href="convection.html">
       <div class="card-preview"><canvas id="c-convection"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
         <div class="card-title">Convection</div>
@@ -1612,7 +992,7 @@
       </div>
     </a>
 
-    <a class="card" href="lorentz-force.html">
+    <a class="card" data-created="2026-04-06" href="lorentz-force.html">
       <div class="card-preview"><canvas id="c-lorentz2"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
         <div class="card-title">Lorentz Force</div>
@@ -1621,7 +1001,7 @@
       </div>
     </a>
 
-    <a class="card" href="soliton.html">
+    <a class="card" data-created="2026-04-06" href="soliton.html">
       <div class="card-preview"><canvas id="c-soliton"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
         <div class="card-title">Soliton</div>
@@ -1630,7 +1010,7 @@
       </div>
     </a>
 
-    <a class="card" href="fish-swarm.html">
+    <a class="card" data-created="2026-04-06" href="fish-swarm.html">
       <div class="card-preview"><canvas id="c-fishswarm"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
         <div class="card-title">Fish Swarm</div>
@@ -1639,7 +1019,7 @@
       </div>
     </a>
 
-    <a class="card" href="ant-colony.html">
+    <a class="card" data-created="2026-04-06" href="ant-colony.html">
       <div class="card-preview"><canvas id="c-antcolony"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
         <div class="card-title">Ant Colony</div>
@@ -1648,115 +1028,778 @@
       </div>
     </a>
 
-    <a class="card" href="vortex-street.html">
-      <div class="card-preview"><canvas id="c-vortexst"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="four-wing-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-fourwing"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Vortex Street</div>
-        <div class="card-desc">Von Karman vortex shedding behind a cylinder. Alternating vortices form the classic fluid dynamics pattern.</div>
-        <div class="card-tags"><span class="card-tag">Fluid Dynamics</span><span class="card-tag">Vortex Shedding</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Four-Wing Attractor</div>
+        <div class="card-desc">The Qi chaotic system producing a striking four-lobed butterfly structure with complex inter-wing dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Four-Lobed</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="penrose-tiling.html">
-      <div class="card-preview"><canvas id="c-penrose"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="dadras-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-dadras"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Penrose Tiling</div>
-        <div class="card-desc">Aperiodic quasicrystal with 5-fold symmetry. Five wave interference creates the non-repeating Penrose pattern.</div>
-        <div class="card-tags"><span class="card-tag">Quasicrystal</span><span class="card-tag">Aperiodic</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Dadras Attractor</div>
+        <div class="card-desc">A wispy, cloud-like chaotic system with two lobes. The Dadras-Momeni equations produce ethereal flowing forms.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Cloud-like</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="earthquake.html">
-      <div class="card-preview"><canvas id="c-earthquake"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="spherical-harmonics.html">
+      <div class="card-preview">
+        <canvas id="c-harmonics"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Earthquake</div>
-        <div class="card-desc">Seismic waves radiating from an epicenter. P-waves arrive first, then S-waves, then rolling surface waves.</div>
-        <div class="card-tags"><span class="card-tag">Seismology</span><span class="card-tag">Wave Propagation</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Spherical Harmonics</div>
+        <div class="card-desc">Morphing organic shapes from harmonic wave functions on a sphere. Animated coefficients create endlessly evolving surfaces.</div>
+        <div class="card-tags">
+          <span class="card-tag">Harmonic Surface</span>
+          <span class="card-tag">Morphing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="soap-bubble.html">
-      <div class="card-preview"><canvas id="c-soapbubble"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="magnetic-field.html">
+      <div class="card-preview">
+        <canvas id="c-magnetic"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Soap Bubble</div>
-        <div class="card-desc">Iridescent soap bubbles merging and reforming. Thin-film interference creates rainbow color shifts across the surface.</div>
-        <div class="card-tags"><span class="card-tag">Optics</span><span class="card-tag">Thin Film</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Magnetic Field</div>
+        <div class="card-desc">Particles tracing 3D dipole magnetic field lines. Graceful arcs flow from pole to pole through the equatorial plane.</div>
+        <div class="card-tags">
+          <span class="card-tag">Physics</span>
+          <span class="card-tag">Field Lines</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="planetary-rings.html">
-      <div class="card-preview"><canvas id="c-rings"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="nose-hoover.html">
+      <div class="card-preview">
+        <canvas id="c-nosehoover"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Planetary Rings</div>
-        <div class="card-desc">Saturn-like rings with Cassini gaps, density waves from shepherd moons, and differential Keplerian rotation.</div>
-        <div class="card-tags"><span class="card-tag">Astrophysics</span><span class="card-tag">Orbital</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Nose-Hoover Attractor</div>
+        <div class="card-desc">A torus-like chaotic system from thermodynamic oscillator equations. Smooth flow on a donut-shaped manifold.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Toroidal</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="dna-replication.html">
-      <div class="card-preview"><canvas id="c-dnarep"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="ocean-surface.html">
+      <div class="card-preview">
+        <canvas id="c-ocean"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">DNA Replication</div>
-        <div class="card-desc">A double helix unzips at a replication fork. Daughter strands form behind as the fork advances.</div>
-        <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Molecular</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Ocean Surface</div>
+        <div class="card-desc">Gerstner wave equations on a particle grid. Three overlapping wave systems create a realistic ocean surface.</div>
+        <div class="card-tags">
+          <span class="card-tag">Physics</span>
+          <span class="card-tag">Waves</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="waterwheel.html">
-      <div class="card-preview"><canvas id="c-waterwheel"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="shimizu-morioka.html">
+      <div class="card-preview">
+        <canvas id="c-shimizu"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Waterwheel</div>
-        <div class="card-desc">The Lorenz/Malkus waterwheel — the physical system behind chaos theory. Water fills, spills, and reverses chaotically.</div>
-        <div class="card-tags"><span class="card-tag">Chaos Theory</span><span class="card-tag">Physical System</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Shimizu-Morioka Attractor</div>
+        <div class="card-desc">A Lorenz variant with smoother, wider butterfly wings. Elegant transitions between the two lobes.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Butterfly</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="calabi-yau.html">
-      <div class="card-preview"><canvas id="c-calabiyau"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="vortex-rings.html">
+      <div class="card-preview">
+        <canvas id="c-vortex"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Calabi-Yau</div>
-        <div class="card-desc">A 6D manifold from string theory projected to 3D. Jewel-like folded geometry that morphs as the projection sweeps.</div>
-        <div class="card-tags"><span class="card-tag">String Theory</span><span class="card-tag">Higher Dimensions</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Vortex Rings</div>
+        <div class="card-desc">Toroidal vortex flow — particles circulate through a smoke ring, driven by poloidal circulation dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fluid Dynamics</span>
+          <span class="card-tag">Toroidal Flow</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="pulsar.html">
-      <div class="card-preview"><canvas id="c-pulsar"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="aurora.html">
+      <div class="card-preview">
+        <canvas id="c-aurora"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Pulsar</div>
-        <div class="card-desc">A rotating neutron star emitting twin radiation beams from tilted magnetic poles. Cosmic lighthouse.</div>
-        <div class="card-tags"><span class="card-tag">Astrophysics</span><span class="card-tag">Neutron Star</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Aurora Borealis</div>
+        <div class="card-desc">Shimmering curtain waves of light, mimicking the northern lights with layered sinusoidal displacement.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature</span>
+          <span class="card-tag">Curtain Waves</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="solar-wind.html">
-      <div class="card-preview"><canvas id="c-solarwind"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="rabinovich-fabrikant.html">
+      <div class="card-preview">
+        <canvas id="c-rabinovich"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Solar Wind</div>
-        <div class="card-desc">Particles stream radially from a star in a Parker spiral pattern. Fast and slow wind create compression regions.</div>
-        <div class="card-tags"><span class="card-tag">Space Physics</span><span class="card-tag">Parker Spiral</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Rabinovich-Fabrikant</div>
+        <div class="card-desc">An intricately folded chaotic attractor with complex self-intersecting loops and delicate structure.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Folded</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="sorting.html">
-      <div class="card-preview"><canvas id="c-sorting"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="jellyfish.html">
+      <div class="card-preview">
+        <canvas id="c-jellyfish"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Sorting</div>
-        <div class="card-desc">65K-element sorting algorithm visualization. A sweep frontier progressively orders scrambled bars.</div>
-        <div class="card-tags"><span class="card-tag">Computer Science</span><span class="card-tag">Algorithm</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Jellyfish</div>
+        <div class="card-desc">A pulsating bell dome with trailing tentacles. Rhythmic contraction drives the flowing organic form.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature</span>
+          <span class="card-tag">Organic</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
-    <a class="card" href="blood-flow.html">
-      <div class="card-preview"><canvas id="c-bloodflow"></canvas><div class="play-hint"></div></div>
+    <a class="card" data-created="2026-04-05" href="burke-shaw.html">
+      <div class="card-preview">
+        <canvas id="c-burkeshaw"></canvas>
+        <div class="play-hint"></div>
+      </div>
       <div class="card-info">
-        <div class="card-title">Blood Flow</div>
-        <div class="card-desc">Cardiovascular circulation with heartbeat pulse. Red arteries, blue veins, slow capillaries — the circulatory system.</div>
-        <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Cardiovascular</span><span class="card-particles">65,536 particles</span></div>
+        <div class="card-title">Burke-Shaw Attractor</div>
+        <div class="card-desc">A pretzel-like twisted chaotic system with fast dynamics and intricate self-crossing trajectories.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Twisted</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="flower-of-life.html">
+      <div class="card-preview">
+        <canvas id="c-flowerlife"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Flower of Life</div>
+        <div class="card-desc">Sacred geometry — 19 overlapping circles in hexagonal arrangement, rotating through 3D space with golden hues.</div>
+        <div class="card-tags">
+          <span class="card-tag">Sacred Geometry</span>
+          <span class="card-tag">Hexagonal</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="mandala.html">
+      <div class="card-preview">
+        <canvas id="c-mandala"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Mandala</div>
+        <div class="card-desc">Concentric rings with petal symmetry, differential rotation, and 3D breathing. Jewel-toned radial harmony.</div>
+        <div class="card-tags">
+          <span class="card-tag">Sacred Geometry</span>
+          <span class="card-tag">Radial Symmetry</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="geometric-paradox.html">
+      <div class="card-preview">
+        <canvas id="c-paradox"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Geometric Paradox</div>
+        <div class="card-desc">Morphing between impossible shapes — Penrose triangle, Necker cube, and Möbius strip in continuous transformation.</div>
+        <div class="card-tags">
+          <span class="card-tag">Impossible Geometry</span>
+          <span class="card-tag">Morphing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="curl-noise.html">
+      <div class="card-preview">
+        <canvas id="c-curlnoise"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Curl Noise Flow</div>
+        <div class="card-desc">Divergence-free noise field creates ethereal smoke-like tendrils. Classic Shadertoy / demoscene technique.</div>
+        <div class="card-tags">
+          <span class="card-tag">Flow Field</span>
+          <span class="card-tag">Demoscene</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="supershape.html">
+      <div class="card-preview">
+        <canvas id="c-supershape"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Supershape</div>
+        <div class="card-desc">Gielis superformula morphs spheres into starfish, flowers, and crystals with animated parameters.</div>
+        <div class="card-tags">
+          <span class="card-tag">Superformula</span>
+          <span class="card-tag">Morphing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="black-hole.html">
+      <div class="card-preview">
+        <canvas id="c-blackhole"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Black Hole</div>
+        <div class="card-desc">Accretion disk with Keplerian orbits spiraling inward. Inner particles glow blue-white, outer ones burn red.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Accretion Disk</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="hopalong-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-hopalong"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Hopalong Attractor</div>
+        <div class="card-desc">Barry Martin's iterated map creates intricate mandala-like orbital patterns through simple square-root rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Generative Art</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="klein-bottle.html">
+      <div class="card-preview">
+        <canvas id="c-klein"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Klein Bottle</div>
+        <div class="card-desc">A 4D non-orientable surface immersed in 3D. No inside or outside — topology made visible.</div>
+        <div class="card-tags">
+          <span class="card-tag">Topology</span>
+          <span class="card-tag">4D Surface</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="tornado.html">
+      <div class="card-preview">
+        <canvas id="c-tornado"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Tornado</div>
+        <div class="card-desc">A spiraling vortex funnel with turbulent dynamics. Particles accelerate inward and lift upward.</div>
+        <div class="card-tags">
+          <span class="card-tag">Weather</span>
+          <span class="card-tag">Vortex</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="fireworks.html">
+      <div class="card-preview">
+        <canvas id="c-fireworks"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fireworks</div>
+        <div class="card-desc">Eight staggered bursts exploding radially with gravity arcs. Each burst a different color.</div>
+        <div class="card-tags">
+          <span class="card-tag">Simulation</span>
+          <span class="card-tag">Ballistics</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="dejong-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-dejong"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">De Jong Attractor</div>
+        <div class="card-desc">Peter de Jong's iterated map — intricate symmetric lace patterns from simple trigonometric rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Lace Patterns</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="galaxy-collision.html">
+      <div class="card-preview">
+        <canvas id="c-galaxycollision"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Galaxy Collision</div>
+        <div class="card-desc">Two spiral galaxies orbit and merge, their stars drawn into luminous tidal streams by mutual gravitation.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Tidal Streams</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="chua-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-chua"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chua Attractor</div>
+        <div class="card-desc">Leon Chua's famous chaotic circuit — a double-scroll shape born from a single piecewise-linear nonlinearity.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Double Scroll</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="pickover-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-pickover"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Pickover Attractor</div>
+        <div class="card-desc">Clifford Pickover's 3D iterated map generates feathery, organic forms from four trigonometric rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Feathery</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="chladni.html">
+      <div class="card-preview">
+        <canvas id="c-chladni"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chladni Patterns</div>
+        <div class="card-desc">Particles on a vibrating plate settle onto nodal lines. Cycling vibration modes create evolving symmetric patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Physics</span>
+          <span class="card-tag">Standing Waves</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="plasma-ball.html">
+      <div class="card-preview">
+        <canvas id="c-plasma"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Plasma Ball</div>
+        <div class="card-desc">Sixteen electric arcs branch from a central core to the glowing surface. Classic tesla-globe aesthetic.</div>
+        <div class="card-tags">
+          <span class="card-tag">Electricity</span>
+          <span class="card-tag">Branching</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="supernova.html">
+      <div class="card-preview">
+        <canvas id="c-supernova"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Supernova</div>
+        <div class="card-desc">A cyclic stellar explosion with shockwave dynamics. Particles rage from hot blue-white to cooling red embers.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Explosion</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="menger-sponge.html">
+      <div class="card-preview">
+        <canvas id="c-menger"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Menger Sponge</div>
+        <div class="card-desc">A recursive 3D fractal cube. Each iteration removes the center of every subcube, carving infinite surface area.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fractal</span>
+          <span class="card-tag">Recursive</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="fractal-tree.html">
+      <div class="card-preview">
+        <canvas id="c-tree"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fractal Tree</div>
+        <div class="card-desc">Recursive 3D branching from trunk to leaves. Each level splits and shrinks, swaying gently in the breeze.</div>
+        <div class="card-tags">
+          <span class="card-tag">Fractal</span>
+          <span class="card-tag">Branching</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="starfield-warp.html">
+      <div class="card-preview">
+        <canvas id="c-warp"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Starfield Warp</div>
+        <div class="card-desc">Classic hyperspace effect — stars streaking outward from center with velocity-based brightness.</div>
+        <div class="card-tags">
+          <span class="card-tag">Sci-Fi</span>
+          <span class="card-tag">Radial Flow</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="lu-chen-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-luchen"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Lu-Chen Attractor</div>
+        <div class="card-desc">A twisted variant of the Chen attractor with complex topology. Larger scale chaos with dramatic folds.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Twisted</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="sprott-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-sprott"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Sprott Attractor</div>
+        <div class="card-desc">J.C. Sprott's minimalist chaotic system. Three elegantly simple equations produce complex attractor dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Minimalist</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="hopf-fibration.html">
+      <div class="card-preview">
+        <canvas id="c-hopf"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Hopf Fibration</div>
+        <div class="card-desc">Linked circles on a 3-sphere stereographically projected to 3D. A beautiful topological object where fibers never intersect.</div>
+        <div class="card-tags">
+          <span class="card-tag">Topology</span>
+          <span class="card-tag">Linked Circles</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-05" href="fireflies.html">
+      <div class="card-preview">
+        <canvas id="c-fireflies"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fireflies</div>
+        <div class="card-desc">Wandering particles with pulsing brightness, like fireflies in a summer night. Calm, organic, meditative.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature</span>
+          <span class="card-tag">Pulsing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="lorenz-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-lorenz"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Lorenz Attractor</div>
+        <div class="card-desc">The iconic butterfly of chaos theory. Two-winged strange attractor with sensitive dependence on initial conditions.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">RK2</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="aizawa-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-aizawa"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Aizawa Attractor</div>
+        <div class="card-desc">A spherical shell-like chaotic attractor producing toroidal structures with intricate surface patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Toroidal</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="thomas-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-thomas"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Thomas Attractor</div>
+        <div class="card-desc">Cyclically symmetric knotted paths. Slow, meandering attractor producing beautiful intertwined loops.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Cyclic Symmetry</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="torus-knot.html">
+      <div class="card-preview">
+        <canvas id="c-torus"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Torus Knot</div>
+        <div class="card-desc">Particles flowing along a (3,7) torus knot — a complex curve wrapping a torus, never self-intersecting.</div>
+        <div class="card-tags">
+          <span class="card-tag">Parametric Curve</span>
+          <span class="card-tag">Flowing</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="halvorsen-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-halvorsen"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Halvorsen Attractor</div>
+        <div class="card-desc">A churning, tri-lobed chaotic form with three-fold rotational symmetry and turbulent dynamics.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Tri-lobed</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="rossler-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-rossler"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Rossler Attractor</div>
+        <div class="card-desc">A band-like spiral with a dramatic sharp fold. One of the simplest systems exhibiting chaos.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Spiral Fold</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="fibonacci-sphere.html">
+      <div class="card-preview">
+        <canvas id="c-fibonacci"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fibonacci Sphere</div>
+        <div class="card-desc">Golden ratio distribution on a sphere with breathing waves and spiral rotation. Nature's most elegant pattern.</div>
+        <div class="card-tags">
+          <span class="card-tag">Nature-Inspired</span>
+          <span class="card-tag">Phyllotaxis</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="chen-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-chen"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Chen Attractor</div>
+        <div class="card-desc">A double-scroll chaotic attractor with fast, turbulent dynamics and butterfly-like structure.</div>
+        <div class="card-tags">
+          <span class="card-tag">Strange Attractor</span>
+          <span class="card-tag">Double Scroll</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="galaxy-spiral.html">
+      <div class="card-preview">
+        <canvas id="c-galaxy"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Galaxy Spiral</div>
+        <div class="card-desc">Four-arm spiral galaxy with differential rotation. Inner stars orbit faster than outer ones.</div>
+        <div class="card-tags">
+          <span class="card-tag">Astrophysics</span>
+          <span class="card-tag">Differential Rotation</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="dna-helix.html">
+      <div class="card-preview">
+        <canvas id="c-dna"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">DNA Helix</div>
+        <div class="card-desc">Double helix with connecting bridges. Two intertwined strands scrolling through space.</div>
+        <div class="card-tags">
+          <span class="card-tag">Biology</span>
+          <span class="card-tag">Parametric</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="clifford-attractor.html">
+      <div class="card-preview">
+        <canvas id="c-clifford"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Clifford Attractor</div>
+        <div class="card-desc">A feathery 2D iterated map creating dense, organic patterns through simple trigonometric rules.</div>
+        <div class="card-tags">
+          <span class="card-tag">Iterated Map</span>
+          <span class="card-tag">Generative Art</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-04" href="lissajous.html">
+      <div class="card-preview">
+        <canvas id="c-lissajous"></canvas>
+        <div class="play-hint"></div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">3D Lissajous</div>
+        <div class="card-desc">Hypnotic harmonograph curves in 3D. Evolving phase parameters create endlessly morphing patterns.</div>
+        <div class="card-tags">
+          <span class="card-tag">Parametric</span>
+          <span class="card-tag">Phase Animation</span>
+          <span class="card-particles">65,536 particles</span>
+        </div>
       </div>
     </a>
 
   </div>
+
+  <div class="pagination" id="pagination"></div>
+  <div class="page-info" id="page-info"></div>
 
   <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
 
@@ -4313,35 +4356,128 @@
       });
     });
 
-    // Dynamic animation count in subtitle
-    document.querySelector('.subtitle').textContent =
-      `${document.querySelectorAll('.card').length} animations — 65,536 particles each — fully GPU computed — Three.js r160`;
+    // ==========================================
+    // PAGINATION + FILTERING
+    // ==========================================
+    const PER_PAGE = 20;
+    let currentPage = 1;
+    let currentFilter = 'all';
+    const allCards = Array.from(document.querySelectorAll('.card'));
+    const totalCount = allCards.length;
 
-    // Category filtering
+    // Dynamic subtitle
+    document.querySelector('.subtitle').textContent =
+      `${totalCount} animations — 65,536 particles each — fully GPU computed — Three.js r160`;
+
+    function getFilteredCards() {
+      if (currentFilter === 'all') return allCards;
+      return allCards.filter(card => {
+        const tags = card.querySelector('.card-tags').textContent.toLowerCase();
+        return tags.includes(currentFilter);
+      });
+    }
+
+    function renderPage() {
+      const filtered = getFilteredCards();
+      const totalPages = Math.ceil(filtered.length / PER_PAGE);
+      if (currentPage > totalPages) currentPage = totalPages || 1;
+
+      const start = (currentPage - 1) * PER_PAGE;
+      const end = start + PER_PAGE;
+      const pageCards = new Set(filtered.slice(start, end));
+
+      // Show/hide cards
+      allCards.forEach(card => {
+        card.classList.toggle('hidden', !pageCards.has(card));
+      });
+
+      // Render pagination buttons
+      const pagDiv = document.getElementById('pagination');
+      pagDiv.innerHTML = '';
+
+      if (totalPages <= 1) {
+        document.getElementById('page-info').textContent = '';
+        // Draw visible thumbnails
+        drawVisibleThumbnails();
+        return;
+      }
+
+      // Prev
+      if (currentPage > 1) {
+        const prev = document.createElement('button');
+        prev.className = 'page-btn';
+        prev.textContent = '\u2190';
+        prev.addEventListener('click', () => { currentPage--; renderPage(); scrollToGrid(); });
+        pagDiv.appendChild(prev);
+      }
+
+      // Page numbers
+      for (let p = 1; p <= totalPages; p++) {
+        const btn = document.createElement('button');
+        btn.className = 'page-btn' + (p === currentPage ? ' active' : '');
+        btn.textContent = p;
+        btn.addEventListener('click', () => { currentPage = p; renderPage(); scrollToGrid(); });
+        pagDiv.appendChild(btn);
+      }
+
+      // Next
+      if (currentPage < totalPages) {
+        const next = document.createElement('button');
+        next.className = 'page-btn';
+        next.textContent = '\u2192';
+        next.addEventListener('click', () => { currentPage++; renderPage(); scrollToGrid(); });
+        pagDiv.appendChild(next);
+      }
+
+      // Info text
+      document.getElementById('page-info').textContent =
+        `Showing ${start + 1}–${Math.min(end, filtered.length)} of ${filtered.length}`;
+
+      // Draw visible thumbnails
+      drawVisibleThumbnails();
+    }
+
+    function scrollToGrid() {
+      document.querySelector('.grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function drawVisibleThumbnails() {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.card:not(.hidden) .card-preview').forEach(el => {
+          const canvas = el.querySelector('canvas');
+          if (canvas && !drawnSet.has(canvas.id)) {
+            const fn = allDrawFns[canvas.id];
+            if (fn) {
+              drawnSet.add(canvas.id);
+              try { fn(); } catch(e) {}
+            }
+          }
+        });
+      });
+    }
+
+    // Category filtering with pagination reset
     document.querySelectorAll('.filter-btn:not(#random-btn)').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn:not(#random-btn)').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.card').forEach(card => {
-          if (filter === 'all') {
-            card.classList.remove('hidden');
-          } else {
-            const tags = card.querySelector('.card-tags').textContent.toLowerCase();
-            card.classList.toggle('hidden', !tags.includes(filter));
-          }
-        });
+        currentFilter = btn.dataset.filter;
+        currentPage = 1;
+        renderPage();
       });
     });
 
     // Random animation button
     document.getElementById('random-btn').addEventListener('click', () => {
-      const cards = document.querySelectorAll('.card:not(.hidden)');
-      if (cards.length > 0) {
-        const idx = Math.floor(Math.random() * cards.length);
-        window.location.href = cards[idx].href;
+      const filtered = getFilteredCards();
+      if (filtered.length > 0) {
+        const idx = Math.floor(Math.random() * filtered.length);
+        window.location.href = filtered[idx].href;
       }
     });
+
+    // Initial render
+    renderPage();
   </script>
 </body>
 </html>
