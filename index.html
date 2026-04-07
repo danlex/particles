@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 106 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 106 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 106 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 107 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 107 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 107 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 106 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 106 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 107 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 107 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 106 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 106 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 107 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 107 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 106 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 107 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 106 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 107 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 62,
     "author": {
       "@type": "Person",
@@ -322,6 +322,15 @@
   </div>
 
   <div class="grid">
+    <a class="card" data-created="2026-04-07" href="plate-tectonics.html">
+      <div class="card-preview"><canvas id="c-plates"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Plate Tectonics</div>
+        <div class="card-desc">Tectonic plates drift, collide, and subduct on a sphere. Divergent ridges spread, convergent boundaries dive.</div>
+        <div class="card-tags"><span class="card-tag">Earth Science</span><span class="card-tag">Geology</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
     <a class="card" data-created="2026-04-07" href="neural-dendrites.html">
       <div class="card-preview"><canvas id="c-dendrites"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
@@ -2284,7 +2293,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 106 * 30 - 15;
+        const gz = Math.floor(i / 80) / 107 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3337,8 +3346,34 @@
       drawRings(); drawDNARep(); drawWaterwheel(); drawCalabiYau();
       drawPulsar(); drawSolarWind(); drawSorting(); drawBloodFlow();
       drawProtein(); drawGravWaves(); drawOceanCurr(); drawMagReconn();
-      drawRayleigh(); drawDendrites();
+      drawRayleigh(); drawDendrites(); drawPlates();
     };
+
+    function drawPlates() {
+      const { ctx, w, h } = setupCanvas('c-plates');
+      const golden=(1+Math.sqrt(5))/2, N=5000, R=6;
+      const centers=[];
+      for (let i=0;i<8;i++) centers.push([R*Math.sin(0.5+Math.sin(i*1.3)*0.8)*Math.cos(i*0.785+0.3), R*Math.cos(0.5+Math.sin(i*1.3)*0.8), R*Math.sin(0.5+Math.sin(i*1.3)*0.8)*Math.sin(i*0.785+0.3)]);
+      for (let i=0;i<N;i++) {
+        const theta=2*Math.PI*i/golden;
+        const phi=Math.acos(1-2*(i+0.5)/N);
+        const x=R*Math.sin(phi)*Math.cos(theta);
+        const y=R*Math.cos(phi);
+        const z=R*Math.sin(phi)*Math.sin(theta);
+        let minD=1e10,pIdx=0;
+        for (let c=0;c<8;c++) {
+          const d=Math.sqrt((x-centers[c][0])**2+(y-centers[c][1])**2+(z-centers[c][2])**2);
+          if(d<minD){minD=d;pIdx=c;}
+        }
+        const { px, py, d: dd } = project(x*1.2,y*1.2,z*1.2,w,h,5,16);
+        const hu=(pIdx/8*216+18)%360;
+        const li=12+Math.exp(-minD*0.5)*15;
+        ctx.fillStyle = hsl(hu, 50, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
 
     function drawDendrites() {
       const { ctx, w, h } = setupCanvas('c-dendrites');
@@ -4472,6 +4507,7 @@
       'c-protein': drawProtein, 'c-gravwaves': drawGravWaves,
       'c-oceancurr': drawOceanCurr, 'c-magreconn': drawMagReconn,
       'c-rayleigh': drawRayleigh, 'c-dendrites': drawDendrites,
+      'c-plates': drawPlates,
     };
 
     // Redraw on resize
