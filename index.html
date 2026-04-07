@@ -4238,30 +4238,7 @@
       }
     }
     // Lazy-load thumbnails: only draw when card scrolls into view
-    const drawFns = {};
-    document.querySelectorAll('.card-preview canvas').forEach(canvas => {
-      const id = canvas.id;
-      // Map canvas id to draw function name
-      const fnName = 'draw' + id.replace('c-', '').replace(/(^|-)(\w)/g, (m, d, c) => c.toUpperCase());
-      drawFns[id] = fnName;
-    });
-
-    const drawnSet = new Set();
-    function drawCard(canvas) {
-      const id = canvas.id;
-      if (drawnSet.has(id)) return;
-      drawnSet.add(id);
-      // Try direct function name mapping
-      const fnName = drawFns[id];
-      if (fnName && typeof window[fnName] === 'function') {
-        try { window[fnName](); } catch(e) { console.warn('Draw error:', id, e); }
-        return;
-      }
-      // Fallback: try all registered draw functions by canvas id
-      try { drawAll(); } catch(e) {}
-    }
-
-    // Expose draw functions to window scope for lazy loading
+    // Map canvas IDs to draw functions
     const allDrawFns = {
       'c-lorenz': drawLorenz, 'c-aizawa': drawAizawa, 'c-thomas': drawThomas,
       'c-torus': drawTorusKnot, 'c-halvorsen': drawHalvorsen, 'c-rossler': drawRossler,
@@ -4304,57 +4281,8 @@
       'c-sorting': drawSorting, 'c-bloodflow': drawBloodFlow,
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const canvas = entry.target.querySelector('canvas');
-          if (canvas && !drawnSet.has(canvas.id)) {
-            const fn = allDrawFns[canvas.id];
-            if (fn) {
-              drawnSet.add(canvas.id);
-              try { fn(); } catch(e) { console.warn('Draw error:', canvas.id, e); }
-            }
-          }
-        }
-      });
-    }, { rootMargin: '200px' });
-
-    document.querySelectorAll('.card-preview').forEach(el => observer.observe(el));
-
-    // Also draw visible ones immediately
-    requestAnimationFrame(() => {
-      document.querySelectorAll('.card-preview').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight + 200) {
-          const canvas = el.querySelector('canvas');
-          if (canvas && !drawnSet.has(canvas.id)) {
-            const fn = allDrawFns[canvas.id];
-            if (fn) {
-              drawnSet.add(canvas.id);
-              try { fn(); } catch(e) {}
-            }
-          }
-        }
-      });
-    });
-
     // Redraw on resize
-    window.addEventListener('resize', () => {
-      drawnSet.clear();
-      document.querySelectorAll('.card-preview').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight + 200) {
-          const canvas = el.querySelector('canvas');
-          if (canvas) {
-            const fn = allDrawFns[canvas.id];
-            if (fn) {
-              drawnSet.add(canvas.id);
-              try { fn(); } catch(e) {}
-            }
-          }
-        }
-      });
-    });
+    window.addEventListener('resize', drawVisibleThumbnails);
 
     // ==========================================
     // PAGINATION + FILTERING
@@ -4458,16 +4386,17 @@
     }
 
     function drawVisibleThumbnails() {
+      // Double rAF: first frame makes cards visible, second frame they have dimensions
       requestAnimationFrame(() => {
-        document.querySelectorAll('.card:not(.hidden) .card-preview').forEach(el => {
-          const canvas = el.querySelector('canvas');
-          if (canvas && !drawnSet.has(canvas.id)) {
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.card:not(.hidden) .card-preview').forEach(el => {
+            const canvas = el.querySelector('canvas');
+            if (!canvas) return;
             const fn = allDrawFns[canvas.id];
-            if (fn) {
-              drawnSet.add(canvas.id);
-              try { fn(); } catch(e) {}
-            }
-          }
+            if (!fn) return;
+            // Always redraw — canvas may have been sized at 0 when hidden
+            try { fn(); } catch(e) { console.warn('Draw error:', canvas.id, e); }
+          });
         });
       });
     }
