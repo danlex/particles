@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 108 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 108 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 108 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 109 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 109 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 109 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 108 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 108 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 109 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 109 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 108 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 108 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 109 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 109 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 108 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 109 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 108 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 109 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 62,
     "author": {
       "@type": "Person",
@@ -322,6 +322,15 @@
   </div>
 
   <div class="grid">
+    <a class="card" data-created="2026-04-07" href="newtons-rings.html">
+      <div class="card-preview"><canvas id="c-newtonrings"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Newton's Rings</div>
+        <div class="card-desc">Thin-film optical interference creates concentric rainbow rings from drifting contact points.</div>
+        <div class="card-tags"><span class="card-tag">Optics</span><span class="card-tag">Interference</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
     <a class="card" data-created="2026-04-07" href="diffusion.html">
       <div class="card-preview"><canvas id="c-diffusion"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
@@ -2302,7 +2311,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 108 * 30 - 15;
+        const gz = Math.floor(i / 80) / 109 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3356,7 +3365,30 @@
       drawPulsar(); drawSolarWind(); drawSorting(); drawBloodFlow();
       drawProtein(); drawGravWaves(); drawOceanCurr(); drawMagReconn();
       drawRayleigh(); drawDendrites(); drawPlates(); drawDiffusion();
+      drawNewtonRings();
     };
+
+    function drawNewtonRings() {
+      const { ctx, w, h } = setupCanvas('c-newtonrings');
+      const c1=[0,0],c2=[-2.5,-3],c3=[1,3.5];
+      for (let i=0;i<5000;i++) {
+        const gx=(i%71)/71*20-10;
+        const gz=Math.floor(i/71)/71*20-10;
+        const d1=Math.sqrt((gx-c1[0])**2+(gz-c1[1])**2);
+        const d2=Math.sqrt((gx-c2[0])**2+(gz-c2[1])**2);
+        const d3=Math.sqrt((gx-c3[0])**2+(gz-c3[1])**2);
+        const t1=d1*d1/40,t2=d2*d2/48,t3=d3*d3/32;
+        const thick=Math.min(t1,t2,t3);
+        const phase=2*thick*1.5*8;
+        const hu=(phase*0.159*360)%360;
+        const li=12+15*(0.5+0.5*Math.cos(phase));
+        const { px, py, d: dd } = project(gx,Math.sin(phase)*0.1-3,gz,w,h,5,10);
+        ctx.fillStyle = hsl(((hu%360)+360)%360, 80, li, 0.35*dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
 
     function drawDiffusion() {
       const { ctx, w, h } = setupCanvas('c-diffusion');
@@ -4178,7 +4210,7 @@
           heading += (Math.random()-0.5) * 0.8;
         }
         const { px, py, d: dd } = project(x*1.3, y*1.3, z*1.3, w, h, 4, 22);
-        const hu = (heading / 6.28 * 108 + 108) % 360;
+        const hu = (heading / 6.28 * 109 + 108) % 360;
         ctx.fillStyle = hsl(hu, 60, 27, 0.3*dd);
         ctx.beginPath();
         ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
@@ -4536,6 +4568,7 @@
       'c-oceancurr': drawOceanCurr, 'c-magreconn': drawMagReconn,
       'c-rayleigh': drawRayleigh, 'c-dendrites': drawDendrites,
       'c-plates': drawPlates, 'c-diffusion': drawDiffusion,
+      'c-newtonrings': drawNewtonRings,
     };
 
     // Redraw on resize
