@@ -1,11 +1,11 @@
 # Particles
 
 [![GitHub Pages](https://img.shields.io/badge/Live%20Demo-danlex.github.io%2Fparticles-blue?style=flat-square)](https://danlex.github.io/particles/)
-[![Animations](https://img.shields.io/badge/Animations-104-brightgreen?style=flat-square)](https://danlex.github.io/particles/)
+[![Animations](https://img.shields.io/badge/Animations-105-brightgreen?style=flat-square)](https://danlex.github.io/particles/)
 [![Three.js](https://img.shields.io/badge/Three.js-r160-orange?style=flat-square)](https://threejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-A gallery of **104 real-time, interactive GPU particle animations**. Each runs **65,536 particles** entirely on the GPU using [Three.js](https://threejs.org/) r160 and `GPUComputationRenderer`.
+A gallery of **105 real-time, interactive GPU particle animations**. Each runs **65,536 particles** entirely on the GPU using [Three.js](https://threejs.org/) r160 and `GPUComputationRenderer`.
 
 **[View Live Gallery](https://danlex.github.io/particles/)**
 
@@ -13,7 +13,7 @@ A gallery of **104 real-time, interactive GPU particle animations**. Each runs *
 
 ## Features
 
-- **104 unique animations** across 13 categories
+- **105 unique animations** across 13 categories
 - **65,536 particles** per animation (256x256 GPU compute texture)
 - **Mouse interaction** — particles react to your cursor in every animation
 - **Real-time controls** — Speed, Bloom, Size, Hue sliders + zoom buttons
