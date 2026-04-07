@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 100 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 100 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 100 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 101 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 101 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 101 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 100 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 100 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 101 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 101 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 100 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 100 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 101 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 101 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 100 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 101 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,8 +72,8 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 100 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
-    "numberOfItems": 61,
+    "description": "Browse 101 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "numberOfItems": 62,
     "author": {
       "@type": "Person",
       "name": "Alexandru DAN"
@@ -427,6 +427,15 @@
         <div class="card-title">Blood Flow</div>
         <div class="card-desc">Cardiovascular circulation with heartbeat pulse. Red arteries, blue veins, slow capillaries — the circulatory system.</div>
         <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Cardiovascular</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
+    <a class="card" data-created="2026-04-07" href="protein-folding.html">
+      <div class="card-preview"><canvas id="c-protein"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Protein Folding</div>
+        <div class="card-desc">A protein chain folds from a straight backbone into alpha helices and beta sheets, then relaxes and refolds.</div>
+        <div class="card-tags"><span class="card-tag">Biology</span><span class="card-tag">Biochemistry</span><span class="card-particles">65,536 particles</span></div>
       </div>
     </a>
 
@@ -2230,7 +2239,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 100 * 30 - 15;
+        const gz = Math.floor(i / 80) / 101 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3282,6 +3291,7 @@
       drawVortexSt(); drawPenrose(); drawEarthquake(); drawSoapBubble();
       drawRings(); drawDNARep(); drawWaterwheel(); drawCalabiYau();
       drawPulsar(); drawSolarWind(); drawSorting(); drawBloodFlow();
+      drawProtein();
     };
 
     function drawPulsar() {
@@ -3362,6 +3372,43 @@
         const hu=phase<0.5?phase*2*300:180+(phase-0.5)*2*(-120+360)%360;
         ctx.fillStyle = hsl(((hu%360)+360)%360,70,22,0.35*dd);
         ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.7*dd),0,Math.PI*2);ctx.fill();
+      }
+    }
+
+    function drawProtein() {
+      const { ctx, w, h } = setupCanvas('c-protein');
+      // Draw a partially folded protein chain with helices and sheets
+      const N = 4000;
+      for (let i = 0; i < N; i++) {
+        const along = i / N;
+        const region = Math.floor(along * 5);
+        const localAlong = (along * 5) % 1;
+        // Simple hash for region type
+        const regionType = [0, 1, 0, 1, 0][region]; // alternating helix/sheet
+        let x, y, z;
+        if (regionType === 0) {
+          // Alpha helix
+          const angle = along * 12 * Math.PI * 2;
+          x = 1.5 * Math.cos(angle) + (region - 2) * 3.0;
+          y = along * 8.0 - 4.0;
+          z = 1.5 * Math.sin(angle) + Math.sin(region * 1.5) * 2.0;
+        } else {
+          // Beta sheet zigzag
+          x = (localAlong - 0.5) * 4.0 + (region - 2) * 2.0;
+          y = Math.sin(localAlong * 8 * Math.PI) * 0.5 + (region - 2) * 1.5;
+          z = (region - 2) * 2.5;
+        }
+        x *= 0.8; y *= 0.8; z *= 0.8;
+        // Add slight spread
+        x += (Math.random() - 0.5) * 0.15;
+        y += (Math.random() - 0.5) * 0.15;
+        z += (Math.random() - 0.5) * 0.15;
+        const { px, py, d: dd } = project(x, y, z, w, h, 5, 16);
+        const hu = along * 360;
+        ctx.fillStyle = hsl(hu % 360, 65, 20, 0.35 * dd);
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(0.3, 0.7 * dd), 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
