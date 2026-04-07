@@ -4360,10 +4360,18 @@
     // PAGINATION + FILTERING
     // ==========================================
     const PER_PAGE = 20;
-    let currentPage = 1;
-    let currentFilter = 'all';
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get('page')) || 1;
+    let currentFilter = urlParams.get('filter') || 'all';
     const allCards = Array.from(document.querySelectorAll('.card'));
     const totalCount = allCards.length;
+
+    // Activate the correct filter button on load
+    if (currentFilter !== 'all') {
+      document.querySelectorAll('.filter-btn:not(#random-btn)').forEach(b => {
+        b.classList.toggle('active', b.dataset.filter === currentFilter);
+      });
+    }
 
     // Dynamic subtitle
     document.querySelector('.subtitle').textContent =
@@ -4385,6 +4393,14 @@
       const start = (currentPage - 1) * PER_PAGE;
       const end = start + PER_PAGE;
       const pageCards = new Set(filtered.slice(start, end));
+
+      // Update URL with page and filter
+      const params = new URLSearchParams();
+      if (currentPage > 1) params.set('page', currentPage);
+      if (currentFilter !== 'all') params.set('filter', currentFilter);
+      const qs = params.toString();
+      const newUrl = window.location.pathname + (qs ? '?' + qs : '');
+      history.replaceState(null, '', newUrl);
 
       // Show/hide cards
       allCards.forEach(card => {
