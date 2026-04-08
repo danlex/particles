@@ -46,71 +46,90 @@
       border-color: rgba(255,255,255,0.06) !important;
       box-shadow: 0 4px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
     }
-    /* Enhanced prev/next navigation */
-    .page-nav a {
-      display: flex !important;
-      align-items: center !important;
-      gap: 10px !important;
-      max-width: 280px !important;
-      padding: 8px 14px !important;
-    }
-    .page-nav a .nav-thumb {
-      width: 80px;
-      height: 50px;
-      border-radius: 6px;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .page-nav a .nav-thumb iframe {
-      width: 320px;
-      height: 200px;
-      border: none;
-      transform: scale(0.25);
-      transform-origin: top left;
+    /* Prev/next navigation */
+    .page-nav {
+      position: fixed;
+      bottom: 80px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 9;
       pointer-events: none;
     }
-    .page-nav a .nav-label {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      overflow: hidden;
-    }
-    .page-nav a .nav-dir {
-      font-size: 8px;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.2);
-    }
-    .page-nav a .nav-name {
+    .page-nav a {
+      pointer-events: auto;
+      color: rgba(255,255,255,0.25);
+      text-decoration: none;
+      font-family: 'Courier New', monospace;
       font-size: 10px;
-      letter-spacing: 1px;
-      color: rgba(255,255,255,0.4);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+      max-width: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .page-nav a:hover .nav-name {
-      color: rgba(255,255,255,0.7);
+    .page-nav a:hover {
+      color: rgba(255,255,255,0.6);
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.5);
     }
   `;
   document.head.appendChild(visualStyle);
 
-  // Enhance prev/next navigation with thumbnails
+  // Build prev/next navigation from the animation list
   if (!document.querySelector('.grid')) {
-    document.querySelectorAll('.page-nav a').forEach(link => {
-      const href = link.getAttribute('href');
-      const isLeft = link === link.parentElement.firstElementChild;
-      const name = href.replace('.html', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-      const arrowHtml = link.querySelector('.nav-arrow')?.outerHTML || '';
+    // Get all animation files for navigation
+    const allAnims = [
+      'aizawa-attractor','ant-colony','apollonian-gasket','attractor-morph','audio-terrain',
+      'aurora','bifurcation','black-hole','blood-flow','burke-shaw','bz-spirals',
+      'calabi-yau','chaotic-billiards','chen-attractor','chladni','chua-attractor',
+      'clifford-attractor','conformal-flow','convection','coral-reef','cosmic-web',
+      'crystal-growth','curl-noise','dadras-attractor','dejong-attractor','diffusion',
+      'dna-helix','dna-replication','doppler-effect','double-pendulum','earthquake',
+      'em-wave','fibonacci-sphere','fireflies','fireworks','fish-swarm','flower-of-life',
+      'fourier-epicycles','four-wing-attractor','fractal-tree','galaxy-collision',
+      'galaxy-spiral','geometric-paradox','gradient-descent','gravitational-lensing',
+      'gravitational-waves','gyroid','halvorsen-attractor','hopalong-attractor',
+      'hopf-fibration','jellyfish','kelvin-helmholtz','klein-bottle','kuramoto-sync',
+      'lichtenberg','lissajous','lorentz-force','lorenz-attractor','lu-chen-attractor',
+      'magnetic-field','magnetic-pendulum','magnetic-reconnection','mandala',
+      'menger-sponge','metaballs','mitosis','mobius-flow','murmuration','n-body',
+      'neural-dendrites','neural-network','newtons-rings','nose-hoover','ocean-currents',
+      'ocean-surface','particle-life','pendulum-wave','penrose-tiling','phyllotaxis',
+      'physarum','pickover-attractor','planetary-rings','plasma-ball','plasma-instability',
+      'plate-tectonics','predator-prey','prime-spiral','protein-folding','pulsar',
+      'quantum-orbital','quaternion-julia','rabinovich-fabrikant','rayleigh-taylor',
+      'rossler-attractor','sand-dunes','shimizu-morioka','smoke','soap-bubble',
+      'solar-wind','soliton','sorting','spherical-harmonics','sprott-attractor',
+      'starfield-warp','supernova','supershape','thomas-attractor','tornado',
+      'torus-knot','trefoil-knot','turing-patterns','vortex-rings','vortex-street',
+      'waterwheel','wave-interference'
+    ];
 
-      // Create thumbnail iframe (loads the actual animation as a tiny preview)
-      link.innerHTML = isLeft
-        ? `<div class="nav-thumb"><iframe src="${href}" loading="lazy" tabindex="-1"></iframe></div>
-           <div class="nav-label"><span class="nav-dir">${arrowHtml} Previous</span><span class="nav-name">${name}</span></div>`
-        : `<div class="nav-label"><span class="nav-dir">Next ${arrowHtml}</span><span class="nav-name">${name}</span></div>
-           <div class="nav-thumb"><iframe src="${href}" loading="lazy" tabindex="-1"></iframe></div>`;
-    });
+    const currentFile = window.location.pathname.split('/').pop().replace('.html', '');
+    const idx = allAnims.indexOf(currentFile);
+    if (idx >= 0) {
+      const prevIdx = idx > 0 ? idx - 1 : allAnims.length - 1;
+      const nextIdx = idx < allAnims.length - 1 ? idx + 1 : 0;
+      const prevName = allAnims[prevIdx].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const nextName = allAnims[nextIdx].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+      const nav = document.createElement('div');
+      nav.className = 'page-nav';
+      nav.innerHTML = `
+        <a href="${allAnims[prevIdx]}.html">&larr; ${prevName}</a>
+        <a href="${allAnims[nextIdx]}.html">${nextName} &rarr;</a>
+      `;
+      document.body.appendChild(nav);
+    }
   }
 
   // Add vignette overlay (doesn't affect canvas rendering or interactions)
