@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Particles — 114 Interactive GPU Particle Animations | Three.js + WebGL</title>
-  <meta name="title" content="Particles — 114 Interactive GPU Particle Animations | Three.js + WebGL">
-  <meta name="description" content="Explore 114 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
+  <title>Particles — 115 Interactive GPU Particle Animations | Three.js + WebGL</title>
+  <meta name="title" content="Particles — 115 Interactive GPU Particle Animations | Three.js + WebGL">
+  <meta name="description" content="Explore 115 real-time, interactive GPU particle animations. 65,536 particles each, fully GPU-computed with Three.js and WebGL. Lorenz attractors, fractals, physics simulations, sacred geometry, and more. Mouse-interactive.">
   <meta name="keywords" content="particle animation, GPU particles, three.js, webgl, strange attractor, lorenz attractor, fractal, shader, GLSL, creative coding, generative art, GPUComputationRenderer, mathematical visualization, chaos theory, physics simulation, interactive art, demoscene, GPGPU, compute shader, particle system, WebGL gallery, real-time graphics, mathematical art, procedural generation, reaction diffusion, turing patterns, double pendulum, n-body simulation, sacred geometry, mandala, fibonacci, supershape, gyroid, klein bottle, metaballs, curl noise, fireworks, supernova, black hole simulation">
   <meta name="author" content="Alexandru DAN">
   <meta name="robots" content="index, follow">
@@ -19,8 +19,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://danlex.github.io/particles/">
-  <meta property="og:title" content="Particles — 114 Interactive GPU Particle Animations">
-  <meta property="og:description" content="Explore 114 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
+  <meta property="og:title" content="Particles — 115 Interactive GPU Particle Animations">
+  <meta property="og:description" content="Explore 115 real-time, interactive GPU particle animations. Strange attractors, fractals, physics simulations, sacred geometry. 65,536 particles each, fully GPU-computed with Three.js + WebGL.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,8 +30,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://danlex.github.io/particles/">
-  <meta name="twitter:title" content="Particles — 114 Interactive GPU Particle Animations">
-  <meta name="twitter:description" content="Explore 114 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
+  <meta name="twitter:title" content="Particles — 115 Interactive GPU Particle Animations">
+  <meta name="twitter:description" content="Explore 115 interactive GPU particle animations. Strange attractors, fractals, physics sims, sacred geometry. 65K particles, fully GPU-computed.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta name="twitter:image:alt" content="A gallery of glowing particle animations on a dark background">
 
@@ -46,7 +46,7 @@
     "@type": "WebApplication",
     "name": "Particles",
     "url": "https://danlex.github.io/particles/",
-    "description": "A gallery of 114 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
+    "description": "A gallery of 115 real-time, interactive GPU particle animations built with Three.js and GPUComputationRenderer. Features strange attractors, fractals, physics simulations, sacred geometry, and more.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any (WebGL-capable browser)",
     "browserRequirements": "Requires WebGL 2.0",
@@ -72,7 +72,7 @@
     "@type": "CollectionPage",
     "name": "GPU Particle Animation Gallery",
     "url": "https://danlex.github.io/particles/",
-    "description": "Browse 114 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
+    "description": "Browse 115 interactive GPU particle animations organized by category: strange attractors, fractals, physics simulations, sacred geometry, astrophysics, and more.",
     "numberOfItems": 62,
     "author": {
       "@type": "Person",
@@ -322,6 +322,15 @@
   </div>
 
   <div class="grid">
+    <a class="card" data-created="2026-04-08" href="fourier-epicycles.html">
+      <div class="card-preview"><canvas id="c-fourier"></canvas><div class="play-hint"></div></div>
+      <div class="card-info">
+        <div class="card-title">Fourier Epicycles</div>
+        <div class="card-desc">Circles rotating on circles draw complex curves. The Fourier series made visible with progressively more epicycles.</div>
+        <div class="card-tags"><span class="card-tag">Math Art</span><span class="card-tag">Fourier Series</span><span class="card-particles">65,536 particles</span></div>
+      </div>
+    </a>
+
     <a class="card" data-created="2026-04-08" href="audio-terrain.html">
       <div class="card-preview"><canvas id="c-audioterrain"></canvas><div class="play-hint"></div></div>
       <div class="card-info">
@@ -2356,7 +2365,7 @@
       const { ctx, w, h } = setupCanvas('c-ocean');
       for (let i = 0; i < 6000; i++) {
         const gx = (i % 80) / 80 * 30 - 15;
-        const gz = Math.floor(i / 80) / 114 * 30 - 15;
+        const gz = Math.floor(i / 80) / 115 * 30 - 15;
         const phase1 = 1.0 * (gx*0.7 + gz*0.7);
         const phase2 = 2.0 * (gx*0.9 - gz*0.4);
         const y = 0.4*Math.sin(phase1) + 0.2*Math.sin(phase2) + 0.1*Math.sin(3*(-gx*0.3+gz*0.95));
@@ -3411,8 +3420,38 @@
       drawProtein(); drawGravWaves(); drawOceanCurr(); drawMagReconn();
       drawRayleigh(); drawDendrites(); drawPlates(); drawDiffusion();
       drawNewtonRings(); drawPredPrey(); drawDoppler(); drawCoralReef();
-      drawPlasmaInstab(); drawAudioTerrain();
+      drawPlasmaInstab(); drawAudioTerrain(); drawFourier();
     };
+
+    function drawFourier() {
+      const { ctx, w, h } = setupCanvas('c-fourier');
+      // Draw the traced curve from epicycles
+      for (let i=0;i<3000;i++) {
+        const t=i/3000*Math.PI*8;
+        let x=0,y=0;
+        for (let n=1;n<=8;n++) {
+          const r=3/n;
+          if(n%2===1){x+=r*Math.cos(n*t+n*0.5);y+=r*Math.sin(n*t+n*0.5);}
+          else{x+=r*0.7*Math.sin(n*t*1.3+n*0.5);y+=r*0.7*Math.cos(n*t*0.8+n*0.5);}
+        }
+        const age=i/3000;
+        const { px, py, d: dd } = project(x*1.5,y*1.5,age*2-1,w,h,8,15);
+        const hu=(age*288)%360;
+        const li=12+(1-age)*25;
+        ctx.fillStyle = hsl(hu,70,li,0.35*dd*(1-age*0.5));
+        ctx.beginPath();ctx.arc(px,py,Math.max(0.3,0.7*dd),0,Math.PI*2);ctx.fill();
+      }
+      // Draw circles (dim)
+      for (let n=1;n<=5;n++) {
+        const r=3/n*1.5;
+        for (let j=0;j<40;j++) {
+          const a=j/40*Math.PI*2;
+          const { px, py, d: dd } = project(r*Math.cos(a),r*Math.sin(a),0,w,h,8,15);
+          ctx.fillStyle = hsl(0,0,8,0.15*dd);
+          ctx.beginPath();ctx.arc(px,py,0.3,0,Math.PI*2);ctx.fill();
+        }
+      }
+    }
 
     function drawAudioTerrain() {
       const { ctx, w, h } = setupCanvas('c-audioterrain');
@@ -4385,7 +4424,7 @@
           heading += (Math.random()-0.5) * 0.8;
         }
         const { px, py, d: dd } = project(x*1.3, y*1.3, z*1.3, w, h, 4, 22);
-        const hu = (heading / 6.28 * 114 + 108) % 360;
+        const hu = (heading / 6.28 * 115 + 108) % 360;
         ctx.fillStyle = hsl(hu, 60, 27, 0.3*dd);
         ctx.beginPath();
         ctx.arc(px, py, Math.max(0.3, 0.7*dd), 0, Math.PI*2);
@@ -4747,6 +4786,7 @@
       'c-doppler': drawDoppler, 'c-coralreef': drawCoralReef,
       'c-plasmainstab': drawPlasmaInstab,
       'c-audioterrain': drawAudioTerrain,
+      'c-fourier': drawFourier,
     };
 
     // Redraw on resize
