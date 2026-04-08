@@ -723,6 +723,21 @@
     uploadBtn.title = 'Upload MP3';
     toolbar.appendChild(uploadBtn);
 
+    // Screenshot button
+    const screenshotBtn = document.createElement('button');
+    screenshotBtn.className = 'tool-btn';
+    screenshotBtn.innerHTML = '&#128247;'; // camera
+    screenshotBtn.title = 'Save Screenshot';
+    toolbar.appendChild(screenshotBtn);
+
+    // Fullscreen button
+    const fsBtn = document.createElement('button');
+    fsBtn.className = 'tool-btn';
+    fsBtn.innerHTML = '&#9974;'; // expand
+    fsBtn.title = 'Fullscreen';
+    fsBtn.style.fontSize = '14px';
+    toolbar.appendChild(fsBtn);
+
     // Hidden file input
     const audioFileInput = document.createElement('input');
     audioFileInput.type = 'file';
@@ -826,6 +841,31 @@
       const embedUrl = pageUrl.replace(/^http:/, 'https:');
       const code = `<iframe src="${embedUrl}" width="800" height="600" style="border:none;border-radius:12px;" allow="accelerometer; autoplay" loading="lazy"></iframe>`;
       copyToClipboard(code, embedBtn);
+    });
+
+    // Screenshot button
+    screenshotBtn.addEventListener('click', () => {
+      const canvas = document.querySelector('canvas');
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = `${pageName.toLowerCase().replace(/\s+/g, '-')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('Screenshot saved');
+    });
+
+    // Fullscreen button
+    fsBtn.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        fsBtn.innerHTML = '&#9974;';
+      } else {
+        document.documentElement.requestFullscreen();
+        fsBtn.innerHTML = '&#10005;'; // X to exit
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) fsBtn.innerHTML = '&#9974;';
     });
 
     // ESC to close panels + stop audio
