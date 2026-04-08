@@ -46,8 +46,72 @@
       border-color: rgba(255,255,255,0.06) !important;
       box-shadow: 0 4px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
     }
+    /* Enhanced prev/next navigation */
+    .page-nav a {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      max-width: 280px !important;
+      padding: 8px 14px !important;
+    }
+    .page-nav a .nav-thumb {
+      width: 80px;
+      height: 50px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-nav a .nav-thumb iframe {
+      width: 320px;
+      height: 200px;
+      border: none;
+      transform: scale(0.25);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+    .page-nav a .nav-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+    .page-nav a .nav-dir {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.2);
+    }
+    .page-nav a .nav-name {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.4);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .page-nav a:hover .nav-name {
+      color: rgba(255,255,255,0.7);
+    }
   `;
   document.head.appendChild(visualStyle);
+
+  // Enhance prev/next navigation with thumbnails
+  if (!document.querySelector('.grid')) {
+    document.querySelectorAll('.page-nav a').forEach(link => {
+      const href = link.getAttribute('href');
+      const isLeft = link === link.parentElement.firstElementChild;
+      const name = href.replace('.html', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const arrowHtml = link.querySelector('.nav-arrow')?.outerHTML || '';
+
+      // Create thumbnail iframe (loads the actual animation as a tiny preview)
+      link.innerHTML = isLeft
+        ? `<div class="nav-thumb"><iframe src="${href}" loading="lazy" tabindex="-1"></iframe></div>
+           <div class="nav-label"><span class="nav-dir">${arrowHtml} Previous</span><span class="nav-name">${name}</span></div>`
+        : `<div class="nav-label"><span class="nav-dir">Next ${arrowHtml}</span><span class="nav-name">${name}</span></div>
+           <div class="nav-thumb"><iframe src="${href}" loading="lazy" tabindex="-1"></iframe></div>`;
+    });
+  }
 
   // Add vignette overlay (doesn't affect canvas rendering or interactions)
   if (!document.querySelector('.grid')) { // only on animation pages, not gallery

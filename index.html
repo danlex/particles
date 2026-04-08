@@ -117,10 +117,13 @@
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 28px;
-      max-width: 1140px;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 32px;
+      max-width: 1600px;
       width: 100%;
+    }
+    @media (min-width: 1800px) {
+      .grid { max-width: 1900px; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); }
     }
     .card {
       position: relative;
@@ -142,7 +145,7 @@
     .card:hover .play-hint { opacity: 1; }
     .card-preview {
       width: 100%;
-      aspect-ratio: 16/9;
+      aspect-ratio: 4/3;
       position: relative;
       overflow: hidden;
       background: #000;
@@ -229,7 +232,7 @@
       gap: 8px;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 1140px;
+      max-width: 1600px;
       width: 100%;
       margin-bottom: 40px;
     }
@@ -263,7 +266,7 @@
       gap: 6px;
       justify-content: center;
       margin-top: 40px;
-      max-width: 1140px;
+      max-width: 1600px;
       width: 100%;
       flex-wrap: wrap;
     }
