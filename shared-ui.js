@@ -1,10 +1,60 @@
 /**
  * Shared UI for all particle animations
- * Adds: Info/Code panel, Embed button, Video Export button
+ * Adds: Visual enhancements, Info/Code panel, Embed, Video Export, Audio
  * Include via <script src="shared-ui.js"></script> (non-module, runs after DOM)
  */
 (function() {
   'use strict';
+
+  // =========================================
+  // VISUAL ENHANCEMENTS (applied to all animations)
+  // =========================================
+  const visualStyle = document.createElement('style');
+  visualStyle.textContent = `
+    /* Vignette overlay */
+    .vignette {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(ellipse at center,
+        transparent 50%,
+        rgba(0,0,0,0.3) 75%,
+        rgba(0,0,0,0.7) 100%
+      );
+    }
+    /* Subtle animated background gradient */
+    body {
+      background: radial-gradient(ellipse at 50% 50%,
+        #0a0a1a 0%,
+        #050510 40%,
+        #000000 100%
+      ) !important;
+    }
+    /* Modern typography for info */
+    #info h1 {
+      font-weight: 300 !important;
+      letter-spacing: 5px !important;
+      text-shadow: 0 0 30px rgba(255,255,255,0.1);
+    }
+    #info p {
+      text-shadow: 0 0 20px rgba(255,255,255,0.05);
+    }
+    /* Subtle glow on controls */
+    #controls {
+      background: rgba(0,0,5,0.5) !important;
+      border-color: rgba(255,255,255,0.06) !important;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+  `;
+  document.head.appendChild(visualStyle);
+
+  // Add vignette overlay (doesn't affect canvas rendering or interactions)
+  if (!document.querySelector('.grid')) { // only on animation pages, not gallery
+    const vignette = document.createElement('div');
+    vignette.className = 'vignette';
+    document.body.appendChild(vignette);
+  }
 
   // =========================================
   // CSS
