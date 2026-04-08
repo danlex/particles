@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kelvin-Helmholtz — Particles</title>
-  <meta name="description" content="Two fluid layers shearing past each other curl into mesmerizing spiral vortex rolls — the pattern seen in Jupiter's atmosphere.">
+  <title>Fourier Epicycles — Particles</title>
+  <meta name="description" content="Circles rotating on circles draw complex curves. The Fourier series made visible with progressively more epicycles.">
   <meta name="author" content="Alexandru DAN">
   <meta name="theme-color" content="#050505">
-  <link rel="canonical" href="https://danlex.github.io/particles/kelvin-helmholtz.html">
+  <link rel="canonical" href="https://danlex.github.io/particles/fourier-epicycles.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://danlex.github.io/particles/kelvin-helmholtz.html">
-  <meta property="og:title" content="Kelvin-Helmholtz — Particles">
-  <meta property="og:description" content="Two fluid layers shearing past each other curl into mesmerizing spiral vortex rolls — the pattern seen in Jupiter's atmosphere.">
+  <meta property="og:url" content="https://danlex.github.io/particles/fourier-epicycles.html">
+  <meta property="og:title" content="Fourier Epicycles — Particles">
+  <meta property="og:description" content="Circles rotating on circles draw complex curves. The Fourier series made visible with progressively more epicycles.">
   <meta property="og:image" content="https://danlex.github.io/particles/og-image.svg">
   <meta property="og:site_name" content="Particles">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Kelvin-Helmholtz — Particles">
-  <meta name="twitter:description" content="Two fluid layers shearing past each other curl into mesmerizing spiral vortex rolls — the pattern seen in Jupiter's atmosphere.">
+  <meta name="twitter:title" content="Fourier Epicycles — Particles">
+  <meta name="twitter:description" content="Circles rotating on circles draw complex curves. The Fourier series made visible with progressively more epicycles.">
   <meta name="twitter:image" content="https://danlex.github.io/particles/og-image.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -135,7 +135,7 @@
 </head>
 <body>
   <div id="info">
-    <h1>Kelvin-Helmholtz</h1>
+    <h1>Fourier Epicycles</h1>
     <p id="particle-count"></p>
   </div>
   <div id="fps"></div>
@@ -146,7 +146,7 @@
       <label>Speed</label>
     </div>
     <div class="ctrl-group">
-      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.4">
+      <input type="range" id="bloom" min="0" max="3" step="0.1" value="0.5">
       <label>Bloom</label>
     </div>
     <div class="ctrl-group">
@@ -183,7 +183,7 @@
     // Scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 2000);
-    camera.position.set(0, 0, 22);
+    camera.position.set(0, 0, 18);
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.setSize(innerWidth, innerHeight);
@@ -201,7 +201,7 @@
     composer.addPass(new RenderPass(scene, camera));
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(innerWidth / 2, innerHeight / 2),
-      0.4, 0.3, 0.85
+      0.5, 0.3, 0.8
     );
     composer.addPass(bloomPass);
 
@@ -213,14 +213,10 @@
       const data = tex.image.data;
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const idx = i * 4;
-        const x = (Math.random() - 0.5) * 32;
-        const y = (Math.random() - 0.5) * 8; // +-4
-        const z = (Math.random() - 0.5) * 0.5;
-        const band = y > 0 ? 1.0 : 0.0;
-        data[idx]     = x;
-        data[idx + 1] = y;
-        data[idx + 2] = z;
-        data[idx + 3] = band;
+        data[idx]     = 0;
+        data[idx + 1] = 0;
+        data[idx + 2] = 0;
+        data[idx + 3] = 0;
       }
     }
 
@@ -234,85 +230,107 @@
       uniform float uFrame;
       uniform float uTime;
 
-      float hash(vec2 p) {
-        vec3 p3 = fract(vec3(p.xyx) * 0.1031);
-        p3 += dot(p3, p3.yzx + 33.33);
-        return fract((p3.x + p3.y) * p3.z);
-      }
+      #define PI 3.14159265359
 
       void main() {
         vec2 uv = gl_FragCoord.xy / resolution.xy;
-        vec4 pos = texture2D(texturePosition, uv);
-        float x = pos.x, y = pos.y, z = pos.z;
-        // w stores which band (0 = bottom, 1 = top) — set during seeding, preserved
-        float band = pos.w;
+        float idx = gl_FragCoord.y * resolution.x + gl_FragCoord.x;
+        float total = resolution.x * resolution.y;
+        float golden = 1.6180339887;
 
-        float dt = uDt * uSpeed;
+        float t = uTime * uSpeed;
 
-        // Compute velocity field from the current vorticity sheet
-        // Simplified: use analytical shear + growing perturbation
-        float shearVel = (y > 0.0) ? 2.0 : -2.0;
+        // Split: 70% trace particles (the drawn curve), 30% epicycle circles
+        float traceFrac = 0.7;
+        bool isTrace = idx < total * traceFrac;
 
-        // Growing sinusoidal instability (amplitude increases with time)
-        float growthRate = min(uTime * 0.1, 3.0);
-        float kx = 0.8; // wavenumber
-        float perturbY = growthRate * sin(kx * x + uTime * 0.3) * exp(-y * y * 0.5);
+        if (isTrace) {
+          // Trace particle: follows the tip of the last epicycle
+          float traceIdx = idx;
+          float traceTotal = total * traceFrac;
 
-        // Vortex rollup: add circular motion around instability peaks
-        float vortexStrength = growthRate * 0.8;
-        float vortexX = 0.0, vortexY = 0.0;
+          // Each trace particle shows a different moment in time (trail)
+          float trailT = t - (traceIdx / traceTotal) * 4.0; // 4 seconds of trail
 
-        // Multiple vortex centers along the shear layer
-        for (int i = 0; i < 4; i++) {
-          float cx = (float(i) - 1.5) * 7.85; // spacing = 2*PI/kx
-          float cy = 0.0;
-          float dx_v = x - cx;
-          float dy_v = y - cy;
-          float r2 = dx_v * dx_v + dy_v * dy_v + 0.5;
-          float r = sqrt(r2);
-          // Rankine vortex (solid body inside, 1/r outside)
-          float vtheta = vortexStrength * min(r, 2.0) / (r2 + 0.3);
-          vortexX += -dy_v * vtheta / r;
-          vortexY += dx_v * vtheta / r;
+          // Number of epicycles (increases over time, cycles 3-15)
+          float numEpicycles = 3.0 + mod(t * 0.3, 12.0);
+
+          // Sum of rotating circles
+          float x = 0.0, y = 0.0;
+          for (int n = 1; n <= 15; n++) {
+            if (float(n) > numEpicycles) break;
+            float fn = float(n);
+            // Fourier coefficients for an interesting shape
+            float radius = 3.0 / fn; // amplitude decreases with frequency
+            float freq = fn; // frequency
+            float phase = fn * 0.5; // phase offset
+
+            // Alternate between sin and cos terms for complex shapes
+            if (n % 2 == 1) {
+              x += radius * cos(freq * trailT + phase);
+              y += radius * sin(freq * trailT + phase);
+            } else {
+              x += radius * 0.7 * sin(freq * trailT * 1.3 + phase);
+              y += radius * 0.7 * cos(freq * trailT * 0.8 + phase);
+            }
+          }
+
+          // Slight z from trail position (older = further back)
+          float trailAge = (traceIdx / traceTotal);
+          float z = trailAge * 2.0 - 1.0;
+
+          gl_FragColor = vec4(x, y, z, trailAge);
+        } else {
+          // Epicycle circle particles: show the rotating circles
+          float circIdx = idx - total * traceFrac;
+          float circTotal = total * (1.0 - traceFrac);
+
+          float numEpicycles = 3.0 + mod(t * 0.3, 12.0);
+          float perCircle = circTotal / min(numEpicycles, 15.0);
+          float whichCircle = floor(circIdx / perCircle);
+          float alongCircle = mod(circIdx, perCircle) / perCircle;
+
+          if (whichCircle >= numEpicycles) {
+            gl_FragColor = vec4(0.0, -100.0, 0.0, 0.0);
+            return;
+          }
+
+          // Compute center of this epicycle (sum of all previous ones)
+          float cx = 0.0, cy = 0.0;
+          for (int n = 1; n <= 15; n++) {
+            if (float(n) > whichCircle) break;
+            float fn = float(n);
+            float radius = 3.0 / fn;
+            float freq = fn;
+            float phase = fn * 0.5;
+            if (n % 2 == 1) {
+              cx += radius * cos(freq * t + phase);
+              cy += radius * sin(freq * t + phase);
+            } else {
+              cx += radius * 0.7 * sin(freq * t * 1.3 + phase);
+              cy += radius * 0.7 * cos(freq * t * 0.8 + phase);
+            }
+          }
+
+          // Draw circle at this center
+          float fn = whichCircle + 1.0;
+          float radius = 3.0 / fn;
+          if (int(whichCircle + 1.0) % 2 == 0) radius *= 0.7;
+          float angle = alongCircle * 2.0 * PI;
+
+          float x = cx + radius * cos(angle);
+          float y = cy + radius * sin(angle);
+          float z = 0.0;
+
+          gl_FragColor = vec4(x, y, z, -1.0); // negative w = circle particle
         }
-
-        x += (shearVel + vortexX) * dt;
-        y += (perturbY * 0.3 + vortexY) * dt;
-
-        // Slight z variation for 3D depth
-        z += (hash(uv * 500.0 + uFrame) - 0.5) * 0.005;
-        z *= 0.99; // slowly flatten
-
-        // Noise
-        vec2 seed = uv * 1000.0 + uFrame;
-        x += (hash(seed) - 0.5) * 0.015;
-        y += (hash(seed + 100.0) - 0.5) * 0.015;
-
-        // Periodic boundary in x
-        if (x > 16.0) x -= 32.0;
-        if (x < -16.0) x += 32.0;
-
-        // Soft y boundary
-        if (abs(y) > 8.0) y *= 0.98;
-
-        // Mouse attraction
-        vec3 p = vec3(x, y, z);
-        if (uMouseActive > 0.01) {
-          vec3 toMouse = uMouse - p;
-          float mouseDist = length(toMouse);
-          float mouseForce = uMouseActive * 0.3 / (mouseDist * mouseDist + 1.0);
-          p += toMouse * mouseForce * dt;
-          x = p.x; y = p.y; z = p.z;
-        }
-
-        gl_FragColor = vec4(x, y, z, band);
       }
     `;
 
     const posVar = gpuCompute.addVariable('texturePosition', positionShader, posTex0);
     gpuCompute.setVariableDependencies(posVar, [posVar]);
 
-    posVar.material.uniforms.uDt = { value: 0.008 };
+    posVar.material.uniforms.uDt = { value: 0.03 };
     posVar.material.uniforms.uSpeed = { value: 1.0 };
     posVar.material.uniforms.uFrame = { value: 0.0 };
     posVar.material.uniforms.uTime = { value: 0.0 };
@@ -352,12 +370,22 @@
       void main() {
         vec4 posData = texture2D(uPositionTexture, aTexCoord);
         vec3 pos = posData.xyz * uScale;
-        float band = posData.w;
+        float w = posData.w;
 
-        // Color by band: top band warm orange (0.08), bottom band cool blue (0.6)
-        float hue = fract(mix(0.6, 0.08, band) + uHueShift);
-        float saturation = 0.7;
-        float lightness = 0.12 + 0.15;
+        float hue, saturation, lightness;
+
+        if (w < 0.0) {
+          // Circle particles: dim white outlines
+          hue = 0.0;
+          saturation = 0.0;
+          lightness = 0.08;
+        } else {
+          // Trace particles: rainbow by trail age
+          float trailAge = w;
+          hue = fract(trailAge * 0.8 + uHueShift);
+          saturation = 0.7;
+          lightness = 0.12 + (1.0 - trailAge) * 0.25;
+        }
 
         vColor = hsl2rgb(hue, saturation, lightness);
 
@@ -376,7 +404,7 @@
         // Soft gaussian falloff with bright core
         float glow = exp(-d * d * 3.0);
         float core = exp(-d * d * 12.0);
-        float alpha = (glow * 0.15 + core * 0.3);
+        float alpha = glow * 0.18 + core * 0.3;
         // Slight color boost at core (hotter center)
         vec3 col = vColor + core * 0.15;
         gl_FragColor = vec4(col, alpha);
@@ -403,7 +431,7 @@
         uPositionTexture: { value: null },
         uHueShift: { value: 0.0 },
         uPointSize: { value: 1.0 },
-        uScale: { value: 0.8 },
+        uScale: { value: 1.5 },
       },
       transparent: true,
       blending: THREE.AdditiveBlending,
@@ -496,8 +524,8 @@
     });
   </script>
     <div class="page-nav">
-    <a href="jellyfish.html"><span class="nav-arrow">&larr;</span> Jellyfish</a>
-    <a href="klein-bottle.html">Klein Bottle <span class="nav-arrow">&rarr;</span></a>
+    <a href="four-wing-attractor.html"><span class="nav-arrow">&larr;</span> Four Wing Attractor</a>
+    <a href="fractal-tree.html">Fractal Tree <span class="nav-arrow">&rarr;</span></a>
   </div>
   <script src="shared-ui.js"></script>
 </body>

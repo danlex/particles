@@ -868,7 +868,7 @@
       if (!document.fullscreenElement) fsBtn.innerHTML = '&#9974;';
     });
 
-    // ESC to close panels + stop audio
+    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (panel) panel.classList.remove('open');
@@ -879,6 +879,15 @@
           uploadBtn.classList.remove('recording');
           uploadBtn.innerHTML = '&#9835;';
         }
+      }
+      // Arrow keys: navigate between animations
+      if (e.key === 'ArrowLeft') {
+        const prev = document.querySelector('.page-nav a:first-child');
+        if (prev) window.location.href = prev.href;
+      }
+      if (e.key === 'ArrowRight') {
+        const next = document.querySelector('.page-nav a:last-child');
+        if (next) window.location.href = next.href;
       }
     });
   }
