@@ -423,7 +423,7 @@
         <div class="info-section">
           <h3>Source</h3>
           <p><a href="https://github.com/danlex/particles" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.5);">View on GitHub</a></p>
-          <p style="margin-top:8px;"><a href="https://alexandrudan.com" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.5);">alexandrudan.com</a></p>
+          <p style="margin-top:8px;"><a href="https://alexandrudan.com" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.5);">alexandrudan.com</a> · <a href="https://tvl.tech" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.5);">tvl.tech</a></p>
         </div>
       </div>
     `;
