@@ -102,16 +102,16 @@
       padding: 60px 20px;
     }
     h1 {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 400;
       letter-spacing: 6px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.85);
       margin-bottom: 8px;
     }
     .subtitle {
-      font-size: 10px;
-      color: rgba(255,255,255,0.25);
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
       letter-spacing: 2px;
       margin-bottom: 60px;
     }
@@ -127,7 +127,7 @@
     }
     .card {
       position: relative;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 14px;
       overflow: hidden;
       background: #0a0a0a;
@@ -138,7 +138,7 @@
       display: block;
     }
     .card:hover {
-      border-color: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.18);
       transform: translateY(-6px);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
@@ -190,42 +190,52 @@
     }
     .card-info { padding: 20px 24px 22px; }
     .card-title {
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
+      color: rgba(255,255,255,0.9);
       margin-bottom: 8px;
     }
     .card-desc {
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-      line-height: 1.7;
-      letter-spacing: 0.5px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+      letter-spacing: 0.3px;
     }
     .card-tags { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
     .card-tag {
-      font-size: 8px;
+      font-size: 9px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.45);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 4px;
       padding: 3px 8px;
     }
     .card-particles {
-      font-size: 8px;
+      font-size: 9px;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.35);
       padding: 3px 8px;
       background: rgba(255,255,255,0.03);
       border-radius: 4px;
     }
     .footer {
       margin-top: 80px;
-      font-size: 9px;
-      color: rgba(255,255,255,0.12);
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
       letter-spacing: 2px;
       text-transform: uppercase;
+      text-align: center;
+      line-height: 2.2;
+    }
+    .footer a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer a:hover {
+      color: rgba(255,255,255,0.7);
     }
     .filters {
       display: flex;
@@ -238,24 +248,24 @@
     }
     .filter-btn {
       font-family: 'Courier New', monospace;
-      font-size: 9px;
+      font-size: 10px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.5);
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 20px;
       padding: 6px 16px;
       cursor: pointer;
       transition: all 0.3s;
     }
     .filter-btn:hover {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.6);
+      border-color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
     }
     .filter-btn.active {
-      border-color: rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.9);
       background: rgba(255,255,255,0.05);
     }
     .card.hidden {
@@ -274,9 +284,9 @@
       font-family: 'Courier New', monospace;
       font-size: 11px;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.5);
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 8px;
       padding: 8px 14px;
       cursor: pointer;
@@ -285,17 +295,17 @@
       text-align: center;
     }
     .page-btn:hover {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.6);
+      border-color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
     }
     .page-btn.active {
-      border-color: rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.9);
       background: rgba(255,255,255,0.05);
     }
     .page-info {
-      font-size: 9px;
-      color: rgba(255,255,255,0.2);
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
       letter-spacing: 1.5px;
       text-transform: uppercase;
       text-align: center;
@@ -1939,7 +1949,10 @@
   <div class="pagination" id="pagination"></div>
   <div class="page-info" id="page-info"></div>
 
-  <div class="footer">Built with Three.js r160 + GPUComputationRenderer</div>
+  <div class="footer">
+    Built with Three.js r160 + GPUComputationRenderer<br>
+    <a href="https://alexandrudan.com">alexandrudan.com</a>
+  </div>
 
   <script>
     // Render lightweight 2D canvas previews of each attractor
