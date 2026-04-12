@@ -2,8 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /_*
 
-Sitemap: https://danlex.github.io/particles/sitemap.xml
+Sitemap: https://particles.alexandrudan.com/sitemap.xml
 
 # Particles — 61 Interactive GPU Particle Animations
-# https://danlex.github.io/particles/
+# https://particles.alexandrudan.com/
 # Built with Three.js r160 + GPUComputationRenderer

@@ -1,7 +1,7 @@
 # Particles — GPU Particle Animation Gallery
 
 ## Project
-A gallery of 100 GPU-computed particle animations built with Three.js r160 and GPUComputationRenderer. Each animation runs 65,536 particles entirely on the GPU. Live at https://danlex.github.io/particles/
+A gallery of 100 GPU-computed particle animations built with Three.js r160 and GPUComputationRenderer. Each animation runs 65,536 particles entirely on the GPU. Live at https://particles.alexandrudan.com/
 
 ## Current State (as of 2026-04-07)
 - \*\*100 animations\*\* across 35+ categories

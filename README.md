@@ -1,13 +1,13 @@
 # Particles
 
-[![GitHub Pages](https://img.shields.io/badge/Live%20Demo-danlex.github.io%2Fparticles-blue?style=flat-square)](https://danlex.github.io/particles/)
-[![Animations](https://img.shields.io/badge/Animations-115-brightgreen?style=flat-square)](https://danlex.github.io/particles/)
+[![GitHub Pages](https://img.shields.io/badge/Live%20Demo-particles.alexandrudan.com-blue?style=flat-square)](https://particles.alexandrudan.com/)
+[![Animations](https://img.shields.io/badge/Animations-115-brightgreen?style=flat-square)](https://particles.alexandrudan.com/)
 [![Three.js](https://img.shields.io/badge/Three.js-r160-orange?style=flat-square)](https://threejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 A gallery of **115 real-time, interactive GPU particle animations**. Each runs **65,536 particles** entirely on the GPU using [Three.js](https://threejs.org/) r160 and `GPUComputationRenderer`.
 
-**[View Live Gallery](https://danlex.github.io/particles/)**
+**[View Live Gallery](https://particles.alexandrudan.com/)**
 
 ---
 

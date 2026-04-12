@@ -303,7 +303,7 @@
   // =========================================
   // HELPERS
   // =========================================
-  const pageUrl = window.location.href.replace(/^http:\/\/localhost.*\//, 'https://danlex.github.io/particles/');
+  const pageUrl = window.location.href.replace(/^http:\/\/localhost.*\//, 'https://particles.alexandrudan.com/');
   const pageName = document.querySelector('#info h1')?.textContent || document.title.split('—')[0].trim();
   const pageDesc = document.querySelector('meta[name="description"]')?.content || '';
 
